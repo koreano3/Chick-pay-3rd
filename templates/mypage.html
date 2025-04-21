@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}Chick Pay - 마이페이지{% endblock %}
+
+{% block content %}
+
+{% load humanize %}
+{% load static %}
+<main class="container mx-auto px-4 py-10 flex-grow">
+    <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl font-bold text-chick-brown mb-8 text-center">마이페이지</h2>
+
+        <div class="bg-white rounded-3xl shadow-lg p-8 mb-8 border-3 border-chick-yellow">
+            <div class="flex flex-col md:flex-row items-center gap-6 mb-6">
+                <div class="w-32 h-32 bg-chick-yellow rounded-full flex items-center justify-center text-6xl">
+                    <img src="{% static 'images/image.png' %}" class="w-16 h-16">
+
+                </div>
+
+
+                <div>
+                    <h3 class="text-2xl font-bold text-chick-brown">{{name}}</h3>
+                    <p class="text-gray-600">{{email}}</p>
+                    <p class="text-gray-600">{{ birthdate|date:"Y년 m월 d일" }}</p>
+                    <div class="mt-3">
+                        <button type="button" class="text-sm text-chick-brown hover:underline"
+                            onclick="togglePasswordForm()">
+                            비밀번호 변경
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="passwordChangeForm" class="hidden">
+            <div class="bg-white rounded-3xl shadow-lg p-8 mt-8 border-3 border-chick-yellow">
+                <h3 class="text-xl font-bold text-chick-brown mb-4">비밀번호 변경</h3>
+
+                <form method="post" action="{% url 'change-password' %}" class="space-y-4">
+                    {% csrf_token %}
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-chick-brown font-medium">현재 비밀번호:</label>
+                        <input type="password" name="current_password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-chick-yellow focus:border-transparent">
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-chick-brown font-medium">새 비밀번호:</label>
+                        <input type="password" name="new_password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-chick-yellow focus:border-transparent">
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-chick-brown font-medium">새 비밀번호 확인:</label>
+                        <input type="password" name="confirm_password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-chick-yellow focus:border-transparent">
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-chick-yellow text-white font-bold py-2 px-4 rounded-lg hover:bg-yellow-500 transition duration-200">
+                        비밀번호 변경
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+        <br>
+
+        <div class="bg-white rounded-3xl shadow-lg p-8 mb-8 border-3 border-chick-yellow">
+            <h3 class="text-xl font-bold text-chick-brown mb-4">내 잔액 정보</h3>
+
+            <div class="space-y-6">
+                <div class="bg-gradient-to-r from-chick-yellow to-chick-orange rounded-2xl p-6 text-chick-brown">
+                    <span class="text-1xl">🏦</span>
+                    <div class="text-xl font-bold mb-2">Chick-Pay 캐시</div>
+                    <div class="flex justify-between items-center">
+                        <span>{{ name }}</span>
+                        <span class="font-bold text-xl">₩ {{ balance|floatformat:"0"|intcomma }}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</main>
+
+<script>
+    // 모바일 메뉴 토글
+    const menuButton = document.querySelector('button');
+    const nav = document.querySelector('nav');
+
+    menuButton.addEventListener('click', function () {
+        if (nav.classList.contains('hidden')) {
+            nav.classList.remove('hidden');
+            nav.classList.add('flex', 'flex-col', 'absolute', 'top-16', 'right-4', 'bg-white', 'p-4', 'rounded-xl', 'shadow-lg', 'z-50');
+        } else {
+            nav.classList.add('hidden');
+            nav.classList.remove('flex', 'flex-col', 'absolute', 'top-16', 'right-4', 'bg-white', 'p-4', 'rounded-xl', 'shadow-lg', 'z-50');
+        }
+    });
+</script>
+
+<script>
+    function togglePasswordForm() {
+        document.getElementById('passwordChangeForm').classList.toggle('hidden');
+    }
+</script>
+{% endblock %}

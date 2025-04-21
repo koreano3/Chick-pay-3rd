@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Chick Pay - 송금하기{% endblock %}
+
+{% block content %}
+{%load static %}
+<main class="container mx-auto px-4 py-10 flex-grow">
+    <div class="max-w-2xl mx-auto">
+        <h2 class="text-3xl font-bold text-chick-brown mb-8 text-center">송금하기</h2>
+
+        <div class="bg-white rounded-3xl shadow-lg p-8 border-3 border-chick-yellow">
+            <form id="transfer-form" action="{% url 'cash-transfer' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="mb-6">
+                    <label for="to-account" class="block mb-2 font-semibold text-gray-600">보내는 사람 : {{name}}</label>
+                    <label type="" id="to-account" required class="block mb-2 font-semibold text-gray-600">이메일 :
+                        {{email}}</label>
+                </div>
+
+                <div class="mb-6">
+                    <label for="to-mail" class="block mb-2 font-semibold text-gray-600">받는 사람 이메일</label>
+
+                    <input type="mail" id="to-mail" name="receiver_email" placeholder="받는 분 이메일을 입력하세요" required
+                        class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+                </div>
+
+                <div class="mb-6">
+                    <label for="amount" class="block mb-2 font-semibold text-gray-600">송금 금액</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-gray-500">₩</span>
+                        <input type="number" id="amount" name="amount" placeholder="0" required min="1000" step="1000"
+                            class="w-full p-3 pl-8 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <label for="memo" class="block mb-2 font-semibold text-gray-600">메모 (선택사항)</label>
+                    <input type="text" id="memo" name="memo" placeholder="메모를 입력하세요"
+                        class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+                </div>
+
+                <div class="flex items-center mb-6">
+                    <input type="checkbox" id="save-recipient" class="mr-2">
+                    <label for="save-recipient" class="text-sm text-gray-600">자주 쓰는 계좌로 저장</label>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-chick-yellow text-chick-brown font-bold py-4 px-6 rounded-xl shadow-md hover:bg-chick-orange transition transform hover:-translate-y-0.5 active:translate-y-0">
+                    송금하기
+                    <img src="{% static 'images/image.png' %}" alt="Chick Pay" class="inline w-5 h-5">
+                </button>
+            </form>
+        </div>
+
+
+    </div>
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Chick Pay - 출금하기{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<main class="container mx-auto px-4 py-10 flex-grow">
+  <div class="max-w-2xl mx-auto">
+    <h2 class="text-3xl font-bold text-chick-brown mb-8 text-center">
+      출금하기
+    </h2>
+
+    <div class="bg-white rounded-3xl shadow-lg p-8 border-3 border-chick-yellow">
+      <form id="withdraw-form" method="POST" action="{% url 'cash-withdraw' %}">
+        {% csrf_token %}
+        <div class="mb-6">
+          <label for="amount" class="block mb-2 font-semibold text-gray-600">출금 금액</label>
+          <div class="relative">
+            <span class="absolute left-3 top-3 text-gray-500">₩</span>
+            <input type="number" id="amount" name="amount" placeholder="0" required min="10" step="1"
+              class="w-full p-3 pl-8 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition" />
+          </div>
+        </div>
+
+        <div class="mb-8">
+          <label for="memo" class="block mb-2 font-semibold text-gray-600">메모 (선택사항)</label>
+          <input type="text" id="memo" placeholder="메모를 입력하세요"
+            class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition" />
+        </div>
+
+        <button type="submit"
+          class="w-full bg-chick-yellow text-chick-brown font-bold py-4 px-6 rounded-xl shadow-md hover:bg-chick-orange transition transform hover:-translate-y-0.5 active:translate-y-0">
+          출금하기
+          <img src="{% static 'images/image.png' %}" alt="Chick Pay" class="inline w-5 h-5">
+        </button>
+      </form>
+    </div>
+
+  </div>
+  </div>
+</main>
+
+
+{% endblock %}

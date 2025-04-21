@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block title %}Chick Pay - 회원가입{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="bg-white rounded-3xl shadow-lg p-8 max-w-2xl mx-auto border-3 border-chick-yellow">
+    <h2 class="text-2xl font-bold text-chick-brown mb-6 text-center">회원가입</h2>
+
+    <form id="register-form" method="post">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <div class="md:col-span-2">
+                <label for="email" class="block mb-2 font-semibold text-gray-600">이메일 ID</label>
+                <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required
+                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+            </div>
+
+            <div>
+                <label for="name" class="block mb-2 font-semibold text-gray-600">이름</label>
+                <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required
+                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+            </div>
+
+            <div>
+                <label for="birthdate" class="block mb-2 font-semibold text-gray-600">생년월일</label>
+                <input type="text" id="birthdate" name="birthdate" placeholder="예시 1994-03-05" required
+                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+            </div>
+
+            <div>
+                <label for="password1" class="block mb-2 font-semibold text-gray-600">비밀번호</label>
+                <input type="password" id="password1" name="password1" placeholder="비밀번호를 입력하세요" required
+                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+            </div>
+
+            <div>
+                <label for="password2" class="block mb-2 font-semibold text-gray-600">비밀번호 확인</label>
+                <input type="password" id="password2" name="password2" placeholder="비밀번호를 다시 입력하세요" required
+                    class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
+            </div>
+
+            <div class="mt-6">
+                <div class="flex items-center mb-4">
+                    <input type="checkbox" id="terms" required class="mr-2">
+                    <label for="terms" class="text-sm text-gray-600">
+                        <span class="text-chick-brown font-semibold">이용약관</span>과 <span
+                            class="text-chick-brown font-semibold">개인정보 처리방침</span>에 동의합니다.
+                    </label>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-chick-yellow text-chick-brown font-bold py-4 px-6 rounded-xl shadow-md hover:bg-chick-orange transition transform hover:-translate-y-0.5 active:translate-y-0">
+                    회원가입 완료
+                    <img src="{% static 'images/image.png' %}" alt="Chick Pay" class="w-[18px] h-auto inline">
+                </button>
+            </div>
+    </form>
+
+    <div class="mt-6 text-center">
+        <p class="text-gray-600">이미 계정이 있으신가요? <a href="{% url 'login' %}"
+                class="text-chick-brown font-semibold hover:underline">로그인</a></p>
+    </div>
+</div>
+{% endblock %}
