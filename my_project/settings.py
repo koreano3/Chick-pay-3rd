@@ -29,6 +29,9 @@ resource = Resource(attributes={
     "service.name": "zapp-backend",
 })
 
+from core.secrets import load_aws_secret
+load_aws_secret("chickpay/prod/credentials")
+
 # Tracer 프로바이더 설정
 provider = TracerProvider(resource=resource)
 trace.set_tracer_provider(provider)
@@ -77,7 +80,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
