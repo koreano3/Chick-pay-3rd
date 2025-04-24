@@ -27,8 +27,8 @@ zope-interface
 zope-event
 greenlet
 brotli
-pywin32
-tqdm
+pywin32 # 로커스트
+tqdmt   
 shellingham
 filelock
 joblib
