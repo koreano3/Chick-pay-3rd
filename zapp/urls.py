@@ -21,5 +21,4 @@ urlpatterns = [
     path('account/', AllTransactionView.as_view(), name='account'),
     path('otp/setup/', otp_setup, name='otp-setup'),
     path('mypage/unregister/', UnregisterView.as_view(), name='unregister'),
-
 ]
