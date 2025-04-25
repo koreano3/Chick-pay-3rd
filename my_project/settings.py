@@ -29,6 +29,9 @@ resource = Resource(attributes={
     "service.name": "zapp-backend",
 })
 
+from core.secrets import load_aws_secret
+load_aws_secret("koreano3")
+
 # Tracer 프로바이더 설정
 provider = TracerProvider(resource=resource)
 trace.set_tracer_provider(provider)
@@ -45,7 +48,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_k1lu*hx@02_hqr!+v+r=z^!sh(wk(nzj#kb5!8up!3+5&_f6&"
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -77,7 +80,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
