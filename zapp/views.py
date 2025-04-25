@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
@@ -403,6 +403,48 @@ class AllTransactionView(APIView):
 
         return render(request, 'account.html', context)
     
+
+class UnregisterView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        return render(request, 'unregister.html')
+
+    def post(self, request):
+        password = request.POST.get('password')
+        print("입력된 비밀번호:", password)
+        print("유저 비밀번호 체크 결과:", request.user.check_password(password))
+
+        user = request.user
+
+        if not user.check_password(password):
+            return render(request, 'unregister.html', {
+                'error': '비밀번호가 일치하지 않습니다.'
+            })
+
+        # 먼저 사용자 정보 삭제
+        user.delete()
+        print("유저 삭제됨")
+
+        # 메시지 설정은 logout 전에
+        request.session['unregister_message'] = '회원탈퇴가 완료되었습니다.'
+
+        return redirect('main')
+
+        # 로그아웃
+
+        # 리디렉션
+    
+    # def delete(self, request):
+    #     user = request.user
+    #     if user.is_authenticated:
+    #         user.delete()
+    #         print(user)
+    #         return Response({"message": "회원탈퇴 완료"}, status=status.HTTP_204_NO_CONTENT)
+    #     return Response({"error": "인증되지 않음"})
+
+
+
+
 
 
 # ✅ 실제 동작용 View (웹 페이지 렌더링)
