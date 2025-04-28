@@ -245,7 +245,7 @@ AWS_DEFAULT_ACL = None
 
 # S3의 URL 설정
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 # boto3 정적파일 저장 위치 설정
