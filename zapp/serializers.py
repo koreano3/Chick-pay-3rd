@@ -3,6 +3,31 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model , password_validation
 from .models import CustomUser, Cash
 
+#로그인 시리얼라이저
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        from django.contrib.auth import authenticate
+
+        email = data.get('email')
+        password = data.get('password')
+
+        if not email or not password:
+            raise serializers.ValidationError("이메일과 비밀번호를 모두 입력하세요.")
+
+        user = authenticate(username=email, password=password)
+
+        if user is None:
+            raise serializers.ValidationError("이메일 또는 비밀번호가 틀렸습니다.")
+
+        if not user.is_active:
+            raise serializers.ValidationError("비활성화된 계정입니다.")
+
+        data['user'] = user
+        return data
+
 # 🔐 회원가입 Serializer 이거 쓰임
 class RegisterSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(write_only=True)
@@ -57,13 +82,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 # 💰 캐시 정보 Serializer (조회용)
-class CashSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(source='user.email', read_only=True)
+# class CashSerializer(serializers.ModelSerializer):
+#     email = serializers.EmailField(source='user.email', read_only=True)
 
-    class Meta:
-        model = Cash
-        fields = ['name', 'user', 'email', 'balance', 'created_at', 'updated_at']
-        read_only_fields = ['nane' ,'user', 'email', 'balance', 'created_at', 'updated_at']
+#     class Meta:
+#         model = Cash
+#         fields = ['name', 'user', 'email', 'balance', 'created_at', 'updated_at']
+#         read_only_fields = ['nane' ,'user', 'email', 'balance', 'created_at', 'updated_at']
 
 # 🔐 비밀번호 변경 Serializer
 class PasswordChangeSerializer(serializers.Serializer):
@@ -139,3 +164,12 @@ class TransferSerializer(serializers.Serializer):
 
         return data
 
+
+class UnregisterPasswordCheckSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("비밀번호가 일치하지 않습니다.")
+        return value

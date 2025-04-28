@@ -40,7 +40,7 @@
         const form = document.getElementById("login-form");
 
         form.addEventListener("submit", async function (e) {
-            e.preventDefault(); // 기본 form 제출 막기
+            e.preventDefault();
 
             const payload = {
                 email: document.getElementById("email").value,
@@ -57,31 +57,42 @@
                     body: JSON.stringify(payload),
                 });
 
-                const contentType = response.headers.get("content-type");
-
                 if (response.ok) {
-                    if (contentType && contentType.includes("application/json")) {
-                        const result = await response.json();
-                        console.log("✅ 로그인 성공:", result);
-                    }
-                    alert("로그인 성공! 메인페이지로 이동합니다.");
+                    const result = await response.json();
+                    alert("👍로그인 성공!");
                     window.location.href = "{% url 'otp-setup' %}";
                 } else {
+                    const errorData = await response.json();
                     let errorMessage = "에러가 발생했습니다.";
-                    if (contentType && contentType.includes("application/json")) {
-                        const errorData = await response.json();
-                        errorMessage = JSON.stringify(errorData);
-                    } else {
-                        const errorText = await response.text();
-                        errorMessage = errorText;
+
+                    if (errorData.error) {
+                        errorMessage = errorData.error;
+                    } else if (errorData.non_field_errors) {
+                        errorMessage = errorData.non_field_errors[0];  // 첫 번째 에러메시지 꺼내기
                     }
-                    alert("❗ " + errorMessage);
+
+                    alert("❗ 로그인 실패: " + errorMessage);
                 }
             } catch (error) {
-                alert("요청 실패: " + error.message);
-                console.error("❌ 요청 중 예외 발생:", error);
+                console.error("❌ 네트워크 오류:", error);
+                alert("서버에 연결할 수 없습니다.");
             }
         });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
         // CSRF 토큰 가져오는 함수
         function getCookie(name) {
