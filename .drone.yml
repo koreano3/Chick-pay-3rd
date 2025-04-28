@@ -1,0 +1,25 @@
+kind: pipeline
+type: docker
+name: deploy-for-feat-drone
+
+steps:
+  - name: deploy
+    image: appleboy/ssh-action
+    settings:
+      host:
+        from_secret: ec2_host
+      username: ubuntu
+      key:
+        from_secret: ssh_private_key
+      port: 22
+      script:
+        - cd /home/ubuntu/your-project-folder
+        - git fetch origin
+        - git checkout feat/drone
+        - git pull origin feat/drone
+        - docker-compose down
+        - docker-compose up -d --build
+
+trigger:
+  branch:
+    - feat/drone
