@@ -43,7 +43,6 @@ provider.add_span_processor(span_processor)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -201,7 +200,7 @@ STATICFILES_FINDERS = [
 
 
 #세션 설정
-SESSION_COOKIE_AGE = 1800
+SESSION_COOKIE_AGE = 1800000000
 
 SESSION_SAVE_EVERY_REQUEST = True
 

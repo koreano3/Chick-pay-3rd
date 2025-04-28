@@ -6,7 +6,7 @@
 <div class="bg-white rounded-3xl shadow-lg p-8 max-w-2xl mx-auto border-3 border-chick-yellow">
     <h2 class="text-2xl font-bold text-chick-brown mb-6 text-center">회원가입</h2>
 
-    <form id="register-form" method="post">
+    <form id="register-form">
         {% csrf_token %}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
@@ -18,25 +18,28 @@
 
             <div>
                 <label for="name" class="block mb-2 font-semibold text-gray-600">이름</label>
-                <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required
+                <input type="text" id="name" name="name" pattern="^[가-힣a-zA-Z]+$" placeholder="이름을 입력하세요" required
                     class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
             </div>
 
             <div>
                 <label for="birthdate" class="block mb-2 font-semibold text-gray-600">생년월일</label>
-                <input type="text" id="birthdate" name="birthdate" placeholder="예시 1994-03-05" required
+                <input type="text" id="birthdate" name="birthdate" pattern="^\d{4}-\d{2}-\d{2}$"
+                    placeholder="예시 1994-03-05" required
                     class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
             </div>
 
             <div>
                 <label for="password1" class="block mb-2 font-semibold text-gray-600">비밀번호</label>
-                <input type="password" id="password1" name="password1" placeholder="비밀번호를 입력하세요" required
+                <input type="password" id="password1" name="password1" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                    placeholder="비밀번호를 입력하세요" required
                     class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
             </div>
 
             <div>
                 <label for="password2" class="block mb-2 font-semibold text-gray-600">비밀번호 확인</label>
-                <input type="password" id="password2" name="password2" placeholder="비밀번호를 다시 입력하세요" required
+                <input type="password" id="password2" name="password2" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$"
+                    placeholder="비밀번호를 다시 입력하세요" required
                     class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
             </div>
 
@@ -62,4 +65,78 @@
                 class="text-chick-brown font-semibold hover:underline">로그인</a></p>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("register-form");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const payload = {
+                name: document.getElementById("name").value,
+                email: document.getElementById("email").value,
+                birthdate: document.getElementById("birthdate").value,
+                password1: document.getElementById("password1").value,
+                password2: document.getElementById("password2").value,
+            };
+
+            try {
+                const response = await fetch("{% url 'api-register' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken"),
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const contentType = response.headers.get("content-type");
+
+                if (response.ok) {
+                    // 성공 시 JSON 응답이면 읽고, 아니면 바로 이동
+                    if (contentType && contentType.includes("application/json")) {
+                        const result = await response.json();  // 안 써도 되지만 혹시 몰라 보관
+                        console.log("✅ 회원가입 성공:", result);
+                    }
+                    alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+                    window.location.href = "{% url 'login' %}";
+                } else {
+                    // 에러 응답 처리 (json 또는 html)
+                    let errorMessage = "에러가 발생했습니다.";
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        errorMessage = JSON.stringify(errorData);
+                    } else {
+                        const errorText = await response.text();
+                        errorMessage = errorText;
+                    }
+                    alert("❗ " + errorMessage);
+                }
+            } catch (error) {
+                alert("요청 실패: " + error.message);
+                console.error("❌ 요청 중 예외 발생:", error);
+            }
+        });
+
+        // CSRF 토큰 가져오기 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
+
 {% endblock %}
