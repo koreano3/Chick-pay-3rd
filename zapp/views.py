@@ -14,6 +14,11 @@ from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 from drf_spectacular.types import OpenApiTypes
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def health_check(request):
+    return HttpResponse("ok")
 
 
 from .forms import LoginForm, PasswordChangeForm
