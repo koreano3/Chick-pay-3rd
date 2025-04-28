@@ -67,11 +67,6 @@
                 </a>
 
                 <nav class="hidden md:flex items-center gap-6">
-                    <!-- <a href="{% url 'account' %}" class="text-chick-brown font-medium hover:underline">계좌조회</a> -->
-                    <!-- <a href="{% url 'cash-transfer' %}" class="text-chick-brown font-medium hover:underline">송금하기</a> -->
-                    <!-- <a href="{% url 'cash-deposit' %}" class="text-chick-brown font-medium hover:underline">입금하기</a> -->
-                    <!-- <a href="{% url 'cash-withdraw' %}" class="text-chick-brown font-medium hover:underline">출금하기</a> -->
-                    <!-- <a href="{% url 'mypage' %}" class="text-chick-brown font-medium hover:underline">마이페이지</a> -->
                     {% if user.is_authenticated %}
                     <form id="logout-form" class="inline flex items-center m-0">
                         {% csrf_token %}

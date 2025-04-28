@@ -15,8 +15,8 @@ from django.db import transaction , IntegrityError
 
 from zapp.models import Cash, CashTransaction, CashTransfer, CustomUser
 from zapp.serializers import (
-    RegisterSerializer, MyPageSerializer, CashSerializer,
-    CashTransactionSerializer, TransferSerializer
+    LoginSerializer,RegisterSerializer, MyPageSerializer,
+    CashTransactionSerializer, TransferSerializer, UnregisterPasswordCheckSerializer
 )
 from django.db import transaction
 import pyotp
@@ -41,20 +41,15 @@ class RegisterAPIView(APIView):
 
 class LoginAPIView(APIView):
     def post(self, request):
-        email = request.data.get('email')
-        password = request.data.get('password')
-
-        if not email or not password:
-            return Response({"error": "이메일과 비밀번호를 모두 입력하세요."}, status=status.HTTP_400_BAD_REQUEST)
-
-        user = authenticate(request, email=email, password=password)
-
-        if user is not None:
+        serializer = LoginSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
             login(request, user)
-            request.session['otp_verified'] = False  # ✅ 로그인 성공하면 otp_verified = False로 초기화
-            return Response({"message": "로그인 성공!"})
-        else:
-            return Response({"error": "이메일 또는 비밀번호가 틀렸습니다."}, status=401)
+            request.session['otp_verified'] = False  # 로그인하면 otp 인증은 다시 해야됨
+            return Response({"message": "로그인 성공!"}, status=200)
+        
+        return Response(serializer.errors, status=400)
         
 class MyPageAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -213,10 +208,12 @@ class AllTransactionAPIView(APIView):
         return Response(serializer.data)
 
 
-
 class UnregisterAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def delete(self, request):
+        serializer = UnregisterPasswordCheckSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)  # ❗ 여기서 비번 검증함
+
         request.user.delete()
         return Response({"message": "회원탈퇴 완료"}, status=status.HTTP_204_NO_CONTENT)
