@@ -118,6 +118,9 @@ X_FRAME_OPTIONS = 'DENY'
 
 WSGI_APPLICATION = "my_project.wsgi.application"
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -203,6 +206,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://https://d13g1etgrsjc85.cloudfront.net",
     'https://chick-pay.com',
     'https://www.chick-pay.com',
 ]
