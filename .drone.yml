@@ -13,7 +13,7 @@ steps:
         from_secret: ssh_private_key
       port: 22
       script:
-        - cd /home/ubuntu/your-project-folder
+        - cd /home/ubuntu/Chick-pay
         - git fetch origin
         - git checkout feat/drone
         - git pull origin feat/drone
