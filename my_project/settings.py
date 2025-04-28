@@ -73,9 +73,11 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
     #aws s3
     'storages',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -102,6 +104,17 @@ TEMPLATES = [
         },
     },
 ]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "https://chick-pay.com",
+    "https://www.chick-pay.com",
+]
+# Cross-Domain Misconfiguration 관련
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+# Anti-clickjacking 문제 막기
 
 WSGI_APPLICATION = "my_project.wsgi.application"
 
