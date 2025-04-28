@@ -4,7 +4,7 @@ name: deploy-for-feat-drone
 
 steps:
   - name: deploy
-    image: appleboy/ssh-action
+    image: appleboy/drone-ssh
     settings:
       host:
         from_secret: ec2_host
