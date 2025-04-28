@@ -6,9 +6,9 @@
 <div class=" bg-white rounded-3xl shadow-lg p-8 max-w-md w-full border-3 border-chick-yellow">
     <h2 class="text-2xl font-bold text-chick-brown mb-6 text-center">로그인</h2>
 
-    <form id="login-form" method="post" action="{% url 'login' %}">
+    <form id="login-form">
         {% csrf_token %}
-        <div class="mb-5">
+        <div class=" mb-5">
             <label for="email" class="block mb-2 font-semibold text-gray-600">이메일 아이디</label>
             <input type="email" id="email" name="username" placeholder="이메일을 입력하세요" required
                 class="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-chick-orange focus:outline-none transition">
@@ -32,4 +32,72 @@
                 class="text-chick-brown font-semibold hover:underline">회원가입</a></p>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("login-form");
+
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault(); // 기본 form 제출 막기
+
+            const payload = {
+                email: document.getElementById("email").value,
+                password: document.getElementById("password").value,
+            };
+
+            try {
+                const response = await fetch("{% url 'api-login' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": getCookie("csrftoken"),
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const contentType = response.headers.get("content-type");
+
+                if (response.ok) {
+                    if (contentType && contentType.includes("application/json")) {
+                        const result = await response.json();
+                        console.log("✅ 로그인 성공:", result);
+                    }
+                    alert("로그인 성공! 메인페이지로 이동합니다.");
+                    window.location.href = "{% url 'otp-setup' %}";
+                } else {
+                    let errorMessage = "에러가 발생했습니다.";
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        errorMessage = JSON.stringify(errorData);
+                    } else {
+                        const errorText = await response.text();
+                        errorMessage = errorText;
+                    }
+                    alert("❗ " + errorMessage);
+                }
+            } catch (error) {
+                alert("요청 실패: " + error.message);
+                console.error("❌ 요청 중 예외 발생:", error);
+            }
+        });
+
+        // CSRF 토큰 가져오는 함수
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+</script>
 {% endblock %}
