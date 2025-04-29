@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <form method="post" action="{% url 'unregister' %}" class="mb-8">
+            <form id="unregister-form" class="mb-8">
                 {% csrf_token %}
                 <div class="bg-gray-50 rounded-2xl p-6 mb-6">
                     <h2 class="font-bold text-gray-700 mb-4">본인 확인</h2>
@@ -180,22 +180,71 @@
         </div>
     </div>
 </main>
-
-<!-- 페이지별 스크립트
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                // 확인 대화상자 표시
-                if (confirm('정말로 Chick Pay 회원에서 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
-                    // 여기에 실제 탈퇴 처리 로직 추가
-                    alert('회원 탈퇴가 완료되었습니다. 그동안 Chick Pay를 이용해주셔서 감사합니다.');
-                    window.location.href = 'index.html';
+{% endblock %}
+{% block scripts %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
                 }
-            });
+            }
+        }
+        return cookieValue;
+    }
+
+    const csrftoken = getCookie('csrftoken');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('#unregister-form');
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            if (!confirm('정말로 Chick Pay 회원에서 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
+                return;
+            }
+
+            const password = document.querySelector('#password').value;
+            const csrftoken = getCookie('csrftoken');
+
+            try {
+                const response = await fetch("{% url 'api-unregister' %}", {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+
+                if (response.status === 204) {
+                    // 204 No Content 처리
+                    alert('회원 탈퇴가 완료되었습니다. 그동안 Chick Pay를 이용해주셔서 감사합니다.');
+                    window.location.href = "{% url 'main' %}";
+                    return;
+                }
+
+                const data = await response.json(); // body가 있을 때만 파싱
+
+                const errorMsg =
+                    data.password ? data.password[0] :
+                        data.error ? data.error :
+                            '알 수 없는 오류';
+                alert('탈퇴 실패: ' + errorMsg);
+
+            } catch (error) {
+                console.error('네트워크 오류:', error);
+                alert('서버 오류 발생!');
+            }
         });
-    </script> -->
+    });
+
+</script>
 
 {% endblock %}
