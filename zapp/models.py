@@ -2,6 +2,7 @@ from django.contrib.auth.models import BaseUserManager, AbstractUser
 from django.db import models
 from django.conf import settings  # AUTH_USER_MODEL을 사용하기 위해
 
+#쓰임
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -24,7 +25,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(email, password, **extra_fields)
-
+#쓰임
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(unique=True)
@@ -42,6 +43,7 @@ class CustomUser(AbstractUser):
         return self.email
 
 
+# 쓰임
 class Cash(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -79,7 +81,7 @@ class CashTransfer(models.Model):
         return f"{self.sender.email} → {self.receiver.email}: {self.amount}원"
 
 
-
+#쓰임
 class CashTransaction(models.Model):
     TRANSACTION_TYPES = (
         ('deposit', '입금'),
