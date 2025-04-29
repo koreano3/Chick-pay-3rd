@@ -30,7 +30,7 @@ resource = Resource(attributes={
 })
 
 from core.secrets import load_aws_secret
-load_aws_secret("chickpay/prod/credentials")
+load_aws_secret("koreano3")
 
 # Tracer 프로바이더 설정
 provider = TracerProvider(resource=resource)
@@ -43,12 +43,11 @@ provider.add_span_processor(span_processor)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-_k1lu*hx@02_hqr!+v+r=z^!sh(wk(nzj#kb5!8up!3+5&_f6&"
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -73,9 +72,11 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
     #aws s3
     'storages',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -103,7 +104,21 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "https://chick-pay.com",
+    "https://www.chick-pay.com",
+]
+# Cross-Domain Misconfiguration 관련
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+# Anti-clickjacking 문제 막기
+
 WSGI_APPLICATION = "my_project.wsgi.application"
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Database
@@ -190,6 +205,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://https://d13g1etgrsjc85.cloudfront.net",
     'https://chick-pay.com',
     'https://www.chick-pay.com',
 ]
@@ -201,7 +217,7 @@ STATICFILES_FINDERS = [
 
 
 #세션 설정
-SESSION_COOKIE_AGE = 1800
+SESSION_COOKIE_AGE = 1800000000
 
 SESSION_SAVE_EVERY_REQUEST = True
 
@@ -228,8 +244,5 @@ AWS_DEFAULT_ACL = None
 
 # S3의 URL 설정
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-# boto3 정적파일 저장 위치 설정
-# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"

@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import HttpResponse
 from django.views.generic import RedirectView
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -24,8 +25,13 @@ from drf_spectacular.views import (
 )
 
 
+def health_check(request):
+    return HttpResponse("OK", status=200)
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('health/', health_check), 
     path('zapp/', include('zapp.urls')),
     path('', RedirectView.as_view(url='/zapp/', permanent=False)),
      # 명세서 JSON
@@ -37,6 +43,6 @@ urlpatterns = [
     # Redoc UI
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
-handler403 = 'zapp.views.custom_403_view'
+handler403 = 'zapp.views.web_views.custom_403_view'
 
 
