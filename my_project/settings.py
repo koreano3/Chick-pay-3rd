@@ -72,9 +72,11 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
     #aws s3
     'storages',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -102,7 +104,21 @@ TEMPLATES = [
     },
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "https://chick-pay.com",
+    "https://www.chick-pay.com",
+]
+# Cross-Domain Misconfiguration 관련
+
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+# Anti-clickjacking 문제 막기
+
 WSGI_APPLICATION = "my_project.wsgi.application"
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 
 # Database
@@ -189,6 +205,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
+    "https://https://d13g1etgrsjc85.cloudfront.net",
     'https://chick-pay.com',
     'https://www.chick-pay.com',
 ]
@@ -227,8 +244,5 @@ AWS_DEFAULT_ACL = None
 
 # S3의 URL 설정
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-# boto3 정적파일 저장 위치 설정
-# STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"

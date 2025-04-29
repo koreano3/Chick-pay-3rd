@@ -12,7 +12,7 @@ from rest_framework import status
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.db import transaction , IntegrityError
-
+from django.views.decorators.csrf import csrf_exempt
 from zapp.models import Cash, CashTransaction, CashTransfer, CustomUser
 from zapp.serializers import (
     LoginSerializer,RegisterSerializer, MyPageSerializer,
@@ -20,6 +20,10 @@ from zapp.serializers import (
 )
 from django.db import transaction
 import pyotp
+
+@csrf_exempt
+def health_check(request):
+    return HttpResponse("ok")
 
 class MainAPIView(APIView):
     def get(self, request):
