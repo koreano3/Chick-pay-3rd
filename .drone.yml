@@ -13,13 +13,15 @@ steps:
         from_secret: ssh_private_key
       port: 22
       script:
-        - echo "✅ SSH 접속 성공, 파이프라인 시작"
-        - cd /home/ubuntu/Chick-pay-2nd
-        - git fetch origin
-        - git checkout feat/drone
-        - git pull origin feat/drone
-        - docker-compose down
-        - docker-compose up -d --build
+        - echo "✅ Drone 접속 성공"
+        - ls -al /home/ubuntu || (echo "❌ 홈 디렉토리 확인 실패" && exit 1)
+        - cd /home/ubuntu/Chick-pay-2nd || (echo "❌ 디렉토리 진입 실패" && exit 1)
+        - git fetch origin || (echo "❌ git fetch 실패" && exit 1)
+        - git checkout feat/drone || (echo "❌ git checkout 실패" && exit 1)
+        - git pull origin feat/drone || (echo "❌ git pull 실패" && exit 1)
+        - docker-compose down || (echo "❌ docker-compose down 실패" && exit 1)
+        - docker-compose up -d --build || (echo "❌ docker-compose up 실패" && exit 1)
+
 
 trigger:
   branch:
