@@ -13,7 +13,8 @@ steps:
         from_secret: ssh_private_key
       port: 22
       script:
-        - cd /home/ubuntu/Chick-pay
+        - echo "✅ SSH 접속 성공, 파이프라인 시작"
+        - cd /home/ubuntu/Chick-pay-2nd
         - git fetch origin
         - git checkout feat/drone
         - git pull origin feat/drone
