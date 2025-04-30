@@ -178,7 +178,7 @@ USE_TZ = True
 STATIC_URL = "https://d13g1etgrsjc85.cloudfront.net/"
 
 #로컬에서도 개발하고 싶으면
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 STATICFILES_DIRS = [
@@ -244,9 +244,16 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
-# S3의 URL 설정
-AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+STATICFILES_STORAGE = 'storage_backends.StaticStorage'
+AWS_S3_CUSTOM_DOMAIN = 'd13g1etgrsjc85.cloudfront.net'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
-STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
-STATIC_URL = "https://d13g1etgrsjc85.cloudfront.net/"
+
+#S3의 URL 설정
+# AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'  # media/ 경로 추가
+# DEFAULT_FILE_STORAGE = 'zapp.storage_backends.MediaStorage'
+
+
+
