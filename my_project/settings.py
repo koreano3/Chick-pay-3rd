@@ -180,6 +180,7 @@ STATIC_URL = "https://d13g1etgrsjc85.cloudfront.net/"
 #로컬에서도 개발하고 싶으면
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
@@ -246,3 +247,4 @@ AWS_DEFAULT_ACL = None
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

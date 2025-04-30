@@ -1,5 +1,3 @@
-
-
 # pytest 통합테스트!
 
 import pytest
