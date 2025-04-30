@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: deploy-for-feat-drone
+name: deploy-for-main
 
 steps:
   - name: deploy
@@ -13,19 +13,13 @@ steps:
         from_secret: ssh_private_key
       port: 22
       script:
-        - echo "✅ [1] Drone SSH 접속 성공"
-        - ls -al /home/ubuntu || (echo "❌ 홈 디렉토리 확인 실패" && exit 1)
-        - cd /home/ubuntu/Chick-pay-2nd || (echo "❌ 디렉토리 이동 실패" && exit 1)
-        - echo "✅ [2] 프로젝트 디렉토리 진입 완료"
-        - git fetch origin || (echo "❌ git fetch 실패" && exit 1)
-        - git checkout feat/drone || (echo "❌ git checkout 실패" && exit 1)
-        - git pull origin feat/drone || (echo "❌ git pull 실패" && exit 1)
-        - echo "✅ [3] 최신 코드 가져오기 성공"
-        - docker-compose down || (echo "❌ docker-compose down 실패" && exit 1)
-        - docker-compose up -d --build || (echo "❌ docker-compose up 실패" && exit 1)
-        - echo "✅ [4] 도커 빌드 및 실행 완료"
-    timeout: 300  # 최대 5분까지 대기
+        - cd /home/ubuntu/Chick-pay-2nd
+        - git fetch origin
+        - git pull origin main
+        - docker-compose down
+        - docker-compose up -d --build
+    timeout: 300
 
 trigger:
   branch:
-    - feat/drone
+    - main
