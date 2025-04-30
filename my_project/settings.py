@@ -249,4 +249,4 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazo
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
-
+STATIC_URL = "https://d13g1etgrsjc85.cloudfront.net/"
