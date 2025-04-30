@@ -225,12 +225,13 @@ SESSION_SAVE_EVERY_REQUEST = True
 
 STORAGES = {
     "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
+        "BACKEND": "django.core.files.storage.FileSystemStorage",  # 미디어 파일
     },
     "staticfiles": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-	}
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",  # ✅ 꼭 이걸 써야 static에만 CloudFront 적용됨
+    },
 }
+
 
 
 # AWS 설정
@@ -247,4 +248,5 @@ AWS_DEFAULT_ACL = None
 AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
 MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
+
