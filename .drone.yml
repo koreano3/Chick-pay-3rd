@@ -3,8 +3,18 @@ type: docker
 name: deploy-for-main
 
 steps:
+  - name: test
+    image: python:3.12
+    environment:
+      DJANGO_SETTINGS_MODULE: my_project.settings
+    commands:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - python manage.py migrate
+      - pytest
+
   - name: bandit-analysis
-    image: python:3.10
+    image: python:3.12
     commands:
       - apt-get update && apt-get install -y jq
       - pip install bandit
