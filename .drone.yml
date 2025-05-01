@@ -17,9 +17,6 @@ steps:
   # 2. Bandit 정적 분석 단계
   - name: bandit-analysis
     image: python:3.12 # 버전 3.12로 test와 통일!
-    volumes:
-      - name: pip_cache
-        path: /root/.cache/pip
     commands:
       - apt-get update && apt-get install -y jq
       - pip install bandit
