@@ -6,16 +6,16 @@ steps:
   - name: bandit-analysis
     image: python:3.10
     commands:
-  - pip install bandit jq
-  - bandit -r zapp -f json -o analysis/bandit-report.json -x zapp/tests.py,zapp/migrations,zapp/static
-  - |
-    ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
-    if [ "$ERRORS" -gt 0 ]; then
-      echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
-      exit 1
-    else
-      echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다.  "
-    fi
+      - pip install bandit jq
+      - bandit -r zapp -f json -o analysis/bandit-report.json -x zapp/tests.py,zapp/migrations,zapp/static
+      - |
+        ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
+          exit 1
+        else
+          echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다.  "
+        fi
 
   - name: deploy
     image: appleboy/drone-ssh
