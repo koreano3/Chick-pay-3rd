@@ -7,10 +7,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth.mixins import AccessMixin
 from django.core.exceptions import PermissionDenied
 from zapp.models import Cash, CashTransaction, CashTransfer, CustomUser
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
-import pyotp
-import qrcode
-import base64
+import pyotp , json ,qrcode , base64
 from io import BytesIO
 
 @csrf_exempt
@@ -200,3 +199,14 @@ class OTPSetupTemplateView(LoginRequired403Mixin, TemplateView):
 def custom_403_view(request, exception=None):
     return render(request, '403.html', status=403)
 
+
+#bandit report
+def bandit_report_view(request):
+    with open("analysis/bandit-report.json") as f:
+        data = json.load(f)
+
+    context = {
+        "issues": data.get("results", []),
+        "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    }
+    return render(request, "bandit_report.html", context)

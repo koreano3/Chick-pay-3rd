@@ -14,6 +14,7 @@ from .views.web_views import (
     AllTransactionTemplateView,
     OTPSetupTemplateView,
     UnregisterTemplateView,
+    bandit_report_view,
 )
 from .views.api_views import (
     MainAPIView,
@@ -46,6 +47,7 @@ urlpatterns = [
     path('account/', AllTransactionTemplateView.as_view(), name='account'),
     path('otp/setup/', OTPSetupTemplateView.as_view(), name='otp-setup'),
     path('mypage/unregister/', UnregisterTemplateView.as_view(), name='unregister'),
+    path("bandit/", bandit_report_view, name="bandit-report"),
 
     # API views
     path('api/main/', MainAPIView.as_view(), name='api-main'),
