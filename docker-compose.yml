@@ -8,8 +8,7 @@ services:
       - "8000:8000"
     networks:
       - backend
-    restart:
-      - always
+    restart: always
 
 networks:
   backend:
