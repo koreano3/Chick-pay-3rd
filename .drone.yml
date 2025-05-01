@@ -31,30 +31,6 @@
 #           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
 #         fi
 
-#   # 3. 배포 단계
-#   - name: deploy
-#     image: appleboy/drone-ssh
-#     settings:
-#       host:
-#         from_secret: ec2_host
-#       username: ubuntu
-#       key:
-#         from_secret: ssh_private_key
-#       port: 22
-#       script:
-#         - cd /home/ubuntu/Chick-pay-2nd
-#         - git fetch origin
-#         - git checkout ${DRONE_BRANCH}
-#         - git pull origin ${DRONE_BRANCH}
-#         # - docker-compose down
-#         - docker-compose up -d --build
-#     timeout: 300
-
-trigger:
-  branch:
-    - main
-    - feat/drone
-
 kind: pipeline
 type: docker
 name: deploy-for-main
@@ -65,12 +41,21 @@ steps:
     image: python:3.12
     environment:
       DJANGO_SETTINGS_MODULE: my_project.settings
+    volumes:
+      - name: pip_cache
+        path: /root/.cache/pip
     commands:
       - pip install --upgrade pip
       - pip install -r requirements.txt
       - python manage.py migrate
       - pytest
 
+volumes:
+  - name: pip_cache
+    host:
+      path: /tmp/drone_pip_cache
+
+  #   # 2. Bandit 정적 분석 단계
   - name: bandit-analysis
     image: python:3.10
     commands:
@@ -86,6 +71,7 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
         fi
 
+  # 3. 배포 단계
   - name: deploy
     image: appleboy/drone-ssh
     settings:
@@ -98,7 +84,8 @@ steps:
       script:
         - cd /home/ubuntu/Chick-pay-2nd
         - git fetch origin
-        - git pull origin feat/drone
+        - git checkout ${DRONE_BRANCH}
+        - git pull origin ${DRONE_BRANCH}
         - docker-compose down
         - docker-compose up -d --build
     timeout: 300
