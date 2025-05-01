@@ -8,9 +8,6 @@ steps:
     image: python:3.12
     environment:
       DJANGO_SETTINGS_MODULE: my_project.settings
-    volumes:
-      - name: pip_cache
-        path: /root/.cache/pip
     commands:
       - pip install --upgrade pip
       - pip install -r requirements.txt
@@ -54,11 +51,6 @@ steps:
         - docker-compose down
         - docker-compose up -d --build
     timeout: 300
-
-volumes:
-  - name: pip_cache
-    host:
-      path: /tmp/drone_pip_cache
 
 trigger:
   branch:
