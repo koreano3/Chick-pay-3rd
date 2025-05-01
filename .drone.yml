@@ -8,9 +8,9 @@ steps:
     commands:
       - apt-get update && apt-get install -y jq
       - pip install bandit
-      - bandit -r zapp -f json -o analysis/bandit-report.json -x zapp/tests.py,zapp/migrations,zapp/static
+      - bandit -r . -f json -o analysis/bandit-report.json -x ./zapp/tests.py,./zapp/migrations,./zapp/static
       - |
-        ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
+        ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium // 0' analysis/bandit-report.json)
         if [ "$ERRORS" -gt 0 ]; then
           echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
           exit 1
@@ -37,3 +37,4 @@ steps:
 
 trigger:
   branch:
+    - main
