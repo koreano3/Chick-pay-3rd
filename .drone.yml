@@ -7,7 +7,7 @@ steps:
   - name: run-django-tests
     image: python:3.10
     environment:
-      DJANGO_SETTINGS_MODULE: your_project.settings  # <- 너 프로젝트에 맞게 수정해야 함
+      DJANGO_SETTINGS_MODULE: my_project.settings  # <- 너 프로젝트에 맞게 수정해야 함
     commands:
       - pip install -r requirements.txt
       - python manage.py test
