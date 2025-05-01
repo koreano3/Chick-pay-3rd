@@ -1,5 +1,3 @@
-# pytest 통합테스트!
-
 import pytest
 from decimal import Decimal
 from django.urls import reverse
@@ -49,7 +47,7 @@ def cash2(user2):
 # Tests
 @pytest.mark.django_db
 class TestUserRegistration:
-    def test_user_registration(self, api_client):
+    def test_user_registration_success(self, api_client):
         url = reverse('register')
         data = {
             'email': 'newuser@example.com',
@@ -60,16 +58,30 @@ class TestUserRegistration:
         }
         
         response = api_client.post(url, data)
-        assert response.status_code == 302  # Redirect to login
+        assert response.status_code == 302
         assert get_user_model().objects.filter(email='newuser@example.com').exists()
         
-        # Check if Cash account was created
+        # Cash account 생성 여부 확인
         user = get_user_model().objects.get(email='newuser@example.com')
         assert Cash.objects.filter(user=user).exists()
 
+    def test_user_registration_password_mismatch(self, api_client):
+        url = reverse('register')
+        data = {
+            'email': 'newuser2@example.com',
+            'name': 'New User 2',
+            'password1': 'testpass123',
+            'password2': 'wrongpass123',
+            'birthdate': '1990-01-01'
+        }
+        
+        response = api_client.post(url, data)
+        assert response.status_code != 302  # 리다이렉트가 발생하면 안됨
+        assert not get_user_model().objects.filter(email='newuser2@example.com').exists()
+
 @pytest.mark.django_db
 class TestCashOperations:
-    def test_deposit(self, api_client, user1, cash1):
+    def test_deposit_success(self, api_client, user1, cash1):
         api_client.force_authenticate(user=user1)
         url = reverse('cash-deposit')
         data = {'amount': '500.00'}
@@ -78,15 +90,11 @@ class TestCashOperations:
         response = api_client.post(url, data)
         
         cash1.refresh_from_db()
-        assert response.status_code == 302  # Redirect to success page
+        assert response.status_code == 302
         assert cash1.balance == initial_balance + Decimal('500.00')
-        assert CashTransaction.objects.filter(
-            user=user1,
-            transaction_type='deposit',
-            amount=Decimal('500.00')
-        ).exists()
+        assert CashTransaction.objects.filter(user=user1, transaction_type='deposit', amount=Decimal('500.00')).exists()
 
-    def test_withdraw(self, api_client, user1, cash1):
+    def test_withdraw_success(self, api_client, user1, cash1):
         api_client.force_authenticate(user=user1)
         url = reverse('cash-withdraw')
         data = {'amount': '300.00'}
@@ -97,33 +105,26 @@ class TestCashOperations:
         cash1.refresh_from_db()
         assert response.status_code == 302
         assert cash1.balance == initial_balance - Decimal('300.00')
-        assert CashTransaction.objects.filter(
-            user=user1,
-            transaction_type='withdraw',
-            amount=Decimal('300.00')
-        ).exists()
+        assert CashTransaction.objects.filter(user=user1, transaction_type='withdraw', amount=Decimal('300.00')).exists()
 
-    def test_insufficient_funds_withdraw(self, api_client, user1, cash1):
+    def test_withdraw_insufficient_funds(self, api_client, user1, cash1):
         api_client.force_authenticate(user=user1)
         url = reverse('cash-withdraw')
-        data = {'amount': '2000.00'}  # More than balance
+        data = {'amount': '2000.00'}  # 잔액보다 많음
         
         initial_balance = cash1.balance
         response = api_client.post(url, data)
         
         cash1.refresh_from_db()
-        assert cash1.balance == initial_balance  # Balance shouldn't change
-        assert not CashTransaction.objects.filter(
-            user=user1,
-            transaction_type='withdraw',
-            amount=Decimal('2000.00')
-        ).exists()
+        assert response.status_code != 302  # 실패했으니 리다이렉트가 아님
+        assert cash1.balance == initial_balance  # 잔액 변동 없음
+        assert not CashTransaction.objects.filter(user=user1, transaction_type='withdraw', amount=Decimal('2000.00')).exists()
 
 @pytest.mark.django_db
 class TestTransfer:
     def test_successful_transfer(self, api_client, user1, user2, cash1, cash2):
         api_client.force_authenticate(user=user1)
-        url = reverse('cash-transfer')  # 'transfer' -> 'cash-transfer'로 수정
+        url = reverse('cash-transfer')
         data = {
             'receiver_email': user2.email,
             'amount': '500.00',
@@ -142,70 +143,25 @@ class TestTransfer:
         assert cash1.balance == sender_initial - Decimal('500.00')
         assert cash2.balance == receiver_initial + Decimal('500.00')
         
-        # Check transfer record
-        transfer = CashTransfer.objects.filter(
-            sender=user1,
-            receiver=user2,
-            amount=Decimal('500.00')
-        ).first()
+        transfer = CashTransfer.objects.filter(sender=user1, receiver=user2, amount=Decimal('500.00')).first()
         assert transfer is not None
         
-        # Check transaction records
-        assert CashTransaction.objects.filter(
-            user=user1,
-            transaction_type='transfer',
-            amount=Decimal('500.00'),
-            related_transfer=transfer
-        ).exists()
-        
-        assert CashTransaction.objects.filter(
-            user=user2,
-            transaction_type='deposit',
-            amount=Decimal('500.00'),
-            related_transfer=transfer
-        ).exists()
-@pytest.mark.django_db
-class TestTransfer:
-    def test_successful_transfer(self, api_client, user1, user2, cash1, cash2):
+        assert CashTransaction.objects.filter(user=user1, transaction_type='transfer', amount=Decimal('500.00'), related_transfer=transfer).exists()
+        assert CashTransaction.objects.filter(user=user2, transaction_type='deposit', amount=Decimal('500.00'), related_transfer=transfer).exists()
+
+    def test_transfer_to_nonexistent_user(self, api_client, user1, cash1):
         api_client.force_authenticate(user=user1)
-        url = reverse('cash-transfer')  # 'transfer' -> 'cash-transfer'로 수정
+        url = reverse('cash-transfer')
         data = {
-            'receiver_email': user2.email,
-            'amount': '500.00',
-            'memo': 'Test transfer'
+            'receiver_email': 'nonexistent@example.com',
+            'amount': '100.00',
+            'memo': 'Fail transfer'
         }
         
         sender_initial = cash1.balance
-        receiver_initial = cash2.balance
-        
         response = api_client.post(url, data)
         
         cash1.refresh_from_db()
-        cash2.refresh_from_db()
-        
-        assert response.status_code == 302
-        assert cash1.balance == sender_initial - Decimal('500.00')
-        assert cash2.balance == receiver_initial + Decimal('500.00')
-        
-        # Check transfer record
-        transfer = CashTransfer.objects.filter(
-            sender=user1,
-            receiver=user2,
-            amount=Decimal('500.00')
-        ).first()
-        assert transfer is not None
-        
-        # Check transaction records
-        assert CashTransaction.objects.filter(
-            user=user1,
-            transaction_type='transfer',
-            amount=Decimal('500.00'),
-            related_transfer=transfer
-        ).exists()
-        
-        assert CashTransaction.objects.filter(
-            user=user2,
-            transaction_type='deposit',
-            amount=Decimal('500.00'),
-            related_transfer=transfer
-        ).exists()
+        assert response.status_code != 302
+        assert cash1.balance == sender_initial  # 잔액 변동 없음
+        assert not CashTransfer.objects.filter(amount=Decimal('100.00')).exists()
