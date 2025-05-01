@@ -50,14 +50,14 @@
 #         - docker-compose up -d --build
 #     timeout: 300
 
-# trigger:
-#   branch:
-#     - main
-#     - feat/drone
+trigger:
+  branch:
+    - main
+    - feat/drone
 
-# kind: pipeline
-# type: docker
-# name: deploy-for-main
+kind: pipeline
+type: docker
+name: deploy-for-main
 
 steps:
   # 1. 단위 테스트, 통합 테스트 단계
