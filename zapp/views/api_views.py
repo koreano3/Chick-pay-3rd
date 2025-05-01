@@ -20,6 +20,8 @@ from zapp.serializers import (
 )
 from django.db import transaction
 import pyotp
+import logging
+logger = logging.getLogger(__name__)
 
 @csrf_exempt
 def health_check(request):
@@ -181,6 +183,7 @@ class CashTransferAPIView(APIView):
                 return Response({"message": "송금 완료!"}, status=200)
 
         except Exception as e:
+            logger.error(f"[TRANSACTION_FAIL] user_id={sender.id}, amount={amount}, error={str(e)}")
             return Response({"error": "서버 오류가 발생했습니다."}, status=500)
         
         
