@@ -1,4 +1,4 @@
-# Chick-pay! 1차 프로젝트 
+# Chick-pay! 2차 프로젝트 
 
 Chick-pay Good
 
@@ -10,11 +10,11 @@ sub : 개발이 진행되는 통합 브랜치
 
 feat/기능명 : 개별 기능별 개발 브랜치
 
-refactoring/수정내용 : 테스트 및 버그 수정 후 sub에 merge
+fix/수정내용 : 테스트 및 버그 수정 후 sub에 merge
 
 Commit
 
-type은 소문자로 작성 / 제목 끝에 마침표 넣지 않기 / 명사형으로 작성
+type은 소문자로 작성(한글작성x) / 제목 끝에 마침표 넣지 않기 / 명사형으로 작성
 
 Issue
 
