@@ -1,8 +1,9 @@
 kind: pipeline
 type: docker
-name: deploy-for-main
+name: deploy-for-main-and-drone
 
 steps:
+  # 1. 단위 테스트, 통합 테스트 단계
   - name: test
     image: python:3.12
     environment:
@@ -13,11 +14,13 @@ steps:
       - python manage.py migrate
       - pytest
 
+  # 2. Bandit 정적 분석 단계
   - name: bandit-analysis
     image: python:3.12
     commands:
       - apt-get update && apt-get install -y jq
       - pip install bandit
+      - mkdir -p analysis
       - bandit -r . -f json -o analysis/bandit-report.json -x ./zapp/tests.py,./zapp/migrations,./zapp/static
       - |
         ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium // 0' analysis/bandit-report.json)
@@ -28,6 +31,7 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
         fi
 
+  # 3. 배포 단계
   - name: deploy
     image: appleboy/drone-ssh
     settings:
@@ -40,7 +44,8 @@ steps:
       script:
         - cd /home/ubuntu/Chick-pay-2nd
         - git fetch origin
-        - git pull origin main
+        - git checkout ${DRONE_BRANCH}
+        - git pull origin ${DRONE_BRANCH}
         - docker-compose down
         - docker-compose up -d --build
     timeout: 300
@@ -48,3 +53,4 @@ steps:
 trigger:
   branch:
     - main
+    - feat/drone
