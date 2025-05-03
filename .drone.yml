@@ -6,9 +6,11 @@ steps:
   # 0. Docker Pull 단계 추가
   - name: pull-zap
     image: docker:dind
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
+    pull: always # 이 옵션만 추가
+
+    # volumes:
+    # - name: dockersock
+    # path: /var/run/docker.sock
     commands:
       - docker pull zaproxy/zap-stable:2.16.1
 
@@ -17,6 +19,10 @@ steps:
     image: zaproxy/zap-stable:2.16.1
     commands:
       - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
+  # volumes:
+  #   - name: dockersock
+  #     host:
+  #       path: /var/run/docker.sock
 
   # # 1. ZAP 테스트
   # - name: zap-ajax-spider
