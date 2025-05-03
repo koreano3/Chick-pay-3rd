@@ -234,7 +234,7 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 AWS_S3_CUSTOM_DOMAIN = 'd13g1etgrsjc85.cloudfront.net'
 
-DEBUG = True
+DEBUG = False
 
 # 디버그 설정에 따른 static url 변경
 if DEBUG:
