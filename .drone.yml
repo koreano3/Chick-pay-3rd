@@ -34,13 +34,14 @@ steps:
   - name: zap-full-automation
     image: docker:cli
     commands:
-      - cd zap # 깃으로 체크아웃된 폴더 (volumes 불필요)
-      - docker run --rm \
-        -v $(pwd):/zap/wrk/:rw \
-        --memory=1.5g \
-        --cpus=2 \
-        ghcr.io/zaproxy/zaproxy:stable \
-        zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+      - cd zap
+      - |
+        docker run --rm \
+          -v $(pwd):/zap/wrk/:rw \
+          --memory=1.5g \
+          --cpus=2 \
+          ghcr.io/zaproxy/zaproxy:stable \
+          zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
       - |
         if grep -qi "High" reports/zap_report.html; then
           echo "❌ High 위험도 발견! 배포 중단."
@@ -48,6 +49,12 @@ steps:
         else
           echo "✅ High 위험도 없음. 배포 계속 진행."
         fi
+    when:
+      status:
+        - success
+        - failure
+    artifacts:
+      - zap/reports/zap_report.html
 
   # 5. 배포 단계
   - name: deploy
