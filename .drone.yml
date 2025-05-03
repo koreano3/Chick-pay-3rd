@@ -14,15 +14,14 @@ steps:
     when:
       status:
         - success
-        - failure  # 실패해도 리포트 업로드
+        - failure # 실패해도 리포트 업로드
     commands:
       - apk add --no-cache zip
       - zip zap_report.zip zap_report.html zap_result.xml
     artifacts:
       - zap_report.zip
 
-steps:
-  # 1. 단위 테스트, 통합 테스트 단계
+  # 2. 단위 테스트, 통합 테스트 단계
   - name: test
     image: python:3.12
     environment:
@@ -33,9 +32,9 @@ steps:
       - python manage.py migrate
       - pytest
 
-  # 2. Bandit 정적 분석 단계
+  # 3. Bandit 정적 분석 단계
   - name: bandit-analysis
-    image: python:3.12 # 버전 3.12로 test와 통일!
+    image: python:3.12
     commands:
       - apt-get update && apt-get install -y jq
       - pip install bandit
@@ -49,7 +48,7 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
         fi
 
-  # 3. 배포 단계
+  # 4. 배포 단계
   - name: deploy
     image: appleboy/drone-ssh
     settings:
