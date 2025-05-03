@@ -7,9 +7,8 @@ env:
       users:
         - name: myuser
           credentials:
-            username: eunsan@eunsan.com
-            password: 123123
-
+            username: ${ZAP_USERNAME}
+            password: ${ZAP_PASSWORD}
 jobs:
   - type: spiderAjax
     parameters:
@@ -23,3 +22,9 @@ jobs:
       template: traditional-html
       reportDir: /zap/wrk/reports
       reportFile: zap_report.html
+
+  - type: report
+    parameters:
+      template: traditional-json
+      reportDir: /zap/wrk/reports
+      reportFile: zap_report.json
