@@ -22,11 +22,12 @@ steps:
         - cd /home/ubuntu/zap
         - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
         - |
-          if grep -qi "High" reports/zap_report.html; then
-            echo "❌ High 위험도 발견! 배포 중단."
+          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 2)) | length' reports/zap_report.json)
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "❌ Medium 이상 위험 $ERRORS 건 발견됨! 배포 중단."
             exit 1
           else
-            echo "✅ High 위험도 없음. 배포 계속 진행."
+            echo "✅ 심각한 취약점 없음. 계속 진행."
           fi
 
   # 2. 단위 테스트, 통합 테스트 단계
