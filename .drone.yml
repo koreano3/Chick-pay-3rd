@@ -33,11 +33,8 @@ steps:
   # 4. ZAP 자동화 스캔 단계
   - name: zap-full-automation
     image: docker:cli
-    volumes:
-      - name: zap_reports
-        path: /drone/src/zap # git clone된 코드의 zap 폴더 (Drone 기준)
     commands:
-      - cd /drone/src/zap
+      - cd zap # 깃으로 체크아웃된 폴더 (volumes 불필요)
       - docker run --rm \
         -v $(pwd):/zap/wrk/:rw \
         --memory=1.5g \
@@ -70,11 +67,6 @@ steps:
         - docker-compose down
         - docker-compose up -d --build
     timeout: 300
-
-volumes:
-  - name: zap_reports
-    host:
-      path: /drone/src/zap
 
 trigger:
   branch:
