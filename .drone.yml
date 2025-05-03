@@ -5,9 +5,8 @@ name: deploy-for-main
 steps:
   # 0. Docker Pull 단계 추가
   - name: pull-zap
-    image: docker:dind
+    image: docker
     pull: always # 이 옵션만 추가
-
     # volumes:
     # - name: dockersock
     # path: /var/run/docker.sock
