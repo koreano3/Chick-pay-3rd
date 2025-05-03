@@ -15,12 +15,7 @@ steps:
       port: 22
       script:
         - cd /home/ubuntu/zap
-        - docker run --rm \
-          -v $(pwd):/zap/wrk/:rw \
-          --memory=1.5g \
-          --cpus=2 \
-          ghcr.io/zaproxy/zaproxy:stable \
-          zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+        - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
         - |
           if grep -qi "High" reports/zap_report.html; then
             echo "❌ High 위험도 발견! 배포 중단."
