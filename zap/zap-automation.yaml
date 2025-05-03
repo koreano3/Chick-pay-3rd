@@ -1,0 +1,25 @@
+---
+env:
+  contexts:
+    - name: ZapContext
+      urls:
+        - https://chick-pay.com
+      users:
+        - name: myuser
+          credentials:
+            username: eunsan@eunsan.com
+            password: 123123
+
+jobs:
+  - type: spiderAjax
+    parameters:
+      context: ZapContext
+      user: myuser
+      maxCrawlDepth: 5
+      maxDuration: 5
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/reports
+      reportFile: zap_report.html
