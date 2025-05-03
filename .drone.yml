@@ -5,16 +5,22 @@ name: deploy-for-main
 steps:
   # 4. ZAP 자동화 스캔 단계
   - name: zap-full-automation
-    image: docker:cli
-    commands:
-      - cd zap
-      - |
-        docker run --rm \
-          -v $(pwd):/zap/wrk/:rw \
-          --memory=1.5g \
-          --cpus=2 \
-          ghcr.io/zaproxy/zaproxy:stable \
-          zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+    image: appleboy/drone-ssh
+    settings:
+    host:
+      from_secret: drone_ec2
+    username: ubuntu
+    key:
+      from_secret: drone_ec2_ssh_key
+    port: 22
+    script:
+      - cd /home/ubuntu/zap
+      - docker run --rm \
+        -v $(pwd):/zap/wrk/:rw \
+        --memory=1.5g \
+        --cpus=2 \
+        ghcr.io/zaproxy/zaproxy:stable \
+        zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
       - |
         if grep -qi "High" reports/zap_report.html; then
           echo "❌ High 위험도 발견! 배포 중단."
@@ -22,12 +28,6 @@ steps:
         else
           echo "✅ High 위험도 없음. 배포 계속 진행."
         fi
-    when:
-      status:
-        - success
-        - failure
-    artifacts:
-      - zap/reports/zap_report.html
 
   # 2. 단위 테스트, 통합 테스트 단계
   - name: pytest
