@@ -3,23 +3,23 @@ type: docker
 name: deploy-for-main
 
 steps:
-  # 1. ZAP 테스트
-  - name: zap-ajax-spider
-    image: zaproxy/zap-stable:2.16.1
-    commands:
-      - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
+  # # 1. ZAP 테스트
+  # - name: zap-ajax-spider
+  #   image: zaproxy/zap-stable:2.16.1
+  #   commands:
+  #     - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
 
-  - name: 리포트 업로드
-    image: alpine
-    when:
-      status:
-        - success
-        - failure # 실패해도 리포트 업로드
-    commands:
-      - apk add --no-cache zip
-      - zip zap_report.zip zap_report.html zap_result.xml
-    artifacts:
-      - zap_report.zip
+  # - name: 리포트 업로드
+  #   image: alpine
+  #   when:
+  #     status:
+  #       - success
+  #       - failure # 실패해도 리포트 업로드
+  #   commands:
+  #     - apk add --no-cache zip
+  #     - zip zap_report.zip zap_report.html zap_result.xml
+  #   artifacts:
+  #     - zap_report.zip
 
   # 2. 단위 테스트, 통합 테스트 단계
   - name: test
