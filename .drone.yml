@@ -5,7 +5,7 @@ name: deploy-for-main
 steps:
   # 1. ZAP 테스트
   - name: zap-ajax-spider
-    image: zaproxy/zap-stable:2.15.0
+    image: zaproxy/zap-stable:latest
     commands:
       - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
 
