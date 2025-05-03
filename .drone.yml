@@ -19,9 +19,9 @@ steps:
       - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
 
 volumes:
-    - name: dockersock
-      host:
-        path: /var/run/docker.sock
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
 
   # # 1. ZAP 테스트
   # - name: zap-ajax-spider
