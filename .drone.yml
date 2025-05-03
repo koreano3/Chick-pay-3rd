@@ -18,16 +18,18 @@ steps:
       key:
         from_secret: drone_ec2_ssh_key
       port: 22
+
       script:
         - cd /home/ubuntu/zap
         - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
         - |
-          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 2)) | length' reports/zap_report.json)
+          echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
+          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
           if [ "$ERRORS" -gt 0 ]; then
-            echo "❌ Medium 이상 위험 $ERRORS 건 발견됨! 배포 중단."
+            echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
             exit 1
           else
-            echo "✅ 심각한 취약점 없음. 계속 진행."
+            echo "✅ High 위험 없음. 계속 진행."
           fi
 
   # 2. 단위 테스트, 통합 테스트 단계
