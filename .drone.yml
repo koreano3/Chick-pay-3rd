@@ -3,30 +3,6 @@ type: docker
 name: deploy-for-main
 
 steps:
-  - name: zap-ajax-spider
-    image: zaproxy/zap-stable:2.16.1
-    pull: always # 이 옵션만 추가
-    commands:
-      - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
-
-  # # 1. ZAP 테스트
-  # - name: zap-ajax-spider
-  #   image: zaproxy/zap-stable:2.16.1
-  #   commands:
-  #     - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
-
-  # - name: 리포트 업로드
-  #   image: alpine
-  #   when:
-  #     status:
-  #       - success
-  #       - failure # 실패해도 리포트 업로드
-  #   commands:
-  #     - apk add --no-cache zip
-  #     - zip zap_report.zip zap_report.html zap_result.xml
-  #   artifacts:
-  #     - zap_report.zip
-
   # 2. 단위 테스트, 통합 테스트 단계
   - name: pytest
     image: python:3.12
@@ -52,6 +28,22 @@ steps:
           exit 1
         else
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
+        fi
+
+  - name: zap-full-automation
+    image: docker:cli
+    volumes:
+      - name: zap_reports
+        path: /home/ubuntu/zap # automation.yaml, context.xml 있는 폴더
+    commands:
+      - cd /home/ubuntu/zap
+      - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+      - |
+        if grep -qi "High" reports/zap_report.html; then
+          echo "❌ High 위험도 발견! 배포 중단."
+          exit 1
+        else
+          echo "✅ High 위험도 없음. 배포 계속 진행."
         fi
 
   # 4. 배포 단계
