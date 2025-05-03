@@ -6,6 +6,11 @@ steps:
   # 4. ZAP 자동화 스캔 단계
   - name: zap-full-automation
     image: appleboy/drone-ssh
+    environment:
+      ZAP_USERNAME:
+        from_secret: ZAP_USERNAME
+      ZAP_PASSWORD:
+        from_secret: ZAP_PASSWORD
     settings:
       host:
         from_secret: drone_ec2
