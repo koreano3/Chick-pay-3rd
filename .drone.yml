@@ -3,25 +3,11 @@ type: docker
 name: deploy-for-main
 
 steps:
-  - name: pull-zap
-    image: docker
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    commands:
-      # - chmod 666 /var/run/docker.sock # 권한 추가
-      - docker pull zaproxy/zap-stable:2.16.1
-
-  # 1. ZAP 테스트 (기존과 동일)
   - name: zap-ajax-spider
     image: zaproxy/zap-stable:2.16.1
+    pull: always # 이 옵션만 추가
     commands:
       - zap-baseline.py -t https://chick-pay.com -r zap_report.html -g "ZapContext.context" -x zap_result.xml --fail-on-alert medium
-
-volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
 
   # # 1. ZAP 테스트
   # - name: zap-ajax-spider
