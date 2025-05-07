@@ -3,6 +3,20 @@ type: docker
 name: deploy-for-main
 
 steps:
+
+  # ECS 배포 단계
+  - name: deploy-ecs
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
+
+
   # ZAP 자동화 스캔 단계
   - name: zap-full-automation
     image: appleboy/drone-ssh
