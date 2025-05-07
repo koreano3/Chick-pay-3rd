@@ -73,6 +73,47 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
         fi
 
+
+  - name: locust-load-test
+    image: python:3.11
+    commands:
+      - pip install locust pandas
+      - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
+
+  - name: monitor-cloudwatch
+    image: amazon/aws-cli
+    commands:
+    - aws cloudwatch get-metric-statistics \
+        --namespace AWS/EC2 \
+        --metric-name CPUUtilization \
+        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
+        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
+        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
+        --period 60 \
+        --statistics Average \
+        --region ap-northeast-2 > cpu_result.json
+    - python check_cpu.py
+    # CloudWatch에서 리소스(CPU/Memory/Network) 메트릭 수집하기
+    # AWS EC2 인스턴스의 최근 10분간 CPU 사용률 평균 데이터를 가져옴
+
+  - name: monitor-db
+    image: postgres:14
+    environment:
+      PGHOST: your-db-host
+      PGUSER: your-db-user
+      PGPASSWORD: your-db-password
+    commands:
+      - psql -d yourdbname -c "SELECT numbackends FROM pg_stat_database WHERE datname='yourdbname';"
+    # DB 연결 수 모니터링(DB 커넥션 수 확인) 추가 (PostgreSQL 기준)
+    # -> 나중에 커넥션 기준 초과시 drone 실패시키는 것도 가능
+    # drone secrets에 db 정보 넣고 사용
+  
+  - name: check-locust-result
+    image: python:3.11
+    commands:
+      - pip install pandas
+      - python check_locust_result.py
+
 trigger:
   branch:
     - main
