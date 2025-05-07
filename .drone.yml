@@ -3,7 +3,7 @@ type: docker
 name: deploy-for-main-and-drone
 
 steps:
-  # 1. 단위 테스트, 통합 테스트 단계
+  # 1. 단위 테스트, 통합 테스트
   - name: test
     image: python:3.12
     environment:
@@ -14,7 +14,7 @@ steps:
       - python manage.py migrate
       - pytest
 
-  # 2. Bandit 정적 분석 단계
+  # 2. Bandit 정적 분석
   - name: bandit-analysis
     image: python:3.12
     commands:
@@ -31,24 +31,17 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
         fi
 
-  # 3. 배포 단계
-  - name: deploy
-    image: appleboy/drone-ssh
+  # 3. ECS 배포 단계
+  - name: deploy-ecs
+    image: amazon/aws-cli
     settings:
-      host:
-        from_secret: ec2_host
-      username: ubuntu
-      key:
-        from_secret: ssh_private_key
-      port: 22
-      script:
-        - cd /home/ubuntu/Chick-pay-2nd
-        - git fetch origin
-        - git checkout ${DRONE_BRANCH}
-        - git pull origin ${DRONE_BRANCH}
-        - docker-compose down
-        - docker-compose up -d --build
-    timeout: 300
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
 
 trigger:
   branch:
