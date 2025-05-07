@@ -99,14 +99,14 @@ steps:
   - name: monitor-db
     image: postgres:14
     environment:
-      PGHOST: your-db-host
-      PGUSER: your-db-user
-      PGPASSWORD: your-db-password
+      PGHOST: zappdb-2.cn68okq6sw53.ap-northeast-2.rds.amazonaws.com
+      PGUSER: postgres
+      PGPASSWORD: bemajor123!!
     commands:
-      - psql -d yourdbname -c "SELECT numbackends FROM pg_stat_database WHERE datname='yourdbname';"
+      - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
     # DB 연결 수 모니터링(DB 커넥션 수 확인) 추가 (PostgreSQL 기준)
     # -> 나중에 커넥션 기준 초과시 drone 실패시키는 것도 가능
-    # drone secrets에 db 정보 넣고 사용
+    # drone secrets에 db 정보 넣고 사용하는거 해야된닷
   
   - name: check-locust-result
     image: python:3.11
