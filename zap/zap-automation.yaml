@@ -17,6 +17,11 @@ jobs:
       maxCrawlDepth: 5
       maxDuration: 5
 
+  - type: accessControl
+    parameters:
+      context: ZapContext
+      user: myuser
+
   - type: report
     parameters:
       template: traditional-html

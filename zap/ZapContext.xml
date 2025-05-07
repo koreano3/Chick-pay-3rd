@@ -5,7 +5,6 @@
         <desc/>
         <inscope>true</inscope>
         <incregexes>https://chick-pay.com/.*</incregexes>
-        <incregexes>https://chick-pay.com/.*</incregexes>
         <excregexes>.*/zapp/logout/.*</excregexes>
         <excregexes>.*/zapp/api/logout/.*</excregexes>
         <tech>
