@@ -4,7 +4,21 @@ name: deploy-for-main
 
 steps:
 
-  # ECS 배포 단계
+  # 1. Docker Build & Push to ECR
+  - name: docker-build-push
+    image: plugins/docker
+    settings:
+      registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
+      repo: zapp
+      tags:
+        - latest
+      dockerfile: Dockerfile
+      username:
+        from_secret: aws_access_key_id
+      password:
+        from_secret: aws_secret_access_key
+
+  # 2. ECS 서비스 업데이트
   - name: deploy-ecs
     image: amazon/aws-cli
     settings:
@@ -16,8 +30,7 @@ steps:
     commands:
       - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
 
-
-  # ZAP 자동화 스캔 단계
+  # 3. ZAP 자동화 스캔 단계
   - name: zap-full-automation
     image: appleboy/drone-ssh
     environment:
@@ -32,7 +45,6 @@ steps:
       key:
         from_secret: drone_ec2_ssh_key
       port: 22
-
       script:
         - cd /home/ubuntu/zap
         - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
@@ -46,7 +58,7 @@ steps:
             echo "✅ High 위험 없음. 계속 진행."
           fi
 
-  # 단위 테스트, 통합 테스트 단계
+  # 4. 단위 테스트, 통합 테스트
   - name: pytest
     image: python:3.12
     environment:
@@ -57,7 +69,7 @@ steps:
       - python manage.py migrate
       - pytest
 
-  # Bandit 정적 분석 단계
+  # 5. Bandit 정적 분석
   - name: bandit-analysis
     image: python:3.12
     commands:
@@ -71,31 +83,31 @@ steps:
           exit 1
         else
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
-        fi
+          fi
 
-
+  # 6. 부하 테스트
   - name: locust-load-test
     image: python:3.11
     commands:
       - pip install locust pandas
       - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
 
+  # 7. CloudWatch 모니터링
   - name: monitor-cloudwatch
     image: amazon/aws-cli
     commands:
-    - aws cloudwatch get-metric-statistics \
-        --namespace AWS/EC2 \
-        --metric-name CPUUtilization \
-        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
-        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
-        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
-        --period 60 \
-        --statistics Average \
-        --region ap-northeast-2 > cpu_result.json
-    - python check_cpu.py
-    # CloudWatch에서 리소스(CPU/Memory/Network) 메트릭 수집하기
-    # AWS EC2 인스턴스의 최근 10분간 CPU 사용률 평균 데이터를 가져옴
+      - aws cloudwatch get-metric-statistics \
+          --namespace AWS/EC2 \
+          --metric-name CPUUtilization \
+          --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
+          --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
+          --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
+          --period 60 \
+          --statistics Average \
+          --region ap-northeast-2 > cpu_result.json
+      - python check_cpu.py
 
+  # 8. DB 커넥션 모니터링
   - name: monitor-db
     image: postgres:14
     environment:
@@ -104,10 +116,8 @@ steps:
       PGPASSWORD: bemajor123!!
     commands:
       - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
-    # DB 연결 수 모니터링(DB 커넥션 수 확인) 추가 (PostgreSQL 기준)
-    # -> 나중에 커넥션 기준 초과시 drone 실패시키는 것도 가능
-    # drone secrets에 db 정보 넣고 사용하는거 해야된닷
-  
+
+  # 9. Locust 결과 체크
   - name: check-locust-result
     image: python:3.11
     commands:
