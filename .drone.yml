@@ -22,7 +22,7 @@ steps:
       - docker build -f dockerfile -t 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest .
       - docker push 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
 
-  # 2. ECS 서비스 업데이트
+  # 2. ECS 서비스 업데이트 2
   - name: deploy-ecs
     image: amazon/aws-cli
     settings:
