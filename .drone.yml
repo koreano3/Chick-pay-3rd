@@ -3,141 +3,140 @@ type: docker
 name: deploy-for-main
 
 steps:
-  steps:
-    # 1. ECR에 새 이미지 빌드 & 푸시
-    - name: docker-build-and-push
-      image: plugins/docker
-      settings:
-        repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
-        tags:
-          - latest
-          - ${DRONE_COMMIT_SHA}
-        dockerfile: Dockerfile
-        registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
-        access_key:
-          from_secret: aws_access_key_id
-        secret_key:
-          from_secret: aws_secret_access_key
-        region: ap-northeast-2
-        auto_login: true
+  # 1. ECR에 새 이미지 빌드 & 푸시
+  - name: docker-build-and-push
+    image: plugins/docker
+    settings:
+      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+      dockerfile: Dockerfile
+      registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+      auto_login: true
 
-    # 2. ECS에 서비스 강제 재배포
-    - name: deploy-ecs
-      image: amazon/aws-cli
-      settings:
-        access_key:
-          from_secret: aws_access_key_id
-        secret_key:
-          from_secret: aws_secret_access_key
-        region: ap-northeast-2
-      commands:
-        - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
+  # 2. ECS에 서비스 강제 재배포
+  - name: deploy-ecs
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
 
-    # 2. ECS 서비스 업데이트
-    - name: deploy-ecs
-      image: amazon/aws-cli
-      settings:
-        access_key:
-          from_secret: aws_access_key_id
-        secret_key:
-          from_secret: aws_secret_access_key
-        region: ap-northeast-2
-      commands:
-        - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
+  # 2. ECS 서비스 업데이트
+  - name: deploy-ecs
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
 
-    # 3. ZAP 자동화 스캔
-    - name: zap-full-automation
-      image: appleboy/drone-ssh
-      environment:
-        ZAP_USERNAME:
-          from_secret: ZAP_USERNAME
-        ZAP_PASSWORD:
-          from_secret: ZAP_PASSWORD
-      settings:
-        host:
-          from_secret: drone_ec2
-        username: ubuntu
-        key:
-          from_secret: drone_ec2_ssh_key
-        port: 22
-        script:
-          - cd /home/ubuntu/zap
-          - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
-          - |
-            echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
-            ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
-            if [ "$ERRORS" -gt 0 ]; then
-              echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
-              exit 1
-            else
-              echo "✅ High 위험 없음. 계속 진행."
-            fi
-
-    # 4. 단위/통합 테스트
-    - name: pytest
-      image: python:3.12
-      environment:
-        DJANGO_SETTINGS_MODULE: my_project.settings
-      commands:
-        - pip install --upgrade pip
-        - pip install -r requirements.txt
-        - python manage.py migrate
-        - pytest
-
-    # 5. Bandit 정적 분석
-    - name: bandit-analysis
-      image: python:3.12
-      commands:
-        - apt-get update && apt-get install -y jq
-        - pip install bandit
-        - bandit -r core zapp my_project -f json -o analysis/bandit-report.json -x zapp/tests
+  # 3. ZAP 자동화 스캔
+  - name: zap-full-automation
+    image: appleboy/drone-ssh
+    environment:
+      ZAP_USERNAME:
+        from_secret: ZAP_USERNAME
+      ZAP_PASSWORD:
+        from_secret: ZAP_PASSWORD
+    settings:
+      host:
+        from_secret: drone_ec2
+      username: ubuntu
+      key:
+        from_secret: drone_ec2_ssh_key
+      port: 22
+      script:
+        - cd /home/ubuntu/zap
+        - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
         - |
-          ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
+          echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
+          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
           if [ "$ERRORS" -gt 0 ]; then
-            echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
+            echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
             exit 1
           else
-            echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
-            fi
+            echo "✅ High 위험 없음. 계속 진행."
+          fi
 
-    # 6. 부하 테스트
-    - name: locust-load-test
-      image: python:3.11
-      commands:
-        - pip install locust pandas
-        - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
+  # 4. 단위/통합 테스트
+  - name: pytest
+    image: python:3.12
+    environment:
+      DJANGO_SETTINGS_MODULE: my_project.settings
+    commands:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - python manage.py migrate
+      - pytest
 
-    # 7. CloudWatch 모니터링
-    - name: monitor-cloudwatch
-      image: amazon/aws-cli
-      commands:
-        - aws cloudwatch get-metric-statistics \
-          --namespace AWS/EC2 \
-          --metric-name CPUUtilization \
-          --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
-          --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
-          --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
-          --period 60 \
-          --statistics Average \
-          --region ap-northeast-2 > cpu_result.json
-        - python check_cpu.py
+  # 5. Bandit 정적 분석
+  - name: bandit-analysis
+    image: python:3.12
+    commands:
+      - apt-get update && apt-get install -y jq
+      - pip install bandit
+      - bandit -r core zapp my_project -f json -o analysis/bandit-report.json -x zapp/tests
+      - |
+        ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
+          exit 1
+        else
+          echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
+          fi
 
-    # 8. DB 커넥션 모니터링
-    - name: monitor-db
-      image: postgres:14
-      environment:
-        PGHOST: zappdb-2.cn68okq6sw53.ap-northeast-2.rds.amazonaws.com
-        PGUSER: postgres
-        PGPASSWORD: bemajor123!!
-      commands:
-        - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
+  # 6. 부하 테스트
+  - name: locust-load-test
+    image: python:3.11
+    commands:
+      - pip install locust pandas
+      - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
 
-    # 9. Locust 결과 체크
-    - name: check-locust-result
-      image: python:3.11
-      commands:
-        - pip install pandas
-        - python check_locust_result.py
+  # 7. CloudWatch 모니터링
+  - name: monitor-cloudwatch
+    image: amazon/aws-cli
+    commands:
+      - aws cloudwatch get-metric-statistics \
+        --namespace AWS/EC2 \
+        --metric-name CPUUtilization \
+        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
+        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
+        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
+        --period 60 \
+        --statistics Average \
+        --region ap-northeast-2 > cpu_result.json
+      - python check_cpu.py
+
+  # 8. DB 커넥션 모니터링
+  - name: monitor-db
+    image: postgres:14
+    environment:
+      PGHOST: zappdb-2.cn68okq6sw53.ap-northeast-2.rds.amazonaws.com
+      PGUSER: postgres
+      PGPASSWORD: bemajor123!!
+    commands:
+      - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
+
+  # 9. Locust 결과 체크
+  - name: check-locust-result
+    image: python:3.11
+    commands:
+      - pip install pandas
+      - python check_locust_result.py
 
 trigger:
   branch:
