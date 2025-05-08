@@ -8,12 +8,12 @@ steps:
     - name: docker-build-and-push
       image: plugins/docker
       settings:
-        repo: <AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com/<ECR_REPO_NAME>
+        repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
         tags:
           - latest
           - ${DRONE_COMMIT_SHA}
         dockerfile: Dockerfile
-        registry: <AWS_ACCOUNT_ID>.dkr.ecr.ap-northeast-2.amazonaws.com
+        registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
         access_key:
           from_secret: aws_access_key_id
         secret_key:
