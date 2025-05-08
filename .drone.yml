@@ -11,6 +11,7 @@ steps:
       tags:
         - latest
       dockerfile: dockerfile
+      context: . 
       registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
       access_key:
         from_secret: aws_access_key_id
