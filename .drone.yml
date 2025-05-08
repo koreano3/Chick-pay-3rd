@@ -4,19 +4,19 @@ name: deploy-for-main
 
 steps:
 
-  # 1. Docker Build & Push to ECR
+  # 1. Docker Build & Push to ECR (수정)
   - name: docker-build-push
-    image: plugins/docker
+    image: amazon/aws-cli
     settings:
-      registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
-      repo: zapp
-      tags:
-        - latest
-      dockerfile: Dockerfile
-      username:
+      access_key:
         from_secret: aws_access_key_id
-      password:
+      secret_key:
         from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
+      - docker build -t 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest .
+      - docker push 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
 
   # 2. ECS 서비스 업데이트
   - name: deploy-ecs
@@ -30,7 +30,7 @@ steps:
     commands:
       - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
 
-  # 3. ZAP 자동화 스캔 단계
+  # 3. ZAP 자동화 스캔
   - name: zap-full-automation
     image: appleboy/drone-ssh
     environment:
@@ -58,7 +58,7 @@ steps:
             echo "✅ High 위험 없음. 계속 진행."
           fi
 
-  # 4. 단위 테스트, 통합 테스트
+  # 4. 단위/통합 테스트
   - name: pytest
     image: python:3.12
     environment:
@@ -82,7 +82,7 @@ steps:
           echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
           exit 1
         else
-          echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 배포를 계속합니다."
+          echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
           fi
 
   # 6. 부하 테스트
