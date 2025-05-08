@@ -3,13 +3,6 @@ type: docker
 name: deploy-for-main
 
 steps:
-
- kind: pipeline
-type: docker
-name: default
-
-steps:
-
   # 1. ECR 로그인
   - name: ecr-login
     image: amazon/aws-cli
@@ -48,7 +41,6 @@ steps:
       service: ChickTask-service-DJANGO
       region: ap-northeast-2
       image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
-
 
   # 2. ECS 서비스 업데이트
   - name: deploy-ecs
@@ -129,14 +121,14 @@ steps:
     image: amazon/aws-cli
     commands:
       - aws cloudwatch get-metric-statistics \
-          --namespace AWS/EC2 \
-          --metric-name CPUUtilization \
-          --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
-          --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
-          --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
-          --period 60 \
-          --statistics Average \
-          --region ap-northeast-2 > cpu_result.json
+        --namespace AWS/EC2 \
+        --metric-name CPUUtilization \
+        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
+        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
+        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
+        --period 60 \
+        --statistics Average \
+        --region ap-northeast-2 > cpu_result.json
       - python check_cpu.py
 
   # 8. DB 커넥션 모니터링
