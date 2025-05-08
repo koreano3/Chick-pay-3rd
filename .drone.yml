@@ -4,15 +4,51 @@ name: deploy-for-main
 
 steps:
 
-  # 1. Docker Build & Push to ECR
-  - name: docker-build-push
-    image: docker:20-dind
-    privileged: true
+ kind: pipeline
+type: docker
+name: default
+
+steps:
+
+  # 1. ECR 로그인
+  - name: ecr-login
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
     commands:
-      - apk add --no-cache aws-cli  # aws-cli 설치
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
-      - docker build -t 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest .
-      - docker push 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
+
+  # 2. Docker 빌드 & 푸시
+  - name: docker-build-push
+    image: plugins/docker
+    settings:
+      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+      tags:
+        - latest
+      registry: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
+      dockerfile: Dockerfile
+      username:
+        from_secret: aws_access_key_id
+      password:
+        from_secret: aws_secret_access_key
+
+  # 3. ECS 서비스 새 이미지로 업데이트
+  - name: ecs-deploy
+    image: silinternational/drone-ecs
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      cluster: ChickCluster
+      service: ChickTask-service-DJANGO
+      region: ap-northeast-2
+      image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
+
 
   # 2. ECS 서비스 업데이트
   - name: deploy-ecs
