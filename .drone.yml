@@ -20,7 +20,7 @@ steps:
       context: .
 
 
-  # 2. ECS 서비스 업데이트
+  # 2. ECS 서비스 업데이트 2
   - name: deploy-ecs
     image: amazon/aws-cli
     settings:
