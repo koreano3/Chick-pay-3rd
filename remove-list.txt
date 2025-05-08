@@ -1,4 +1,4 @@
-nltk
+.\venv\Scripts\activatenltk
 markdown-it-py
 mdurl
 pygments
