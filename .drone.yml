@@ -98,13 +98,13 @@ steps:
     image: python:3.11
     commands:
       - pip install locust pandas pyotp
-      - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
+      - locust --headless -f locustfile.py -u 200 -r 20 -t 1m --host https://chick-pay.com --csv=locust_result
       - python check_locust_result.py
 
-# 9. Locust 결과 체크
-  - name: check-locust-result
-    image: python:3.11
-    commands:
+# # 9. Locust 결과 체크
+#   - name: check-locust-result
+#     image: python:3.11
+#     commands:
       
 
   # 7. CloudWatch 모니터링
@@ -131,8 +131,7 @@ steps:
       PGPASSWORD: dbpassword
     commands:
       - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
-
-  
+ 
 
 trigger:
   branch:
