@@ -130,3 +130,4 @@ trigger:
   branch:
     - main
     - feat/drone
+    - feat/infra
