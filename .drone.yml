@@ -18,9 +18,9 @@ steps:
         - ${DRONE_COMMIT_SHA}
       dockerfile: dockerfile
       context: .
-      when:
-        branch:
-          - main
+    when:
+      branch:
+        - main
 
 
   # 2. ECS 서비스 업데이트 2
