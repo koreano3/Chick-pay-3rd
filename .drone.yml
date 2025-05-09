@@ -2,25 +2,23 @@ kind: pipeline
 type: docker
 name: deploy-for-main
 
+  # 1. ECR에 새 이미지 빌드 & 푸시
 steps:
-  # 0. ECR 강제 로그인
-  - name: ecr-login
-    image: amazon/aws-cli
+  - name: build-and-push-to-ecr
+    image: plugins/ecr
     settings:
+      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+      region: ap-northeast-2
       access_key:
         from_secret: aws_access_key_id
       secret_key:
         from_secret: aws_secret_access_key
-      region: ap-northeast-2
-    commands:
-      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+      dockerfile: dockerfile
+      context: .
 
-  # 1. Docker Build & Push 직접 (Login 했으니까 Plugins 없이)
-  - name: docker-build-and-push
-    image: docker:20.10
-    commands:
-      - docker build -f dockerfile -t 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest .
-      - docker push 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp:latest
 
   # 2. ECS 서비스 업데이트 2
   - name: deploy-ecs
