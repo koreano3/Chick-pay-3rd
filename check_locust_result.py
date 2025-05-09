@@ -9,7 +9,7 @@ except FileNotFoundError:
     sys.exit(1)
 
 # "Total" 행 필터링
-filtered = df[df['Name'] == "Total"]
+filtered = df[df['Name'] == "Aggregated"]
 
 if filtered.empty:
     print('❌ "Total" row not found in Locust result.')
