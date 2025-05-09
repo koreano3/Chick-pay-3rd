@@ -30,6 +30,7 @@ resource = Resource(attributes={
 })
 
 from core.secrets import load_aws_secret
+
 load_aws_secret("chickpay/prod/credentials")
 
 # Tracer 프로바이더 설정
