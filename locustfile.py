@@ -9,6 +9,7 @@ class ChickPayUser(HttpUser):
     def on_start(self):
         response = self.client.post("/zapp/api/login/", json={
             "email": "eunsan@eunsan.com",
+
             "password": "123123"
         })
         if response.status_code != 200:
@@ -27,11 +28,7 @@ class ChickPayUser(HttpUser):
             time.sleep(0.3)
 
         # ✅ OTP 생성
-<<<<<<< HEAD
         totp = pyotp.TOTP("47GE56Q72WHDBFSMAMUHKKXIJPSQZRUT", interval=30)
-=======
-        totp = pyotp.TOTP("H37USR2MPU3C3UPO4FAOWRLHXTYSAZQS", interval=30)
->>>>>>> 1f970c1bcd6767a360fb6bd2340d56dc0a08ce62
 
         # 현재 OTP + 과거 OTP 코드 모두 준비
         current_otp = totp.now()
