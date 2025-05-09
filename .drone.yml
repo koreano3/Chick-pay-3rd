@@ -98,29 +98,13 @@ steps:
     image: python:3.11
     commands:
       - pip install locust pandas pyotp
-      - locust --headless -f locustfile.py -u 200 -r 20 -t 1m --host https://chick-pay.com --csv=locust_result
+      - locust --headless -f locustfile.py -u 200 -r 20 -t 30s --host https://chick-pay.com --csv=locust_result
       - python check_locust_result.py
 
 # # 9. Locust 결과 체크
 #   - name: check-locust-result
 #     image: python:3.11
-#     commands:
-      
-
-  # 7. CloudWatch 모니터링
-  - name: monitor-cloudwatch
-    image: amazon/aws-cli
-    commands:
-      - aws cloudwatch get-metric-statistics \
-        --namespace AWS/EC2 \
-        --metric-name CPUUtilization \
-        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
-        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
-        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
-        --period 60 \
-        --statistics Average \
-        --region ap-northeast-2 > cpu_result.json
-      - python check_cpu.py
+#     commands:      
 
   # 8. DB 커넥션 모니터링
   - name: monitor-db
@@ -132,7 +116,6 @@ steps:
     commands:
       - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
  
-
 trigger:
   branch:
     - main
