@@ -11,23 +11,23 @@ class ChickPayUser(HttpUser):
     def hit_main_page(self):
         self.client.get("/") 
 
-    # def on_start(self):
-    #     response = self.client.post("/zapp/api/login/", json={
-    #         "email": "eunsan@eunsan.com",
-    #         "password": "123123"
-    #     })
-    #     if response.status_code != 200:
-    #         print(f"status: {response.status_code}")
-    #         print(f"body: {response.text}")
-    #         raise Exception("로그인 실패")
+    def on_start(self):
+        response = self.client.post("/zapp/api/login/", json={
+            "email": "eunsan@eunsan.com",
+            "password": "123123"
+        })
+        if response.status_code != 200:
+            print(f"status: {response.status_code}")
+            print(f"body: {response.text}")
+            raise Exception("로그인 실패")
 
-    #     self.session_cookie = response.cookies.get('sessionid')
-    #     self.csrf_token = response.cookies.get('csrftoken')
+        self.session_cookie = response.cookies.get('sessionid')
+        self.csrf_token = response.cookies.get('csrftoken')
 
-    #     headers = {
-    #         "Cookie": f"sessionid={self.session_cookie}; csrftoken={self.csrf_token}",
-    #         "X-CSRFToken": self.csrf_token
-    #     }
+        # headers = {
+        #     "Cookie": f"sessionid={self.session_cookie}; csrftoken={self.csrf_token}",
+        #     "X-CSRFToken": self.csrf_token
+        # }
 
     #      # ✅ 30초 경계 피하기
     #     while True:
