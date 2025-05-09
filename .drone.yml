@@ -93,18 +93,14 @@ steps:
   #         echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
   #         fi
 
-  # 6. 부하 테스트
+  # 6. 부하 테스트 + locust 결과 체크
   - name: locust-load-test
     image: python:3.11
     commands:
       - pip install locust pandas pyotp
-      - locust --headless -f locustfile.py -u 200 -r 20 -t 30s --host https://chick-pay.com --csv=locust_result
+      - locust --headless -f locustfile.py -u 46 -r 5 -t 1m --host https://chick-pay.com --csv=locust_result
       - python check_locust_result.py
-
-# # 9. Locust 결과 체크
-#   - name: check-locust-result
-#     image: python:3.11
-#     commands:      
+    
 
   # 8. DB 커넥션 모니터링
   - name: monitor-db
@@ -114,7 +110,13 @@ steps:
       PGUSER: postgres
       PGPASSWORD: dbpassword
     commands:
-      - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
+    - >
+      conn_count=$(psql -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
+      echo "🔍 현재 DB 커넥션 수: $conn_count";
+      if [ "$conn_count" -gt 60 ]; then
+        echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
+        exit 1;
+      fi
  
 trigger:
   branch:

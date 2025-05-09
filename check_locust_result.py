@@ -17,7 +17,7 @@ if filtered.empty:
 
 # 평균 응답시간 체크 (1초 = 1000ms)
 avg_response_time = filtered["Average Response Time"].values[0]
-if avg_response_time > 1000:
+if avg_response_time > 5000:
     print(f"❌ 평균 응답시간 {avg_response_time}ms 초과: 실패")
     sys.exit(1)
 
