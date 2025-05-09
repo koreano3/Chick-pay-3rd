@@ -19,8 +19,8 @@ steps:
       dockerfile: dockerfile
       context: .
       when:
-      branch:
-        - main
+        branch:
+          - main
 
 
   # 2. ECS 서비스 업데이트 2
@@ -35,8 +35,8 @@ steps:
     commands:
       - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
     when:
-    branch:
-      - main
+      branch:
+        - main
 
   # # 3. ZAP 자동화 스캔
   # - name: zap-full-automation
@@ -99,7 +99,6 @@ steps:
     commands:
       - pip install locust pandas pyotp
       - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
-      - pip install pandas
       - python check_locust_result.py
 
 # 9. Locust 결과 체크
