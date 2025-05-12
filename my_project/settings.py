@@ -129,21 +129,31 @@ CORS_ALLOWED_ORIGINS = [
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'transaction.log',
+
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s [%(name)s] %(message)s',
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['file'],
+
+    'handlers': {
+        'transaction_file': {
             'level': 'INFO',
-            'propagate': True,
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'transactions.log',  # Collector가 이 파일 감시
+            'formatter': 'standard',
+        },
+    },
+
+    'loggers': {
+        'transaction': {
+            'handlers': ['transaction_file'],
+            'level': 'INFO',
+            'propagate': False,
         },
     },
 }
+
 
 
 # Cross-Domain Misconfiguration 관련

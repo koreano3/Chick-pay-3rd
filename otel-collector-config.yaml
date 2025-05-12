@@ -1,6 +1,6 @@
 receivers:
   filelog:
-    include: [/app/logs/transaction.log]
+    include: [/app/logs/transactions.log]
     start_at: beginning
 
 exporters:
