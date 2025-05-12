@@ -94,19 +94,19 @@ steps:
   #         fi
 
 #   # 6. 부하 테스트 + locust 결과 체크
-#   - name: locust-load-test
-#     image: python:3.11
-#     commands:
-#     - pip install locust pandas pyotp
-#     - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
-#     - python check_locust_result.py
+  - name: locust-load-test
+    image: python:3.11
+    commands:
+    - pip install locust pandas pyotp
+    - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
+    - python check_locust_result.py
 
 # # Drone UI에서 로그 확인하는 컨테이너 
-#   - name: show-locust-csv
-#     image: python:3.11
-#     commands:
-#     - pip install pandas
-#     - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
+  - name: show-locust-csv
+    image: python:3.11
+    commands:
+    - pip install pandas
+    - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
 
 # 부하 테스트 중 DB 커넥션 변화 감지 (중간 상태)1
   - name: monitor-db-mid
@@ -127,22 +127,22 @@ steps:
         done
 
 # # 부하 테스트 후 커넥션 누수 확인
-#   - name: monitor-db-end
-#     image: postgres:14
-#     environment:
-#     PGHOST:
-#       from_secret: dbhost
-#     PGUSER: postgres
-#     PGPASSWORD:
-#       from_secret: dbpassword
-#     commands:
-#     - >
-#       conn_count=$(psql -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
-#       echo "🔍 현재 DB 커넥션 수: $conn_count";
-#       if [ "$conn_count" -gt 60 ]; then
-#         echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
-#         exit 1;
-#       fi
+  - name: monitor-db-end
+    image: postgres:14
+    environment:
+    PGHOST:
+      from_secret: dbhost
+    PGUSER: postgres
+    PGPASSWORD:
+      from_secret: dbpassword
+    commands:
+    - >
+      conn_count=$(psql -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
+      echo "🔍 현재 DB 커넥션 수: $conn_count";
+      if [ "$conn_count" -gt 60 ]; then
+        echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
+        exit 1;
+      fi
  
 trigger:
   branch:
