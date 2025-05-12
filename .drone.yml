@@ -121,7 +121,7 @@ steps:
       echo "🔍 테스트 중간 DB 커넥션 모니터링 시작..."
       for i in {1..5}; do
         echo "⏱ DB 커넥션 체크 $i/5:"
-        psql -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
+        psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
         sleep 5
       done
 
