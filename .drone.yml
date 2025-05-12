@@ -101,6 +101,7 @@ steps:
     - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
     - python check_locust_result.py
 
+# Drone UI에서 로그 확인하는 컨테이너 
   - name: show-locust-csv
     image: python:3.11
     commands:
@@ -111,19 +112,20 @@ steps:
   - name: monitor-db-mid
     image: postgres:14
     environment:
-    PGHOST:
-      from_secret: dbhost
-    PGUSER: postgres
-    PGPASSWORD:
-      from_secret: dbpassword
+      PGHOST:
+        from_secret: dbhost
+      PGUSER:
+        from_secret: dbuser  # 필요하면 이렇게 user도 secret에서 받는 게 안전
+      PGPASSWORD:
+        from_secret: dbpassword
     commands:
-    - |
-      echo "🔍 테스트 중간 DB 커넥션 모니터링 시작..."
-      for i in {1..5}; do
-        echo "⏱ DB 커넥션 체크 $i/5:"
-        psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
-        sleep 5
-      done
+      - |
+        echo "🔍 테스트 중간 DB 커넥션 모니터링 시작..."
+        for i in {1..5}; do
+          echo "⏱ DB 커넥션 체크 $i/5:"
+          psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
+          sleep 5
+        done
 
 # 부하 테스트 후 커넥션 누수 확인
   - name: monitor-db-end
