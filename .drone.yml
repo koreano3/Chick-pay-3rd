@@ -116,6 +116,9 @@ steps:
 
       echo "🧪 Locust 부하 테스트 시작"
     - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
+      
+      wait #DB 모니터링 루프끝날때까지 wait
+
     - echo "📤 DB 커넥션 로그 출력 ==============================="
     - cat db_conn_log.txt
     - python check_locust_result.py
