@@ -98,7 +98,7 @@ steps:
     image: python:3.11
     commands:
       - pip install locust pandas pyotp
-      - locust --headless -f locustfile.py -u 60 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
+      - locust --headless -f locustfile.py -u 30 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
       - python check_locust_result.py
 
   - name: show-locust-csv
@@ -109,6 +109,8 @@ steps:
     
 
   # 8. DB 커넥션 모니터링
+  # >60 =>커넥션 풀 누수, ORM 커넥션 미반납, 트랜잭션 미종료 등 리스크 상황
+  # 부하테스트중 과도한 DB 커넥션 수 감지
   - name: monitor-db
     image: postgres:14
     environment:
