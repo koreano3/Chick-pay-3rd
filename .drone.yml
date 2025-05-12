@@ -97,8 +97,8 @@ steps:
   - name: locust-load-test
     image: python:3.11
     environment:
-    PGHOST:
-      from_secret: dbhost
+    PGHOST: your-db-host.rds.amazonaws.com
+      # from_secret: dbhost
     PGUSER: postgres
     PGPASSWORD:
       from_secret: dbpassword
@@ -107,7 +107,7 @@ steps:
     - pip install locust pandas pyotp
     - |
       echo "🌐 PGHOST=$PGHOST"
-      
+
       echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
       ( 
         export PGHOST="$PGHOST"
