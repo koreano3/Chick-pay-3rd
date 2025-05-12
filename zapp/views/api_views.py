@@ -165,6 +165,8 @@ class CashTransferAPIView(APIView):
             with transaction.atomic():
                 sender.cash.withdraw(amount)
                 receiver.cash.deposit(amount)
+                raise Exception("일부러 실패")  # 테스트용
+
 
                 transfer = CashTransfer.objects.create(
                     sender=sender,
