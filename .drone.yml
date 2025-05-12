@@ -96,8 +96,25 @@ steps:
 #   # 6. 부하 테스트 + locust 결과 체크
   - name: locust-load-test
     image: python:3.11
+    environment:
+    PGHOST:
+      from_secret: dbhost
+    PGUSER: postgres
+    PGPASSWORD:
+      from_secret: dbpassword
     commands:
     - pip install locust pandas pyotp
+    - |
+      echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
+      (
+        for i in {1..6}; do
+          echo "⏱ DB 커넥션 체크 $i/6:"
+          psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
+          sleep 5
+        done
+      ) &
+
+      echo "🧪 Locust 부하 테스트 시작"
     - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
     - python check_locust_result.py
 
@@ -107,24 +124,6 @@ steps:
     commands:
     - pip install pandas
     - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
-
-# 부하 테스트 중 DB 커넥션 변화 감지 (중간 상태)
-  - name: monitor-db-mid
-    image: postgres:14
-    environment:
-      PGHOST:
-        from_secret: dbhost
-      PGUSER: postgres
-      PGPASSWORD:
-        from_secret: dbpassword
-    commands:
-      - |
-        echo "🔍 테스트 중간 DB 커넥션 모니터링 시작..."
-        for i in {1..5}; do
-          echo "⏱ DB 커넥션 체크 $i/5:"
-          psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
-          sleep 5
-        done
 
 # # 부하 테스트 후 커넥션 누수 확인
   - name: monitor-db-end
