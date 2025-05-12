@@ -106,8 +106,10 @@ steps:
     - apt-get update && apt-get install -y postgresql-client
     - pip install locust pandas pyotp
     - |
+      echo "🌐 PGHOST=$PGHOST"
+      
       echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
-      (
+      ( 
         export PGHOST="$PGHOST"
         export PGUSER="$PGUSER"
         export PGPASSWORD="$PGPASSWORD"
