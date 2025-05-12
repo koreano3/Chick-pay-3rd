@@ -111,7 +111,7 @@ steps:
         export PGUSER="$PGUSER"
         export PGPASSWORD="$PGPASSWORD"
         echo "🔍 DB 모니터링 시작됨!"
-        for i in {1..6}; do
+        for i in $(seq 1 6); do
           echo "⏱ DB 커넥션 체크 $i/6:"
           psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
           sleep 5
