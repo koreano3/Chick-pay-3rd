@@ -100,15 +100,23 @@ steps:
       - pip install locust pandas pyotp
       - locust --headless -f locustfile.py -u 20 -r 5 -t 1m --host https://chick-pay.com --csv=locust_result
       - python check_locust_result.py
+
+  - name: show-locust-csv
+    image: python:3.11
+    commands:
+      - pip install pandas
+      - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
     
 
   # 8. DB 커넥션 모니터링
   - name: monitor-db
     image: postgres:14
     environment:
-      PGHOST: dbhost
+      PGHOST: 
+        from_secret: dbhost
       PGUSER: postgres
-      PGPASSWORD: dbpassword
+      PGPASSWORD: 
+        from_secret: dbpassword
     commands:
     - >
       conn_count=$(psql -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
