@@ -108,7 +108,7 @@ steps:
     - pip install pandas
     - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
 
-# 부하 테스트 중 DB 커넥션 변화 감지 (중간 상태)1
+# 부하 테스트 중 DB 커넥션 변화 감지 (중간 상태)
   - name: monitor-db-mid
     image: postgres:14
     environment:
