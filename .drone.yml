@@ -119,7 +119,7 @@ steps:
             psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
             sleep 5
           done
-        ) & >> db_conn_log.txt 2>&1 &
+        ) >> db_conn_log.txt 2>&1 &
 
         echo "🧪 Locust 부하 테스트 시작"
         locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result 
