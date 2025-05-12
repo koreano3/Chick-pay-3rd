@@ -107,6 +107,10 @@ steps:
     - |
       echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
       (
+        export PGHOST="$PGHOST"
+        export PGUSER="$PGUSER"
+        export PGPASSWORD="$PGPASSWORD"
+        echo "🔍 DB 모니터링 시작됨!"
         for i in {1..6}; do
           echo "⏱ DB 커넥션 체크 $i/6:"
           psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
@@ -115,12 +119,12 @@ steps:
       ) & >> db_conn_log.txt 2>&1 &
 
       echo "🧪 Locust 부하 테스트 시작"
-    - locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result
+      locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result 
       
-      wait #DB 모니터링 루프끝날때까지 wait
-
-    - echo "📤 DB 커넥션 로그 출력 ==============================="
-    - cat db_conn_log.txt
+      wait 
+      
+      echo "📤 DB 커넥션 로그 출력 ==============================="
+      cat db_conn_log.txt
     - python check_locust_result.py
 
 # # Drone UI에서 로그 확인하는 컨테이너 
