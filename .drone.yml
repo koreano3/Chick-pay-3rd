@@ -97,7 +97,7 @@ steps:
   - name: locust-load-test
     image: python:3.11
     environment:
-    PGHOST: your-db-host.rds.amazonaws.com
+    PGHOST: zappdb-2.cn68okq6sw53.ap-northeast-2.rds.amazonaws.com
       # from_secret: dbhost
     PGUSER: postgres
     PGPASSWORD:
