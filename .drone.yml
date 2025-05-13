@@ -141,19 +141,19 @@ steps:
   - name: monitor-db-end
     image: postgres:14
     environment:
-    PGHOST:
-      from_secret: dbhost
-    PGUSER: postgres
-    PGPASSWORD:
-      from_secret: dbpassword
+      PGHOST:
+        from_secret: dbhost
+      PGUSER: postgres
+      PGPASSWORD:
+        from_secret: dbpassword
     commands:
-    - >
-      conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
-      echo "🔍 현재 DB 커넥션 수: $conn_count";
-      if [ "$conn_count" -gt 60 ]; then
-        echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
-        exit 1;
-      fi
+      - >
+        conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
+        echo "🔍 현재 DB 커넥션 수: $conn_count";
+        if [ "$conn_count" -gt 60 ]; then
+          echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
+          exit 1;
+        fi
  
 trigger:
   branch:
