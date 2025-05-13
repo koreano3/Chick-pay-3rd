@@ -147,12 +147,20 @@ steps:
       PGPASSWORD:
         from_secret: dbpassword
     commands:
-      - >
-        conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs);
-        echo "🔍 현재 DB 커넥션 수: $conn_count";
+      - echo "⏳ Locust 종료 후 안정화 대기 중... (60초)"
+      - sleep 60
+      - |
+        conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs)
+        echo "🧠 커넥션 수 = $conn_count"
+        if ! [[ "$conn_count" =~ ^[0-9]+$ ]]; then
+          echo "❌ conn_count가 숫자가 아님 → '$conn_count'"
+          exit 1
+        fi
         if [ "$conn_count" -gt 60 ]; then
-          echo "❌ DB 커넥션 수 초과 ($conn_count개) → 실패";
-          exit 1;
+          echo "❌ DB 커넥션 누수 가능성 있음 ($conn_count개)"
+          exit 1
+        else
+          echo "✅ DB 커넥션 정상 종료 ($conn_count개)"
         fi
  
 trigger:
