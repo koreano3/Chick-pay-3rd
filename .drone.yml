@@ -18,6 +18,9 @@ steps:
         - ${DRONE_COMMIT_SHA}
       dockerfile: dockerfile
       context: .
+    when:
+      branch:
+        - main
 
 
   # 2. ECS 서비스 업데이트 2
@@ -31,6 +34,9 @@ steps:
       region: ap-northeast-2
     commands:
       - aws ecs update-service --cluster ChickCluster --service ChickTask-service-DJANGO --force-new-deployment
+    when:
+      branch:
+        - main
 
   # 3. ZAP 자동화 스캔
   - name: zap-full-automation
@@ -87,46 +93,80 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
           fi
 
-  # 6. 부하 테스트
+#   # 6. 부하 테스트 + locust 결과 체크 
   - name: locust-load-test
     image: python:3.11
-    commands:
-      - pip install locust pandas
-      - locust --headless -f locustfile.py -u 200 -r 20 -t 3m --host https://chick-pay.com --csv=locust_result
-
-  # 7. CloudWatch 모니터링
-  - name: monitor-cloudwatch
-    image: amazon/aws-cli
-    commands:
-      - aws cloudwatch get-metric-statistics \
-        --namespace AWS/EC2 \
-        --metric-name CPUUtilization \
-        --dimensions Name=InstanceId,Value=i-0b2440e7ffbc23f5a \
-        --start-time $(date -u -d '-10 minutes' +%Y-%m-%dT%H:%M:%SZ) \
-        --end-time $(date -u +%Y-%m-%dT%H:%M:%SZ) \
-        --period 60 \
-        --statistics Average \
-        --region ap-northeast-2 > cpu_result.json
-      - python check_cpu.py
-
-  # 8. DB 커넥션 모니터링
-  - name: monitor-db
-    image: postgres:14
     environment:
-      PGHOST: zappdb-2.cn68okq6sw53.ap-northeast-2.rds.amazonaws.com
+      PGHOST: 
+        from_secret: dbhost
       PGUSER: postgres
-      PGPASSWORD: bemajor123!!
+      PGPASSWORD:
+        from_secret: dbpassword
     commands:
-      - psql -d postgres -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';"
+      - apt-get update && apt-get install -y postgresql-client
+      - pip install locust pandas pyotp
+      - |
+        echo "🌐 PGHOST=$PGHOST"
 
-  # 9. Locust 결과 체크
-  - name: check-locust-result
-    image: python:3.11
-    commands:
-      - pip install pandas
+        echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
+        ( 
+          export PGHOST="$PGHOST"
+          export PGUSER="$PGUSER"
+          export PGPASSWORD="$PGPASSWORD"
+          echo "🔍 DB 모니터링 시작됨!"
+          for i in $(seq 1 6); do
+            echo "⏱ DB 커넥션 체크 $i/6:"
+            psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
+            sleep 5
+          done
+        ) >> db_conn_log.txt 2>&1 &
+
+        echo "🧪 Locust 부하 테스트 시작"
+        locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host https://chick-pay.com --csv=locust_result 
+        
+        wait 
+        
+        echo "📤 DB 커넥션 로그 출력 ==============================="
+        cat db_conn_log.txt
       - python check_locust_result.py
 
+# # Drone UI에서 로그 확인하는 컨테이너 
+  - name: show-locust-csv
+    image: python:3.11
+    commands:
+    - pip install pandas
+    - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
+
+# # 부하 테스트 후 커넥션 누수 확인
+  - name: monitor-db-end
+    image: postgres:14
+    environment:
+      PGHOST:
+        from_secret: dbhost
+      PGUSER: postgres
+      PGPASSWORD:
+        from_secret: dbpassword
+    commands:
+      - echo "⏳ Locust 종료 후 안정화 대기 중... (60초)"
+      - sleep 60
+      - |
+        conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs)
+        echo "🔍 커넥션 수 = $conn_count"
+
+        if echo "$conn_count" | grep -qE '^[0-9]+$'; then
+          if [ "$conn_count" -gt 60 ]; then
+            echo "❌ DB 커넥션 누수 가능성 있음 ($conn_count개)"
+            exit 1
+          else
+            echo "✅ DB 커넥션 정상 종료 ($conn_count개)"
+          fi
+        else
+          echo "❌ conn_count가 숫자가 아님 → '$conn_count'"
+          exit 1
+        fi
+ 
 trigger:
   branch:
     - main
     - feat/drone
+    - feat/infra
