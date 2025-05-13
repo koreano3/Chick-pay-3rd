@@ -1,11 +1,9 @@
-import csv
 import random
 from locust import HttpUser, task, between
 
-# 이메일만 CSV에서 읽어오기
-with open("users.csv", newline='') as f:
-    reader = csv.DictReader(f)
-    USER_EMAILS = [row["email"] for row in reader]
+# 헤더 없이 이메일만 줄줄이 있는 users.csv 파일 읽기
+with open("users.csv", "r") as f:
+    USER_EMAILS = [line.strip().strip('"') for line in f if line.strip()]
 
 DEFAULT_PASSWORD = "Ab123456"
 
