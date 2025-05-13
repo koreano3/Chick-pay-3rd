@@ -20,7 +20,10 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (
     SimpleSpanProcessor,
     ConsoleSpanExporter,
+    BatchSpanProcessor,
 )
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.django import DjangoInstrumentor
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -40,6 +43,18 @@ trace.set_tracer_provider(provider)
 # Exporter 설정 (여기선 콘솔로 출력)
 span_processor = SimpleSpanProcessor(ConsoleSpanExporter())
 provider.add_span_processor(span_processor)
+
+# OTLP exporter 사용(Collector 컨테이너 기준 URL)
+span_exporter = OTLPSpanExporter(
+    endpoint="http://otel-collector:4318/v1/traces"
+)
+
+# Batch processor로 등록
+span_processor = BatchSpanProcessor(span_exporter)
+provider.add_span_processor(span_processor)
+
+# Django 자동 계측
+DjangoInstrumentor().instrument()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -110,6 +125,37 @@ CORS_ALLOWED_ORIGINS = [
     "https://chick-pay.com",
     "https://www.chick-pay.com",
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s [%(name)s] %(message)s',
+        },
+    },
+
+    'handlers': {
+        'transaction_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'transactions.log',  # Collector가 이 파일 감시
+            'formatter': 'standard',
+        },
+    },
+
+    'loggers': {
+        'transaction': {
+            'handlers': ['transaction_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+
+
 # Cross-Domain Misconfiguration 관련
 
 SECURE_BROWSER_XSS_FILTER = True
@@ -135,6 +181,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
+        'ATOMIC_REQUESTS': True  # 요청 단위 트랜잭션'
 
     }
 }
