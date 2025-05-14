@@ -175,7 +175,6 @@ class CashTransferAPIView(APIView):
                 # 💸 실제 송금 처리
                 sender.cash.withdraw(amount)
                 receiver.cash.deposit(amount)
-                raise Exception("일부러 실패")  # 테스트용
 
 
                 transfer = CashTransfer.objects.create(

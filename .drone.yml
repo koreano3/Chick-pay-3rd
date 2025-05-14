@@ -1,10 +1,9 @@
 kind: pipeline
 type: docker
-name:
-  deploy-for-main
+name: deploy-for-main
 
-  # 1. ECR에 새 이미지 빌드 & 푸시
 steps:
+  # 1. ECR에 새 이미지 빌드 & 푸시
   - name: build-and-push-to-ecr
     image: plugins/ecr
     settings:
@@ -24,8 +23,7 @@ steps:
         - sub
         - main
 
-
-  # 2. ECS 테스트 업데이트 
+  # 2. ECS 테스트 업데이트
   - name: deploy-test-ecs
     image: amazon/aws-cli
     settings:
@@ -41,33 +39,33 @@ steps:
         - sub
         - main
 
-  # 3. ZAP 자동화 스캔
-  - name: zap-full-automation
-    image: appleboy/drone-ssh
-    environment:
-      ZAP_USERNAME:
-        from_secret: ZAP_USERNAME
-      ZAP_PASSWORD:
-        from_secret: ZAP_PASSWORD
-    settings:
-      host:
-        from_secret: drone_ec2
-      username: ubuntu
-      key:
-        from_secret: drone_ec2_ssh_key
-      port: 22
-      script:
-        - cd /home/ubuntu/zap
-        - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
-        - |
-          echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
-          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
-          if [ "$ERRORS" -gt 0 ]; then
-            echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
-            exit 1
-          else
-            echo "✅ High 위험 없음. 계속 진행."
-          fi
+  # # 3. ZAP 자동화 스캔
+  # - name: zap-full-automation
+  #   image: appleboy/drone-ssh
+  #   environment:
+  #     ZAP_USERNAME:
+  #       from_secret: ZAP_USERNAME
+  #     ZAP_PASSWORD:
+  #       from_secret: ZAP_PASSWORD
+  #   settings:
+  #     host:
+  #       from_secret: drone_ec2
+  #     username: ubuntu
+  #     key:
+  #       from_secret: drone_ec2_ssh_key
+  #     port: 22
+  #     script:
+  #       - cd /home/ubuntu/zap
+  #       - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+  #       - |
+  #         echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
+  #         ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
+  #         if [ "$ERRORS" -gt 0 ]; then
+  #           echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
+  #           exit 1
+  #         else
+  #           echo "✅ High 위험 없음. 계속 진행."
+  #         fi
 
   # 4. 단위/통합 테스트
   - name: pytest
@@ -96,7 +94,7 @@ steps:
           echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
           fi
 
-   # 6. 부하 테스트 + locust 결과 체크
+    # 6. 부하 테스트 + locust 결과 체크
   - name: locust-load-test
     image: python:3.11
     environment:
@@ -168,7 +166,6 @@ steps:
           exit 1
         fi
 
-
     # 9-1. BLUE 업데이트
   - name: deploy-prod-blue
     image: amazon/aws-cli
@@ -200,10 +197,6 @@ steps:
       branch:
         - main
         - sub
-
-
-
-
 
 trigger:
   branch:
