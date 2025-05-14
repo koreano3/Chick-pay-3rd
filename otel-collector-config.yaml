@@ -12,5 +12,5 @@ exporters:
 service:
   pipelines:
     logs:
-      receivers: [] # filelog 제거
+      receivers: [filelog]
       exporters: [awscloudwatchlogs]
