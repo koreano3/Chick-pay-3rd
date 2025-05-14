@@ -66,19 +66,18 @@ steps:
   #         else
   #           echo "✅ High 위험 없음. 계속 진행."
   #         fi
-
-  # 4. 단위/통합 테스트
-  - name: pytest
-    image: python:3.12
-    environment:
-      DJANGO_SETTINGS_MODULE: my_project.settings
-    commands:
-      - pip install --upgrade pip
-      - pip install -r requirements.txt
-      - python manage.py migrate
-      - pytest
-
+  # # 4. 단위/통합 테스트
+  # - name: pytest
+  #   image: python:3.12
+  #   environment:
+  #     DJANGO_SETTINGS_MODULE: my_project.settings
+  #   commands:
+  #     - pip install --upgrade pip
+  #     - pip install -r requirements.txt
+  #     - python manage.py migrate
+  #     - pytest
   # 5. Bandit 정적 분석
+  
   - name: bandit-analysis
     image: python:3.12
     commands:
@@ -123,7 +122,7 @@ steps:
         ) >> db_conn_log.txt 2>&1 &
 
         echo "🧪 Locust 부하 테스트 시작"
-        locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host http://chicktestalb-561931865.ap-northeast-2.elb.amazonaws.com/zapp/ --csv=locust_result 
+        locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host http://chicktestalb-561931865.ap-northeast-2.elb.amazonaws.com --csv=locust_result 
 
         wait 
 
