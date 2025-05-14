@@ -76,8 +76,7 @@ steps:
       - pip install -r requirements.txt
       - python manage.py migrate
       - pytest
-  5. Bandit 정적 분석
-
+  # 5. Bandit 정적 분석
   - name: bandit-analysis
     image: python:3.12
     commands:
