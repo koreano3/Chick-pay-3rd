@@ -126,33 +126,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.chick-pay.com",
 ]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    'formatters': {
-        'standard': {
-            'format': '[%(asctime)s] %(levelname)s [%(name)s] %(message)s',
-        },
-    },
-
-    'handlers': {
-        'transaction_file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'transactions.log',  # Collector가 이 파일 감시
-            'formatter': 'standard',
-        },
-    },
-
-    'loggers': {
-        'transaction': {
-            'handlers': ['transaction_file'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
+LOGGING = {}
 
 
 
@@ -182,7 +156,6 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
         'ATOMIC_REQUESTS': True  # 요청 단위 트랜잭션'
-
     }
 }
 
