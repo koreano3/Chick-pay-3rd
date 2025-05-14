@@ -1,6 +1,7 @@
 # 임시테스트 ▽지워야함 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 
 # views_api.py
@@ -26,7 +27,7 @@ logger = logging.getLogger("transaction")
 
 @csrf_exempt
 def health_check(request):
-    return HttpResponse("ok")
+    return HttpResponse("OK", content_type="text/plain", status=200)
 
 class MainAPIView(APIView):
     def get(self, request):
@@ -174,6 +175,8 @@ class CashTransferAPIView(APIView):
                 # 💸 실제 송금 처리
                 sender.cash.withdraw(amount)
                 receiver.cash.deposit(amount)
+                raise Exception("일부러 실패")  # 테스트용
+
 
                 transfer = CashTransfer.objects.create(
                     sender=sender,
