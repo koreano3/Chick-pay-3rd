@@ -3,41 +3,41 @@ type: docker
 name: deploy-for-main
 
 steps:
-  # # 1. ECR에 새 이미지 빌드 & 푸시
-  # - name: build-and-push-to-ecr
-  #   image: plugins/ecr
-  #   settings:
-  #     repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
-  #     region: ap-northeast-2
-  #     access_key:
-  #       from_secret: aws_access_key_id
-  #     secret_key:
-  #       from_secret: aws_secret_access_key
-  #     tags:
-  #       - latest
-  #       - ${DRONE_COMMIT_SHA}
-  #     dockerfile: dockerfile
-  #     context: .
-  #   when:
-  #     branch:
-  #       - sub
-  #       - main
+  # 1. ECR에 새 이미지 빌드 & 푸시
+  - name: build-and-push-to-ecr
+    image: plugins/ecr
+    settings:
+      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+      region: ap-northeast-2
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+      dockerfile: dockerfile
+      context: .
+    when:
+      branch:
+        - sub
+        - main
 
-  # # 2. ECS 테스트 업데이트
-  # - name: deploy-test-ecs
-  #   image: amazon/aws-cli
-  #   settings:
-  #     access_key:
-  #       from_secret: aws_access_key_id
-  #     secret_key:
-  #       from_secret: aws_secret_access_key
-  #     region: ap-northeast-2
-  #   commands:
-  #     - aws ecs update-service --cluster ChickCluster --service ChickTask-service-test --force-new-deployment
-  #   when:
-  #     branch:
-  #       - sub
-  #       - main
+  # 2. ECS 테스트 업데이트
+  - name: deploy-test-ecs
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-test --force-new-deployment
+    when:
+      branch:
+        - sub
+        - main
 
   # # 3. ZAP 자동화 스캔
   # - name: zap-full-automation
