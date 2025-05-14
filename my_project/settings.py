@@ -156,7 +156,6 @@ DATABASES = {
         'HOST': os.environ.get('DB_HOST'),
         'PORT': os.environ.get('DB_PORT'),
         'ATOMIC_REQUESTS': True  # 요청 단위 트랜잭션'
-
     }
 }
 
