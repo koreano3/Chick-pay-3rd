@@ -1,72 +1,71 @@
 kind: pipeline
 type: docker
-name:
-  deploy-for-main
+name: deploy-for-main
 
-  # 1. ECR에 새 이미지 빌드 & 푸시
 steps:
-  - name: build-and-push-to-ecr
-    image: plugins/ecr
-    settings:
-      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
-      region: ap-northeast-2
-      access_key:
-        from_secret: aws_access_key_id
-      secret_key:
-        from_secret: aws_secret_access_key
-      tags:
-        - latest
-        - ${DRONE_COMMIT_SHA}
-      dockerfile: dockerfile
-      context: .
-    when:
-      branch:
-        - sub
-        - main
+  # # 1. ECR에 새 이미지 빌드 & 푸시
+  # - name: build-and-push-to-ecr
+  #   image: plugins/ecr
+  #   settings:
+  #     repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+  #     region: ap-northeast-2
+  #     access_key:
+  #       from_secret: aws_access_key_id
+  #     secret_key:
+  #       from_secret: aws_secret_access_key
+  #     tags:
+  #       - latest
+  #       - ${DRONE_COMMIT_SHA}
+  #     dockerfile: dockerfile
+  #     context: .
+  #   when:
+  #     branch:
+  #       - sub
+  #       - main
 
-  # 2. ECS 테스트 업데이트
-  - name: deploy-test-ecs
-    image: amazon/aws-cli
-    settings:
-      access_key:
-        from_secret: aws_access_key_id
-      secret_key:
-        from_secret: aws_secret_access_key
-      region: ap-northeast-2
-    commands:
-      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-test --force-new-deployment
-    when:
-      branch:
-        - sub
-        - main
+  # # 2. ECS 테스트 업데이트
+  # - name: deploy-test-ecs
+  #   image: amazon/aws-cli
+  #   settings:
+  #     access_key:
+  #       from_secret: aws_access_key_id
+  #     secret_key:
+  #       from_secret: aws_secret_access_key
+  #     region: ap-northeast-2
+  #   commands:
+  #     - aws ecs update-service --cluster ChickCluster --service ChickTask-service-test --force-new-deployment
+  #   when:
+  #     branch:
+  #       - sub
+  #       - main
 
-  # 3. ZAP 자동화 스캔
-  - name: zap-full-automation
-    image: appleboy/drone-ssh
-    environment:
-      ZAP_USERNAME:
-        from_secret: ZAP_USERNAME
-      ZAP_PASSWORD:
-        from_secret: ZAP_PASSWORD
-    settings:
-      host:
-        from_secret: drone_ec2
-      username: ubuntu
-      key:
-        from_secret: drone_ec2_ssh_key
-      port: 22
-      script:
-        - cd /home/ubuntu/zap
-        - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
-        - |
-          echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
-          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
-          if [ "$ERRORS" -gt 0 ]; then
-            echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
-            exit 1
-          else
-            echo "✅ High 위험 없음. 계속 진행."
-          fi
+  # # 3. ZAP 자동화 스캔
+  # - name: zap-full-automation
+  #   image: appleboy/drone-ssh
+  #   environment:
+  #     ZAP_USERNAME:
+  #       from_secret: ZAP_USERNAME
+  #     ZAP_PASSWORD:
+  #       from_secret: ZAP_PASSWORD
+  #   settings:
+  #     host:
+  #       from_secret: drone_ec2
+  #     username: ubuntu
+  #     key:
+  #       from_secret: drone_ec2_ssh_key
+  #     port: 22
+  #     script:
+  #       - cd /home/ubuntu/zap
+  #       - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+  #       - |
+  #         echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
+  #         ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
+  #         if [ "$ERRORS" -gt 0 ]; then
+  #           echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
+  #           exit 1
+  #         else
+  #           echo "✅ High 위험 없음. 계속 진행."
+  #         fi
 
   # 4. 단위/통합 테스트
   - name: pytest
