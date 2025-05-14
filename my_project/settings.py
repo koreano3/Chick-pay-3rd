@@ -24,17 +24,19 @@ from opentelemetry.sdk.trace.export import (
 )
 from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
 from opentelemetry.instrumentation.django import DjangoInstrumentor
+
 from dotenv import load_dotenv
 from pathlib import Path
+from core.secrets import load_aws_secret
+
+# load_aws_secret("chickpay/prod/credentials")
+load_aws_secret("koreano3")
+
 
 # 자원 메타 정보 설정
 resource = Resource(attributes={
     "service.name": "zapp-backend",
 })
-
-from core.secrets import load_aws_secret
-
-load_aws_secret("chickpay/prod/credentials")
 
 # Tracer 프로바이더 설정
 provider = TracerProvider(resource=resource)
@@ -55,6 +57,7 @@ provider.add_span_processor(span_processor)
 
 # Django 자동 계측
 DjangoInstrumentor().instrument()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -126,7 +129,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.chick-pay.com",
 ]
 
-LOGGING = {}
+LOGGING = {
+}
   
 
 
@@ -229,7 +233,7 @@ REST_FRAMEWORK = {
 }
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://https://d13g1etgrsjc85.cloudfront.net",
+    "https://d13g1etgrsjc85.cloudfront.net",
     'https://chick-pay.com',
     'https://www.chick-pay.com',
 ]
@@ -286,7 +290,7 @@ else:
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
         "staticfiles": {
-            "BACKEND": "storages.backends.s3bSo3.S3StaticStorage",
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
         },
     }
 
