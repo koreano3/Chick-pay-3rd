@@ -1,6 +1,7 @@
 # 임시테스트 ▽지워야함 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 
 # views_api.py
@@ -23,7 +24,7 @@ import pyotp
 
 @csrf_exempt
 def health_check(request):
-    return HttpResponse("ok")
+    return HttpResponse("OK", content_type="text/plain", status=200)
 
 class MainAPIView(APIView):
     def get(self, request):
