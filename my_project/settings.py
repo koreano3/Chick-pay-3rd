@@ -29,8 +29,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 from core.secrets import load_aws_secret
 
-load_aws_secret("chickpay/prod/credentials")
-# load_aws_secret("koreano3")
+# load_aws_secret("chickpay/prod/credentials")
+load_aws_secret("koreano3")
 
 
 # 자원 메타 정보 설정
