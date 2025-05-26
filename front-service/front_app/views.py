@@ -9,12 +9,15 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import AccessMixin
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 import pyotp , json ,qrcode , base64
 from io import BytesIO
+import os
+import requests
 
+USER_SERVICE_URL = os.getenv('USER_SERVICE_URL', 'http://user-service:8001')
 
 @csrf_exempt
 def health_check(request):
@@ -219,3 +222,25 @@ def bandit_report_view(request):
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
     return render(request, "bandit_report.html", context)
+
+def index(request):
+    return render(request, 'index.html')
+
+def get_users(request):
+    try:
+        response = requests.get(f"{USER_SERVICE_URL}/api/users/")
+        return JsonResponse(response.json(), safe=False)
+    except requests.exceptions.RequestException as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+def create_user(request):
+    if request.method == 'POST':
+        try:
+            response = requests.post(
+                f"{USER_SERVICE_URL}/api/users/",
+                json=request.POST.dict()
+            )
+            return JsonResponse(response.json(), status=response.status_code)
+        except requests.exceptions.RequestException as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
