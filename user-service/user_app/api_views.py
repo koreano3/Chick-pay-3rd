@@ -1,6 +1,3 @@
-from django.shortcuts import render
-
-# Create your views here.
 # 임시테스트 ▽지워야함 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -18,7 +15,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.db import transaction , IntegrityError
 from django.views.decorators.csrf import csrf_exempt
-from user_app.models import CustomUser
+from user_app.models import CustomUser, Cash
 from user_app.serializers import (
     LoginSerializer,RegisterSerializer, MyPageSerializer,UnregisterPasswordCheckSerializer
 )
@@ -91,6 +88,8 @@ class PasswordChangeAPIView(APIView):
 
         return Response({"message": "비밀번호가 성공적으로 변경되었습니다."}, status=status.HTTP_200_OK)
 
+
+
 class OTPVerifyAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -108,6 +107,9 @@ class OTPVerifyAPIView(APIView):
             return Response({"message": "인증 성공"}, status=200)
         else:
             return Response({"error": "OTP 인증 실패"}, status=400)
+
+
+
 
 class UnregisterAPIView(APIView):
     permission_classes = [IsAuthenticated]
