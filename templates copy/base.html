@@ -1,0 +1,123 @@
+<!-- templates/base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chick pay{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 공통 CSS, 스크립트 등 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "chick-yellow": "#FFDE59",
+                        "chick-orange": "#FFC93C",
+                        "chick-brown": "#B85C38",
+                        "chick-light": "#FFF9E5",
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
+
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+
+</head>
+
+<body class="bg-chick-light text-gray-800 leading-relaxed min-h-screen flex flex-col">
+    <!-- 공유할 헤더 내용 -->
+    <header class="bg-chick-yellow py-5 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'main' %}" class="flex items-center gap-3">
+                    <img src="{% static 'images/image.png' %}" alt="Chick Pay" class="w-10 h-10">
+
+                    <h1 class="text-2xl font-bold text-chick-brown">Chick Pay</h1>
+                </a>
+
+                <nav class="hidden md:flex items-center gap-6">
+                    <a href="{% url 'account' %}" class="text-chick-brown font-medium hover:underline">계좌조회</a>
+                    <a href="{% url 'cash-transfer' %}" class="text-chick-brown font-medium hover:underline">송금하기</a>
+                    <a href="{% url 'cash-deposit' %}" class="text-chick-brown font-medium hover:underline">입금하기</a>
+                    <a href="{% url 'cash-withdraw' %}" class="text-chick-brown font-medium hover:underline">출금하기</a>
+                    <a href="{% url 'mypage' %}" class="text-chick-brown font-medium hover:underline">마이페이지</a>
+                    {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}" class="inline flex items-center m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="text-chick-brown font-medium hover:underline">
+                            로그아웃
+                        </button>
+                    </form>
+                    {% endif %}
+
+
+                </nav>
+                <button class="md:hidden text-2xl">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10 flex-grow flex items-center justify-center">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <footer class="bg-chick-yellow py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+                <div class="flex items-center gap-3 mb-6 md:mb-0">
+                    <img src="{% static 'images/image.png' %}" class="w-11 h-11">
+                    <h1 class="text-2xl font-bold text-chick-brown">Chick Pay</h1>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#" class="text-chick-brown hover:underline">서비스 소개</a>
+                    <a href="#" class="text-chick-brown hover:underline">이용약관</a>
+                    <a href="#" class="text-chick-brown hover:underline">개인정보처리방침</a>
+                    <a href="#" class="text-chick-brown hover:underline">고객센터</a>
+                    <a href="#" class="text-chick-brown hover:underline">채용정보</a>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <p>&copy; 2025 Chick Pay. 모든 권리 보유.
+                    <img src="{% static 'images/image.png' %}" class="inline w-5 h-5 ml-1">
+                </p>
+
+            </div>
+        </div>
+    </footer>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>
