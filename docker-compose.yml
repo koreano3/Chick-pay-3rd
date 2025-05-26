@@ -1,4 +1,4 @@
-version: "3.8"
+# version: "3.8"
 
 services:
   user-service:
@@ -27,6 +27,7 @@ services:
       - USER_SERVICE_URL=http://user-service:8001
     depends_on:
       - user-service
+      - transaction-service
     networks:
       - backend
 
@@ -35,17 +36,27 @@ services:
   #   build: ./transaction-service
   #   ports:
   #     - "8002:8002"
+  #   volumes:
+  #     - ./transaction-service:/app
   #   environment:
-  #     - DATABASE_URL=postgresql://test:test@user-db:5432/user_db
-  #     - DATABASE_HOST=user-db
-  #     - DATABASE_PORT=5432
-  #     - DATABASE_NAME=user_db
-  #     - DATABASE_USER=test
-  #     - DATABASE_PASSWORD=test
-  #   depends_on:
-  #     - user-db
+  #     - USER_SERVICE_URL=http://localhost:8002
+      
+  #   # depends_on:
+  #   #   - user_db
   #   networks:
   #     - backend
+
+  transaction-service:
+    build: ./transaction-service
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./transaction-service:/app
+    environment:
+      - USER_SERVICE_URL=http://user-service:8001
+    networks:
+      - backend
+
 
   user-db:
     image: postgres:13
