@@ -19,7 +19,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     # 모든 API 및 웹 라우팅을 transaction_app.urls에서 관리
-    path('', include('transaction_app.urls')),
+    path('zapp/', include('transaction_app.urls')),
 ]
