@@ -11,27 +11,81 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
+import boto3
+import json
+from botocore.exceptions import ClientError
+from pathlib import Path
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
+
+# Aws secret HJ code copy
+def load_aws_secret(secret_name, region_name="ap-northeast-2"):
+    """
+    AWS Secrets Manager에서 비밀을 가져와 환경 변수로 설정합니다.
+
+    :param secret_name: 저장된 secret 이름 (예: 'chickpay/prod/credentials')
+    :param region_name: AWS 리전 (기본: ap-northeast-2 = 서울)
+    """
+    client = boto3.client("secretsmanager", region_name=region_name)
+
+    try:
+        response = client.get_secret_value(SecretId=secret_name)
+        secret = json.loads(response['SecretString'])
+
+        # 환경 변수로 설정
+        for key, value in secret.items():
+            os.environ[key] = value
+
+    except ClientError as e:
+        print(f"[ERROR] Failed to load secrets: {e}")
+        raise e
+
+load_aws_secret("koreano3")
+
+# =======================
+# 시크릿 로드 (운영 환경에서만)
+# =======================
+# SECRET_NAME = os.getenv("AWS_SECRET_NAME", "koreano3")
+# if os.getenv("USE_AWS_SECRETS", "false") == "true":
+#     load_aws_secret(SECRET_NAME)
+
+# =======================
+# 환경변수/시크릿에서 값 읽기 함수
+# =======================
+def get_config(key, default=None):
+    return os.getenv(key, default)
+
+# =======================
+# Django 기본 설정
+# =======================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-abcd-abcd-abcd-1234567890'
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+SECRET_KEY = get_config("DJANGO_SECRET_KEY", "unsafe-secret-key")
+DEBUG = get_config('DJANGO_DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = get_config('DJANGO_ALLOWED_HOSTS', '*').split(',')
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# Database
+# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / '.env')
 
-ALLOWED_HOSTS = ['*']
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'USER': os.environ.get('DB_USER'),
+        'NAME': os.environ.get('DB_NAME'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        'ATOMIC_REQUESTS': True  # 요청 단위 트랜잭션'
 
-
-# Application definition
-
+    }
+}
 AUTH_USER_MODEL = 'user_app.CustomUser'
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -40,58 +94,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'user_app',
     'corsheaders',
 ]
 
-
-# CORS 설정
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
-# CSRF 설정
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-]
-CSRF_COOKIE_SAMESITE = None
-SESSION_COOKIE_SAMESITE = None
-CSRF_COOKIE_HTTPONLY = False
-CSRF_USE_SESSIONS = False
-CSRF_COOKIE_SECURE = False
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # CORS 미들웨어를 CommonMiddleware 전에 배치
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -119,81 +131,122 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'user_service.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-if DEBUG:
-    # 개발 환경: SQLite 사용
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    # 운영 환경: PostgreSQL 사용
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DATABASE_NAME', 'user_db'),
-            'USER': os.getenv('DATABASE_USER', 'test'),
-            'PASSWORD': os.getenv('DATABASE_PASSWORD', 'test'),
-            'HOST': os.getenv('DATABASE_HOST', 'user-db'),
-            'PORT': os.getenv('DATABASE_PORT', '5432'),
-        }
-    }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+# =======================
+# CORS/CSRF 설정
+# =======================
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
 ]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://localhost:8001",
+    "http://127.0.0.1:8001",
+]
+CSRF_COOKIE_SAMESITE = "None"
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
+SESSION_COOKIE_AGE = 1800000000
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_DOMAIN = None
 
+
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = None
+
+
+
+
+# =======================
+# 기타 Django 설정
+# =======================
 LANGUAGE_CODE = 'ko-kr'
-
 TIME_ZONE = 'Asia/Seoul'
-
 USE_I18N = True
-
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST Framework 설정
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # 로그인 API는 인증 없이 접근 가능하도록
+        'rest_framework.permissions.AllowAny',
     ],
 }
+
+
+
+
+
+# AWS 설정
+# AWS 인증 정보 (환경변수로도 설정 가능)
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = 'd13g1etgrsjc85.cloudfront.net'
+
+# 개발환경에서는 반드시 True
+DEBUG = True
+
+# 디버그 설정에 따른 static url 변경
+if DEBUG:
+    STATIC_URL = "/static/"
+else:
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+
+# 디버그 설정에 따른 로컬과 ec2 환경 스태틱파일 경로 변경
+if DEBUG:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        },
+    }
+
