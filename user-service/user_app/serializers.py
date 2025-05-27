@@ -134,8 +134,6 @@ class PasswordChangeSerializer(serializers.Serializer):
         user.save()
         return user
 
-
-
 class UnregisterPasswordCheckSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
