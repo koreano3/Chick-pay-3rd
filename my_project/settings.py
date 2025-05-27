@@ -14,16 +14,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os 
 
 from pathlib import Path
-from opentelemetry import trace
-from opentelemetry.sdk.resources import Resource
-from opentelemetry.sdk.trace import TracerProvider
-from opentelemetry.sdk.trace.export import (
-    SimpleSpanProcessor,
-    ConsoleSpanExporter,
-    BatchSpanProcessor,
-)
-from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
-from opentelemetry.instrumentation.django import DjangoInstrumentor
+# from opentelemetry import trace
+# from opentelemetry.sdk.resources import Resource
+# from opentelemetry.sdk.trace import TracerProvider
+# from opentelemetry.sdk.trace.export import (
+#     SimpleSpanProcessor,
+#     ConsoleSpanExporter,
+#     BatchSpanProcessor,
+# )
+# from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+# from opentelemetry.instrumentation.django import DjangoInstrumentor
 
 from dotenv import load_dotenv
 from pathlib import Path
