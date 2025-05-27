@@ -63,7 +63,7 @@
       const memo = memoInput.value;
 
       try {
-        const response = await fetch("{% url 'api-cash-withdraw' %}", {
+        const response = await fetch("http://localhost:8002/zapp/api/cash/withdraw/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

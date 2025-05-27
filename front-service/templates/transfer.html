@@ -89,7 +89,7 @@
 
 
             try {
-                const response = await fetch("{% url 'api-cash-transfer' %}", {
+                const response = await fetch("http://localhost:8002/zapp/api/cash/transfer/", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
