@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        echo '✅ GitHub webhook 트리거 성공!'
+        echo '✅ GitHub webhook 트리거 성공!!'
       }
     }
   }
