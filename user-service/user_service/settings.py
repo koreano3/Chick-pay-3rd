@@ -11,67 +11,20 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-import sys
 from pathlib import Path
-import boto3
-import json
-from botocore.exceptions import ClientError
-from pathlib import Path
-from dotenv import load_dotenv
+from datetime import timedelta
 
-
-
-
-# Aws secret HJ code copy
-def load_aws_secret(secret_name, region_name="ap-northeast-2"):
-    """
-    AWS Secrets Manager에서 비밀을 가져와 환경 변수로 설정합니다.
-
-    :param secret_name: 저장된 secret 이름 (예: 'chickpay/prod/credentials')
-    :param region_name: AWS 리전 (기본: ap-northeast-2 = 서울)
-    """
-    client = boto3.client("secretsmanager", region_name=region_name)
-
-    try:
-        response = client.get_secret_value(SecretId=secret_name)
-        secret = json.loads(response['SecretString'])
-
-        # 환경 변수로 설정
-        for key, value in secret.items():
-            os.environ[key] = value
-
-    except ClientError as e:
-        print(f"[ERROR] Failed to load secrets: {e}")
-        raise e
-
-load_aws_secret("koreano3")
-
-# =======================
-# 시크릿 로드 (운영 환경에서만)
-# =======================
-# SECRET_NAME = os.getenv("AWS_SECRET_NAME", "koreano3")
-# if os.getenv("USE_AWS_SECRETS", "false") == "true":
-#     load_aws_secret(SECRET_NAME)
-
-# =======================
-# 환경변수/시크릿에서 값 읽기 함수
-# =======================
-def get_config(key, default=None):
-    return os.getenv(key, default)
-
-# =======================
-# Django 기본 설정
-# =======================
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-abcd-abcd-abcd-1234567890'
+SECRET_KEY = 'django-insecure-)0^_%r1txxl8b7#tc3wun@r428kc8^za)+jj2%1tjw8cmyzz10'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'user_app.CustomUser'
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -87,26 +41,63 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.humanize',
     'rest_framework',
+    'rest_framework_simplejwt',
     'user_app',
     'corsheaders',
-
 ]
 
 
-#TODO 개발용입니다 운영용에선 필히 삭제!! delete
-CORS_ALLOW_ALL_ORIGINS = True  # 개발용(운영에서는 도메인 제한 권장)
+# CORS 설정
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# CSRF 설정
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+]
+CSRF_COOKIE_SAMESITE = None
+CSRF_COOKIE_HTTPONLY = False
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SECURE = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',  # 세션 미들웨어 추가
+    'corsheaders.middleware.CorsMiddleware',  # CORS 미들웨어를 CommonMiddleware 전에 배치
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'user_service.urls'
@@ -133,16 +124,26 @@ WSGI_APPLICATION = 'user_service.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'user_db'),
-        'USER': os.getenv('DATABASE_USER', 'test'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'test'),
-        'HOST': os.getenv('DATABASE_HOST', 'user-db'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+if DEBUG:
+    # 개발 환경: SQLite 사용
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # 운영 환경: PostgreSQL 사용
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME', 'user_db'),
+            'USER': os.getenv('DATABASE_USER', 'test'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD', 'test'),
+            'HOST': os.getenv('DATABASE_HOST', 'user-db'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
+        }
+    }
 
 
 # Password validation
@@ -168,8 +169,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'ko-kr'
+
 TIME_ZONE = 'Asia/Seoul'
+
 USE_I18N = True
+
 USE_TZ = True
 
 
@@ -177,8 +181,35 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# REST Framework 설정
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+
+}
+# JWT 설정
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'email',
+    'USER_ID_CLAIM': 'email',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+}

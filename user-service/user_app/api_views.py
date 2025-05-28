@@ -1,14 +1,14 @@
 # 임시테스트 ▽지워야함 
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
 # views_api.py
 from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from django.shortcuts import redirect
@@ -22,6 +22,29 @@ from user_app.serializers import (
 
 import pyotp
 import logging
+from rest_framework_simplejwt.tokens import RefreshToken
+
+
+class CookieLoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        user = authenticate(request, username=email, password=password)  # 또는 email=email
+        if user is not None:
+            refresh = RefreshToken.for_user(user)
+            request.session['otp_verified'] = False  # ✅ 세션에 OTP 상태 유지
+
+            response = JsonResponse({'message': '로그인 성공'})
+            response.set_cookie('access_token', str(refresh.access_token), httponly=True, secure=True, samesite='Lax', max_age=3600)
+            response.set_cookie('refresh_token', str(refresh), httponly=True, secure=True, samesite='Lax', max_age=7*24*3600)
+            return response
+        else:
+            return JsonResponse({'error': '이메일 또는 비밀번호가 틀렸습니다'}, status=401)
+
+
 logger = logging.getLogger("transaction")
 
 @csrf_exempt
@@ -33,6 +56,8 @@ class MainAPIView(APIView):
         return Response({"message": "Welcome to the API main endpoint."})
 
 class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         try:
@@ -40,23 +65,35 @@ class RegisterAPIView(APIView):
                 with transaction.atomic():  # 💥 여기!
                     user = serializer.save()
                     Cash.objects.create(user=user, balance=0)
-                return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
+                    # 회원가입 성공 시 JWT 토큰 발급
+                    refresh = RefreshToken.for_user(user)
+                    return Response({
+                        "message": "Registration successful",
+                        "access_token": str(refresh.access_token),
+                        "refresh_token": str(refresh)
+                    }, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         except IntegrityError:
             return Response({"error": "이미 존재하는 이메일입니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-class LoginAPIView(APIView):
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
+# class LoginAPIView(APIView):
+#     permission_classes = [AllowAny]
+
+#     def post(self, request):
+#         serializer = LoginSerializer(data=request.data)
         
-        if serializer.is_valid():
-            user = serializer.validated_data['user']
-            login(request, user)
-            request.session['otp_verified'] = False  # 로그인하면 otp 인증은 다시 해야됨
-            return Response({"message": "로그인 성공!"}, status=200)
+#         if serializer.is_valid():
+#             user = serializer.validated_data['user']
+#             refresh = RefreshToken.for_user(user)
+#             request.session['otp_verified'] = False  # OTP 인증 상태는 세션에 유지
+            
+#             return Response({
+#                 'message': '로그인 성공!',
+#                 'access_token': str(refresh.access_token),
+#                 'refresh_token': str(refresh),
+#             }, status=200)
         
-        return Response(serializer.errors, status=400)
+#         return Response(serializer.errors, status=400)
         
 class MyPageAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -103,11 +140,18 @@ class OTPVerifyAPIView(APIView):
         totp = pyotp.TOTP(user.otp_secret)
 
         if totp.verify(otp_code):
-            request.session['otp_verified'] = True  # ✅ OTP 인증 성공했으면 True로 변경
-            return Response({"message": "인증 성공"}, status=200)
+            # OTP 인증 성공 시 새로운 JWT 토큰 발급
+            refresh = RefreshToken.for_user(user)
+            # OTP 인증 여부를 토큰에 포함
+            refresh['otp_verified'] = True
+            
+            return Response({
+                "message": "인증 성공",
+                "access_token": str(refresh.access_token),
+                "refresh_token": str(refresh)
+            }, status=200)
         else:
             return Response({"error": "OTP 인증 실패"}, status=400)
-
 
 
 
