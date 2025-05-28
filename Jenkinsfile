@@ -2,13 +2,13 @@ pipeline {
   agent any
 
   triggers {
-    githubPush()
+    githubPush()  // ⬅️ 이게 꼭 필요!
   }
 
   stages {
-    stage('Build') {
+    stage('Test') {
       steps {
-        echo 'GitHub 푸시로 트리거된 빌드!'
+        echo '✅ GitHub webhook 트리거 성공!'
       }
     }
   }
