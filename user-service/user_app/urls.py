@@ -3,16 +3,18 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from . import api_views
+from .views import RegisterAPIView
+from .views import MyPageAPIView
 
 urlpatterns = [
     # API 엔드포인트
-    path('api/register/', api_views.RegisterAPIView.as_view(), name='register'),
-    path('api/login/', api_views.CookieLoginView.as_view(), name='login'),
-    path('api/mypage/', api_views.MyPageAPIView.as_view(), name='mypage'),
-    path('api/password-change/', api_views.PasswordChangeAPIView.as_view(), name='password-change'),
-    path('api/otp/', api_views.OTPVerifyAPIView.as_view(), name='otp'),
-    path('api/unregister/', api_views.UnregisterAPIView.as_view(), name='unregister'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/register/', RegisterAPIView.as_view(), name='register'),
+    # path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    # path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/mypage/', MyPageAPIView.as_view(), name='api-mypage'),
+    path('api/user/me/', MyPageAPIView.as_view(), name='user-info'),
+    # path('api/change-password/', PasswordChangeAPIView.as_view(), name='api-change-password'),
+    # path('api/unregister/', UnregisterAPIView.as_view(), name='api-unregister'),
+    # path('api/otp/verify/', OTPVerifyAPIView.as_view(), name='api-otp-verify')
+
 ] 

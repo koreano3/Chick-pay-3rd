@@ -1,6 +1,7 @@
 # urls.py
 from django.urls import path
 from .views import (
+    IndexView,
     MainTemplateView,
     RegisterTemplateView,
     LoginTemplateView,
@@ -19,7 +20,6 @@ from .views import (
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    # Template (HTML) views
     path('', MainTemplateView.as_view(), name='main'),
     path('register/', RegisterTemplateView.as_view(), name='register'),
     path('login/', LoginTemplateView.as_view(), name='login'),
