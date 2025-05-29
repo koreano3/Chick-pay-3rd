@@ -21,19 +21,31 @@ data "terraform_remote_state" "vpc" {
 
 # ✅ EKS 클러스터 생성
 module "eks" {
-  source          = "terraform-aws-modules/eks/aws"
-  version         = "~> 20.0"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.0"
 
-  cluster_name    = var.cluster_name         # eks-infra
-  cluster_version = var.cluster_version      # 1.29
+  cluster_name    = var.cluster_name
+  cluster_version = var.cluster_version
 
-  cluster_endpoint_public_access       = true     # 퍼블릭 ON
-  cluster_endpoint_private_access      = true     # 프라이빗도 ON
+  cluster_endpoint_public_access  = true
+  cluster_endpoint_private_access = true
 
   vpc_id     = data.terraform_remote_state.vpc.outputs.vpc_id
   subnet_ids = data.terraform_remote_state.vpc.outputs.public_subnet_ids
 
-  enable_irsa = true  # OIDC IRSA 활성화 → ArgoCD, Helm 연동용
+  enable_irsa = true
+
+  # ✅ 정확한 속성 이름
+  # manage_aws_auth_configmap = true
+
+  # aws_auth_users = [
+  #   {
+  #     userarn  = "arn:aws:iam::297195401389:user/eomsigi"
+  #     username = "eomsigi"
+  #     groups   = ["system:masters"]
+  #   }
+  # ]
+
 
   eks_managed_node_groups = {
     cicd-nodes = {
@@ -48,4 +60,8 @@ module "eks" {
     Name    = var.cluster_name
     Purpose = "cicd-cluster"
   }
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_name
 }
