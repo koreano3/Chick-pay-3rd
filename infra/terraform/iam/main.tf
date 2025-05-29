@@ -34,7 +34,7 @@ data "terraform_remote_state" "s3" {
 }
 
 
-# Velero용 IAM Policy
+# Velero용 IAM Policy! 
 resource "aws_iam_policy" "velero_policy" {
   name        = "velero-s3-kms-access-policy"
   description = "Policy for Velero to access S3 and decrypt with KMS"
