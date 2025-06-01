@@ -212,13 +212,15 @@
 
             const password = document.querySelector('#password').value;
             const csrftoken = getCookie('csrftoken');
+            const access = localStorage.getItem('access_token');
 
             try {
-                const response = await fetch("{% url 'api-unregister' %}", {
+                const response = await fetch('http://localhost:8001/zapp/api/unregister/', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': csrftoken,
+                        'Authorization': `Bearer ${access}`
                     },
                     body: JSON.stringify({ password: password })
                 });

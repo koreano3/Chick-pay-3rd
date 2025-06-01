@@ -92,7 +92,7 @@
             <p class="text-gray-700 mb-6 text-center">아래 QR 코드를 스캔해서 Google Authenticator에 등록하세요.</p>
 
             <div class="flex justify-center mb-4">
-                <img src="{{ qr_code_url }}" alt="QR Code"
+                <img src="http://localhost:8001/api/otp/qrcode/" alt="QR Code"
                     class="w-56 h-56 border border-chick-yellow shadow-md rounded-lg">
             </div>
 
@@ -181,6 +181,7 @@
                             headers: {
                                 'Content-Type': 'application/json',
                                 'X-CSRFToken': csrftoken,
+                                'Authorization': `Bearer ${access}`,
                             },
                             body: JSON.stringify({
                                 otp_code: otpCode

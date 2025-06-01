@@ -131,35 +131,33 @@ class MyPageSerializer(serializers.ModelSerializer):
 # #         fields = ['name', 'user', 'email', 'balance', 'created_at', 'updated_at']
 # #         read_only_fields = ['nane' ,'user', 'email', 'balance', 'created_at', 'updated_at']
 
-# # 🔐 비밀번호 변경 Serializer
-# class PasswordChangeSerializer(serializers.Serializer):
-#     old_password = serializers.CharField(write_only=True)
-#     new_password = serializers.CharField(write_only=True)
+# 🔐 비밀번호 변경 Serializer
+class PasswordChangeSerializer(serializers.Serializer):
+    old_password = serializers.CharField(write_only=True)
+    new_password = serializers.CharField(write_only=True)
 
-#     def validate_new_password(self, value):
-#         password_validation.validate_password(value)
-#         return value
+    def validate_new_password(self, value):
+        password_validation.validate_password(value)
+        return value
 
-#     def validate(self, data):
-#         user = self.context['request'].user
-#         if not user.check_password(data['old_password']):
-#             raise serializers.ValidationError({'old_password': '기존 비밀번호가 틀렸습니다.'})
-#         return data
+    def validate(self, data):
+        user = self.context['request'].user
+        if not user.check_password(data['old_password']):
+            raise serializers.ValidationError({'old_password': '기존 비밀번호가 틀렸습니다.'})
+        return data
 
-#     def save(self, **kwargs):
-#         user = self.context['request'].user
-#         user.set_password(self.validated_data['new_password'])
-#         user.save()
-#         return user
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['new_password'])
+        user.save()
+        return user
 
+class UnregisterPasswordCheckSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
 
-
-# class UnregisterPasswordCheckSerializer(serializers.Serializer):
-#     password = serializers.CharField(write_only=True)
-
-#     def validate_password(self, value):
-#         user = self.context['request'].user
-#         if not user.check_password(value):
-#             raise serializers.ValidationError("비밀번호가 일치하지 않습니다.")
-#         return value
+    def validate_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("비밀번호가 일치하지 않습니다.")
+        return value
 

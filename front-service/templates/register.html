@@ -102,17 +102,19 @@
 
                 if (response.ok) {
                     // 성공 시 JSON 응답이면 읽고, 아니면 바로 이동
-                    if (contentType && contentType.includes("application/json")) {
-                        const result = await response.json();
-                        // JWT 토큰 저장
-                        localStorage.setItem('access_token', result.access_token);
-                        localStorage.setItem('refresh_token', result.refresh_token);
-                        alert("✅ 회원가입 성공! OTP 인증 페이지로 이동합니다.");
-                        window.location.href = "{% url 'otp-setup' %}";
-                    } else {
-                        alert("✅ 회원가입 성공! 로그인 페이지로 이동합니다.");
-                        window.location.href = "{% url 'login' %}";
-                    }
+                    // if (contentType && contentType.includes("application/json")) {
+                    //     const result = await response.json();
+                    //     // JWT 토큰 저장
+                    //     localStorage.setItem('access_token', result.access_token);
+                    //     localStorage.setItem('refresh_token', result.refresh_token);
+                    //     alert("✅ 회원가입 성공! OTP 인증 페이지로 이동합니다.");
+                    //     window.location.href = "{% url 'otp-setup' %}";
+                    // } else {
+                    //     alert("✅ 회원가입 성공! 로그인 페이지로 이동합니다.");
+                    //     window.location.href = "{% url 'login' %}";
+                    // }
+                    alert("✅ 회원가입 성공! 로그인 페이지로 이동합니다.");
+                    window.location.href = "{% url 'login' %}";
                 } else {
                     // 에러 응답 처리 (json 또는 html)
                     let errorMessage = "에러가 발생했습니다.";

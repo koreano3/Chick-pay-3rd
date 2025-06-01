@@ -36,6 +36,8 @@
 
 {% block scripts %}
 <script>
+
+
     document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById("login-form");
 
@@ -64,7 +66,7 @@
 
                 if (response.ok) {
                     // JWT 토큰 저장
-                    localStorage.setItem('access', result.access);
+                    localStorage.setItem('access_toekn', result.access);
                     localStorage.setItem('refresh_token', result.refresh);
                     alert("👍로그인 성공!");
                     window.location.href = "{% url 'otp-setup' %}";

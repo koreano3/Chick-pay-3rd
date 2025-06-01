@@ -119,11 +119,12 @@
         };
 
         try {
-            const response = await fetch('http://localhost:8001/zapp/api/user/me/', {
+            const response = await fetch('http://localhost:8001/zapp/api/change-password/', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "X-CSRFToken": getCookie("csrftoken"),
+                    "Authorization": `Bearer ${access}`,
                 },
                 body: JSON.stringify(payload),
             });
@@ -159,7 +160,7 @@
         return cookieValue;
     }
 
-    const access = localStorage.getItem('access');
+    const access = localStorage.getItem('access_token');
     if (access) {
         fetch('http://localhost:8001/zapp/api/mypage/', {
             headers: { 'Authorization': `Bearer ${access}` }
