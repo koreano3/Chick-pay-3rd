@@ -23,7 +23,7 @@ output "cluster_certificate_authority_data" {
 }
 
 output "cluster_token" {
-  value = data.aws_eks_cluster_auth.cluster.token
+  value = data.aws_eks_cluster_auth.this.token  # ✅ 수정
   sensitive = true
 }
 
