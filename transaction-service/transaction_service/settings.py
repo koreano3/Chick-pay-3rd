@@ -1,6 +1,9 @@
 from pathlib import Path
 from datetime import timedelta
 
+
+USER_SERVICE_URL = "http://localhost:8001"
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-q07@^m=o0w39dgbwq(qzj5y)7osx2oi@%39%oe9cat4gx=24za'
@@ -83,10 +86,6 @@ REST_FRAMEWORK = {
     #     'rest_framework.permissions.IsAuthenticated',
     # ]
 }
-
-# --- 여기서부터 트랜잭션 서비스만의 설정 ---
-# user-service 연동 주소 (필수!)
-USER_SERVICE_URL = "http://localhost:8001"
 
 # JWT 설정 (필요시)
 from datetime import timedelta

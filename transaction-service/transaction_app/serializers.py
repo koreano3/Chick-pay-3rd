@@ -1,7 +1,6 @@
 import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model , password_validation
-from .models import  Cash
 
 
 
@@ -25,8 +24,6 @@ class CashTransactionSerializer(serializers.Serializer):
         if value <= 0:
             raise serializers.ValidationError("금액은 0보다 커야 합니다.")
         return value
-
-
 
 #쓰임
 class TransferSerializer(serializers.Serializer):

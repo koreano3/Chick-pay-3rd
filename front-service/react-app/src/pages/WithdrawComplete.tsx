@@ -6,29 +6,43 @@ import {
   Box,
   Button,
   Divider,
-  Collapse,
+  Alert,
 } from "@mui/material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
 
+interface WithdrawTx {
+  id: string;
+  amount: number;
+  created_at: string;
+  bank_name?: string;
+  transaction_method?: string;
+}
+
+interface WithdrawCompleteData {
+  name: string;
+  email: string;
+  balance: number;
+  previous_balance: number;
+  recent_withdraws: WithdrawTx[];
+}
+
 const WithdrawComplete: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const [data, setData] = useState<any>(location.state?.withdraw || null);
-  const [loading, setLoading] = useState(!location.state?.withdraw);
+  const [data, setData] = useState<WithdrawCompleteData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAll, setShowAll] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (data) return; // 이미 state로 받은 경우 API 호출 안 함
     const access = localStorage.getItem("access_token");
     if (!access) {
       navigate("/login");
       return;
     }
-    fetch(`${API_BASE_URL}/api/cash/withdraw/complete/`, {
+    fetch(`${API_BASE_URL}/zapp/api/cash/withdraw/complete/`, {
       headers: { Authorization: `Bearer ${access}` },
     })
       .then(async (res) => {
@@ -42,7 +56,7 @@ const WithdrawComplete: React.FC = () => {
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [navigate, data]);
+  }, [navigate]);
 
   if (loading)
     return (
@@ -53,18 +67,10 @@ const WithdrawComplete: React.FC = () => {
   if (error)
     return (
       <Container sx={{ mt: 8 }}>
-        <Typography color="error">{error}</Typography>
+        <Alert severity="error">{error}</Alert>
       </Container>
     );
   if (!data) return null;
-
-  const {
-    name,
-    email,
-    balance,
-    previous_balance,
-    recent_withdraws = [],
-  } = data;
 
   return (
     <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
@@ -76,7 +82,7 @@ const WithdrawComplete: React.FC = () => {
       </Button>
       <Paper elevation={3} sx={{ p: 4, borderRadius: 5, mb: 4 }}>
         <Typography variant="h5" color="#7c4a03" fontWeight={700} gutterBottom>
-          <span style={{ fontSize: 32, marginRight: 8 }}>💰</span>출금 상세 정보
+          <span style={{ fontSize: 32, marginRight: 8 }}>💸</span>출금 상세 정보
         </Typography>
         <Box
           sx={{
@@ -86,25 +92,19 @@ const WithdrawComplete: React.FC = () => {
             mb: 3,
           }}
         >
+          <Typography fontWeight={700} fontSize={20}>
+            Cash 🏦
+          </Typography>
+          <Typography fontSize={18}>{data.email}</Typography>
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
-            mb={2}
+            mt={1}
           >
-            <Typography fontWeight={700} fontSize={20}>
-              Cash 🏦
-            </Typography>
-            <Typography fontSize={28}>{email}</Typography>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography fontSize={18}>{name}</Typography>
+            <Typography>{data.name}</Typography>
             <Typography fontWeight={700} fontSize={28} color="#7c4a03">
-              ₩ {Number(balance).toLocaleString()}
+              ₩ {data.balance.toLocaleString()}
             </Typography>
           </Box>
         </Box>
@@ -116,12 +116,12 @@ const WithdrawComplete: React.FC = () => {
           <Box display="flex" justifyContent="space-between" mb={1}>
             <span>출금 금액</span>
             <span className="text-2xl font-bold text-chick-brown">
-              ₩ {recent_withdraws[0]?.amount?.toLocaleString() ?? 0}
+              ₩ {data.recent_withdraws[0]?.amount?.toLocaleString() ?? 0}
             </span>
           </Box>
           <Box display="flex" justifyContent="space-between" mb={1}>
             <span>출금 일시</span>
-            <span>{recent_withdraws[0]?.created_at ?? "내역 없음"}</span>
+            <span>{data.recent_withdraws[0]?.created_at ?? "내역 없음"}</span>
           </Box>
           <Box display="flex" justifyContent="space-between" mb={1}>
             <span>거래 ID</span>
@@ -147,12 +147,12 @@ const WithdrawComplete: React.FC = () => {
         </Typography>
         <Box display="flex" justifyContent="space-between" mb={1}>
           <span>이전 잔액</span>
-          <span>₩ {Number(previous_balance).toLocaleString()}</span>
+          <span>₩ {data.previous_balance.toLocaleString()}</span>
         </Box>
         <Box display="flex" justifyContent="space-between" mb={1}>
           <span>출금 금액</span>
           <span style={{ color: "#d32f2f" }}>
-            - ₩ {recent_withdraws[0]?.amount?.toLocaleString() ?? 0}
+            - ₩ {data.recent_withdraws[0]?.amount?.toLocaleString() ?? 0}
           </span>
         </Box>
         <Box
@@ -163,7 +163,7 @@ const WithdrawComplete: React.FC = () => {
         >
           <span>현재 잔액</span>
           <span style={{ color: "#7c4a03" }}>
-            ₩ {Number(balance).toLocaleString()}
+            ₩ {data.balance.toLocaleString()}
           </span>
         </Box>
       </Paper>
@@ -172,40 +172,39 @@ const WithdrawComplete: React.FC = () => {
         <Typography variant="h6" color="#7c4a03" gutterBottom>
           최근 출금 내역
         </Typography>
-        {recent_withdraws.length === 0 && (
+        {data.recent_withdraws.length === 0 && (
           <Typography color="text.secondary">출금 내역이 없습니다.</Typography>
         )}
-        {(showAll ? recent_withdraws : recent_withdraws.slice(0, 3)).map(
-          (tx: any, idx: number) => (
-            <Box
-              key={tx.id}
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              py={1}
-              borderBottom={idx < recent_withdraws.length - 1 ? 1 : 0}
-              borderColor="#eee"
-            >
-              <Box>
-                <Typography fontWeight={600}>
-                  {tx.bank_name || "출금"}
-                </Typography>
-                <Typography fontSize={14} color="text.secondary">
-                  {tx.created_at}
-                </Typography>
-              </Box>
-              <Box textAlign="right">
-                <Typography fontWeight={700} color="red">
-                  - ₩ {Number(tx.amount).toLocaleString()}
-                </Typography>
-                <Typography fontSize={14} color="text.secondary">
-                  {tx.transaction_method || "계좌 이체"}
-                </Typography>
-              </Box>
+        {(showAll
+          ? data.recent_withdraws
+          : data.recent_withdraws.slice(0, 3)
+        ).map((tx, idx) => (
+          <Box
+            key={tx.id}
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            py={1}
+            borderBottom={idx < data.recent_withdraws.length - 1 ? 1 : 0}
+            borderColor="#eee"
+          >
+            <Box>
+              <Typography fontWeight={600}>{tx.bank_name || "출금"}</Typography>
+              <Typography fontSize={14} color="text.secondary">
+                {tx.created_at}
+              </Typography>
             </Box>
-          )
-        )}
-        {recent_withdraws.length > 3 && (
+            <Box textAlign="right">
+              <Typography fontWeight={700} color="red">
+                - ₩ {tx.amount.toLocaleString()}
+              </Typography>
+              <Typography fontSize={14} color="text.secondary">
+                {tx.transaction_method || "계좌 이체"}
+              </Typography>
+            </Box>
+          </Box>
+        ))}
+        {data.recent_withdraws.length > 3 && (
           <Box textAlign="center" mt={2}>
             <Button
               onClick={() => setShowAll((v) => !v)}

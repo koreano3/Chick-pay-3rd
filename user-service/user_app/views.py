@@ -21,6 +21,7 @@ from rest_framework import status
 from django.db import transaction, IntegrityError
 from rest_framework.permissions import IsAuthenticated
 from user_app.serializers import MyPageSerializer
+from decimal import Decimal
 
 # API Views
 
@@ -83,6 +84,7 @@ class RegisterAPIView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        print("request.data:", request.data)
         serializer = RegisterSerializer(data=request.data)
         try:
             if serializer.is_valid():
@@ -201,3 +203,45 @@ class UnregisterAPIView(APIView):
 
         request.user.delete()
         return Response({"message": "회원탈퇴 완료"}, status=status.HTTP_204_NO_CONTENT)
+
+class UserExistsAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        email = request.GET.get('email')
+        exists = CustomUser.objects.filter(email=email).exists()
+        user_id = None
+        if exists:
+            user_id = CustomUser.objects.get(email=email).id
+        return Response({'exists': exists, 'user_id': user_id})
+
+class CashUpdateAPIView(APIView):
+    permission_classes = [AllowAny]  # 실제 서비스에서는 인증 필요!
+
+    def post(self, request):
+        print("request.data:", request.data)
+        user_id = request.data.get('user_id')
+        amount = request.data.get('amount')
+        type_ = request.data.get('type')  # 'deposit' or 'withdraw'
+
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            cash = user.cash  # OneToOneField로 연결되어 있음
+
+            if type_ == 'deposit':
+                cash.balance += Decimal(str(amount))
+                cash.save()
+                return Response({'message': '입금 성공', 'balance': cash.balance})
+            elif type_ == 'withdraw':
+                if cash.balance < Decimal(str(amount)):
+                    return Response({'error': '잔액 부족'}, status=400)
+                cash.balance -= Decimal(str(amount))
+                cash.save()
+                return Response({'message': '출금 성공', 'balance': cash.balance})
+            else:
+                return Response({'error': '잘못된 type'}, status=400)
+        except CustomUser.DoesNotExist:
+            return Response({'error': '유저 없음'}, status=404)
+        except Exception as e:
+            print("====[DEBUG] Exception:", str(e))
+            return Response({'error': str(e)}, status=500)

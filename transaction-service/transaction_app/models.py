@@ -2,26 +2,26 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-class Cash(models.Model):
-    user_id = models.IntegerField()  # 유저 PK만 저장
-    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+# class Cash(models.Model):
+#     user_id = models.IntegerField()  # 유저 PK만 저장
+#     balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
 
-    def deposit(self, amount):
-        self.balance += amount
-        self.save()
+#     def deposit(self, amount):
+#         self.balance += amount
+#         self.save()
 
-    def withdraw(self, amount):
-        if self.balance >= amount:
-            self.balance -= amount
-            self.save()
+#     def withdraw(self, amount):
+#         if self.balance >= amount:
+#             self.balance -= amount
+#             self.save()
 
-            return True
-        return False
+#             return True
+#         return False
 
-    def __str__(self):
-        return f"{self.user_id} - Balance: {self.balance}"
+#     def __str__(self):
+#         return f"{self.user_id} - Balance: {self.balance}"
 
 class CashTransfer(models.Model):
     sender_id = models.IntegerField()
