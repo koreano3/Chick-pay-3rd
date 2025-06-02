@@ -1,5 +1,12 @@
-import React from "react";
-import { Container, Typography, Box, Button, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  Paper,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const features = [
@@ -40,6 +47,60 @@ const reviews = [
 
 const Main: React.FC = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState<{ name: string } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const access = localStorage.getItem("access_token");
+    if (access) {
+      fetch("http://localhost:8001/zapp/api/user/me/", {
+        headers: { Authorization: `Bearer ${access}` },
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            setUser(null);
+            setLoading(false);
+            return;
+          }
+          if (!res.ok) throw new Error("서버 오류");
+          return res.json();
+        })
+        .then((data) => {
+          if (data) setUser({ name: data.name });
+          setLoading(false);
+        })
+        .catch(() => {
+          setUser(null);
+          setLoading(false);
+        });
+    } else {
+      setUser(null);
+      setLoading(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    navigate("/");
+  };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box sx={{ bgcolor: "#FFF9E5", minHeight: "100vh" }}>
@@ -72,6 +133,11 @@ const Main: React.FC = () => {
               <Typography variant="h5" fontWeight={700} color="#B85C38">
                 Chick Pay
               </Typography>
+              {user && (
+                <Typography sx={{ ml: 2 }} color="grey.700">
+                  안녕하세요, <strong>{user.name}</strong>님!
+                </Typography>
+              )}
             </Box>
 
             {/* 네비게이션 메뉴 */}
@@ -82,86 +148,103 @@ const Main: React.FC = () => {
                 mr: 4,
               }}
             >
-              <Button
-                sx={{
-                  color: "#B85C38",
-                  fontWeight: "bold",
-                  "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                }}
-                onClick={() => navigate("/deposit")}
-              >
-                입금하기
-              </Button>
-              <Button
-                sx={{
-                  color: "#B85C38",
-                  fontWeight: "bold",
-                  "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                }}
-                onClick={() => navigate("/withdraw")}
-              >
-                출금하기
-              </Button>
-              <Button
-                sx={{
-                  color: "#B85C38",
-                  fontWeight: "bold",
-                  "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                }}
-                onClick={() => navigate("/transfer")}
-              >
-                송금하기
-              </Button>
-              <Button
-                sx={{
-                  color: "#B85C38",
-                  fontWeight: "bold",
-                  "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                }}
-                onClick={() => navigate("/mypage")}
-              >
-                마이페이지
-              </Button>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                gap: 2,
-                flexWrap: "wrap",
-                justifyContent: { xs: "center", md: "flex-end" },
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  bgcolor: "#B85C38",
-                  color: "#fff",
-                  fontWeight: "bold",
-                  borderRadius: 2,
-                  px: 3,
-                  minWidth: { xs: "100%", sm: "auto" },
-                }}
-                onClick={() => navigate("/login")}
-              >
-                로그인하기
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "#B85C38",
-                  borderColor: "#B85C38",
-                  fontWeight: "bold",
-                  borderRadius: 2,
-                  px: 3,
-                  bgcolor: "#fff",
-                  "&:hover": { bgcolor: "#FFF9E5" },
-                  minWidth: { xs: "100%", sm: "auto" },
-                }}
-                onClick={() => navigate("/register")}
-              >
-                회원가입
-              </Button>
+              {user ? (
+                <>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={() => navigate("/account")}
+                  >
+                    계좌조회
+                  </Button>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={() => navigate("/transfer")}
+                  >
+                    송금하기
+                  </Button>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={() => navigate("/deposit")}
+                  >
+                    입금하기
+                  </Button>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={() => navigate("/withdraw")}
+                  >
+                    출금하기
+                  </Button>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={() => navigate("/mypage")}
+                  >
+                    마이페이지
+                  </Button>
+                  <Button
+                    sx={{
+                      color: "#B85C38",
+                      fontWeight: "bold",
+                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
+                    }}
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#B85C38",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      borderRadius: 2,
+                      px: 3,
+                      minWidth: { xs: "100%", sm: "auto" },
+                    }}
+                    onClick={() => navigate("/login")}
+                  >
+                    로그인하기
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: "#B85C38",
+                      borderColor: "#B85C38",
+                      fontWeight: "bold",
+                      borderRadius: 2,
+                      px: 3,
+                      bgcolor: "#fff",
+                      "&:hover": { bgcolor: "#FFF9E5" },
+                      minWidth: { xs: "100%", sm: "auto" },
+                    }}
+                    onClick={() => navigate("/register")}
+                  >
+                    회원가입
+                  </Button>
+                </>
+              )}
             </Box>
           </Box>
         </Container>
@@ -200,36 +283,38 @@ const Main: React.FC = () => {
                 경험해보세요. 귀여운 디자인과 함께 금융 생활이 더욱
                 즐거워집니다.
               </Typography>
-              <Box display="flex" gap={2} flexWrap="wrap">
-                <Button
-                  variant="contained"
-                  sx={{
-                    bgcolor: "#B85C38",
-                    color: "#fff",
-                    fontWeight: "bold",
-                    borderRadius: 2,
-                    px: 4,
-                  }}
-                  onClick={() => navigate("/login")}
-                >
-                  로그인하기
-                </Button>
-                <Button
-                  variant="outlined"
-                  sx={{
-                    color: "#B85C38",
-                    borderColor: "#B85C38",
-                    fontWeight: "bold",
-                    borderRadius: 2,
-                    px: 4,
-                    bgcolor: "#fff",
-                    "&:hover": { bgcolor: "#FFF9E5" },
-                  }}
-                  onClick={() => navigate("/register")}
-                >
-                  회원가입
-                </Button>
-              </Box>
+              {!user && (
+                <Box display="flex" gap={2} flexWrap="wrap">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      bgcolor: "#B85C38",
+                      color: "#fff",
+                      fontWeight: "bold",
+                      borderRadius: 2,
+                      px: 4,
+                    }}
+                    onClick={() => navigate("/login")}
+                  >
+                    로그인하기
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: "#B85C38",
+                      borderColor: "#B85C38",
+                      fontWeight: "bold",
+                      borderRadius: 2,
+                      px: 4,
+                      bgcolor: "#fff",
+                      "&:hover": { bgcolor: "#FFF9E5" },
+                    }}
+                    onClick={() => navigate("/register")}
+                  >
+                    회원가입
+                  </Button>
+                </Box>
+              )}
             </Box>
             <Box sx={{ flex: "1 1 300px", minWidth: 0, textAlign: "center" }}>
               <Box

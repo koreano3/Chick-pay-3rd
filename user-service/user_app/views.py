@@ -245,3 +245,15 @@ class CashUpdateAPIView(APIView):
         except Exception as e:
             print("====[DEBUG] Exception:", str(e))
             return Response({'error': str(e)}, status=500)
+
+class UserDetailByIdAPIView(APIView):
+    def get(self, request, user_id):
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            return Response({
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+            })
+        except CustomUser.DoesNotExist:
+            return Response({"error": "유저를 찾을 수 없습니다."}, status=404)

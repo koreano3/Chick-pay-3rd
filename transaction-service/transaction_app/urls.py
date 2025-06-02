@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import (
-    CashDepositAPIView, 
+    CashDepositAPIView,
+    CashTransferCompleteAPIView, 
     CashWithdrawAPIView, 
     CashTransferAPIView, 
     AllTransactionAPIView, 
@@ -17,4 +18,5 @@ urlpatterns = [
     path('api/cash/withdraw/complete/', CashWithdrawCompleteAPIView.as_view(), name='api-cash-withdraw-complete'),
     path('api/cash/transfer/', CashTransferAPIView.as_view(), name='api-cash-transfer'),
     path('api/transactions/', AllTransactionAPIView.as_view(), name='api-transactions'),
+    path('api/cash/transfer/complete/', CashTransferCompleteAPIView.as_view(), name='api-cash-transfer-complete'),
 ] 

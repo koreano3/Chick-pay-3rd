@@ -77,13 +77,14 @@ class CashDepositAPIView(APIView):
 
 
 class CashWithdrawAPIView(APIView):
-
     def post(self, request):
-        # JWT에서 user_id 추출
+        # 1. Authorization 헤더에서 토큰 추출
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             return Response({"error": "인증 토큰이 없습니다."}, status=401)
         token = auth_header.split(' ')[1]
+
+        # 2. JWT 토큰에서 user_id 추출
         try:
             payload = jwt.decode(token, options={"verify_signature": False})
             user_id = payload.get('user_id')
@@ -92,44 +93,106 @@ class CashWithdrawAPIView(APIView):
         except Exception as e:
             return Response({"error": "토큰 파싱 실패"}, status=401)
 
-        print(f"user_id: {user_id}") 
-        cash, _ = Cash.objects.get_or_create(user_id=user_id)
-        serializer = CashTransactionSerializer(data=request.data)
+        # 3. 출금 처리
+        amount = request.data.get('amount')
+        memo = request.data.get('memo', '')
 
-        if serializer.is_valid():
-            amount = serializer.validated_data['amount']
-            try:
-                with transaction.atomic():
-                    # 출금 시 잔액이 부족하면 처리하지 않음
-                    response = requests.post(
-                        f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
-                        json={"user_id": user_id, "amount": amount, "type": "withdraw"}
-                    )
-                    if not response.ok:
-                        return Response({"error": "출금 처리 실패"}, status=500)
+        print(f"user_id: {user_id}")
+        print("====[DEBUG] user_id from JWT:", user_id)
 
-                    # 출금 내역 기록
-                    CashTransaction.objects.create(
-                        user_id=user_id,
-                        transaction_type='withdraw',
-                        amount=amount,
-                        memo=request.data.get('memo', '')
-                    )
+        # user-service에 잔액 차감 요청
+        response = requests.post(
+            f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
+            json={"user_id": user_id, "amount": amount, "type": "withdraw"}
+        )
+        if not response.ok:
+            return Response({"error": "출금 처리 실패"}, status=500)
 
-                    # 성공적인 출금 후 잔액과 함께 응답 반환
-                    return Response({
-                        "message": "출금 성공",
-                        "balance": cash.balance  # 잔액 반환
-                    }, status=status.HTTP_200_OK)
+        print("====[DEBUG] CashTransaction(출금) 생성 직전 ====")
+        CashTransaction.objects.create(
+            user_id=user_id,
+            transaction_type='withdraw',
+            amount=amount,
+            memo=memo
+        )
+        print("====[DEBUG] CashTransaction(출금) 생성 완료 ====")
 
-            except Exception as e:
-                return Response({"error": str(e)}, status=500)
+        # 출금 후 잔액 조회
+        user_info = requests.get(
+            f"{settings.USER_SERVICE_URL}/zapp/api/mypage/",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        if not user_info.ok:
+            return Response({"error": "잔액 조회 실패"}, status=500)
+        balance = user_info.json().get('balance', 0)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "출금 성공", "balance": balance})
+
+# class CashTransferAPIView(APIView):
+#     def post(self, request):
+#         # 1. JWT에서 보내는 사람 user_id 추출
+#         auth_header = request.headers.get('Authorization')
+#         if not auth_header or not auth_header.startswith('Bearer '):
+#             return Response({"error": "인증 토큰이 없습니다."}, status=401)
+#         token = auth_header.split(' ')[1]
+#         try:
+#             payload = jwt.decode(token, options={"verify_signature": False})
+#             sender_id = payload.get('user_id')
+#             if not sender_id:
+#                 return Response({"error": "user_id 없음"}, status=401)
+#         except Exception as e:
+#             return Response({"error": "토큰 파싱 실패"}, status=401)
+
+#         # 2. 요청 데이터 파싱
+#         receiver_email = request.data.get('receiver_email')
+#         amount = request.data.get('amount')
+#         memo = request.data.get('memo', '')
+
+#         # 3. user-service에서 받는 사람 존재 확인 및 user_id 얻기
+#         response = requests.get(
+#             f"{settings.USER_SERVICE_URL}/zapp/api/user/exists/",
+#             params={'email': receiver_email}
+#         )
+#         if response.status_code != 200 or not response.json().get('exists'):
+#             return Response({"error": "받는 사람을 찾을 수 없습니다."}, status=400)
+#         receiver_id = response.json().get('user_id')
+
+#         # 4. user-service에 각각 잔액 차감/증가 요청
+#         # 4-1. 보내는 사람 출금
+#         withdraw_res = requests.post(
+#             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
+#             json={"user_id": sender_id, "amount": amount, "type": "withdraw"}
+#         )
+#         if not withdraw_res.ok:
+#             return Response({"error": "보내는 사람 잔액 차감 실패"}, status=500)
+#         # 4-2. 받는 사람 입금
+#         deposit_res = requests.post(
+#             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
+#             json={"user_id": receiver_id, "amount": amount, "type": "deposit"}
+#         )
+#         if not deposit_res.ok:
+#             return Response({"error": "받는 사람 잔액 증가 실패"}, status=500)
+
+#         # 5. 거래 내역 기록 (transaction-service DB)
+#         CashTransaction.objects.create(
+#             user_id=sender_id,
+#             transaction_type='transfer',
+#             amount=amount,
+#             memo=memo
+#         )
+#         CashTransaction.objects.create(
+#             user_id=receiver_id,
+#             transaction_type='receive',
+#             amount=amount,
+#             memo=memo
+#         )
+#         # 필요하다면 CashTransfer 모델에도 기록
+
+#         return Response({"message": "송금 완료!"}, status=200)
 
 class CashTransferAPIView(APIView):
     def post(self, request):
-        # 1. JWT에서 user_id 추출
+        # 1. JWT에서 보내는 사람 user_id 추출
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             return Response({"error": "인증 토큰이 없습니다."}, status=401)
@@ -143,26 +206,11 @@ class CashTransferAPIView(APIView):
             return Response({"error": "토큰 파싱 실패"}, status=401)
 
         # 2. 요청 데이터 파싱
-        serializer = TransferSerializer(data=request.data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=400)
+        receiver_email = request.data.get('receiver_email')
+        amount = request.data.get('amount')
+        memo = request.data.get('memo', '')
 
-        receiver_email = serializer.validated_data['receiver_email']
-        amount = serializer.validated_data['amount']
-        memo = serializer.validated_data.get('memo', '')
-
-        # 3. user-service에서 sender_email 조회
-        sender_info = requests.get(
-            f"{settings.USER_SERVICE_URL}/zapp/api/mypage/",
-            headers={"Authorization": f"Bearer {token}"}
-        )
-        if not sender_info.ok:
-            return Response({"error": "보내는 사람 정보 조회 실패"}, status=400)
-        sender_email = sender_info.json().get('email')
-        if sender_email == receiver_email:
-            return Response({"error": "자기 자신에게 송금할 수 없습니다."}, status=400)
-
-        # 4. user-service에 receiver 존재 확인 (API 호출)
+        # 3. user-service에서 받는 사람 존재 확인 및 user_id 얻기
         response = requests.get(
             f"{settings.USER_SERVICE_URL}/zapp/api/user/exists/",
             params={'email': receiver_email}
@@ -171,15 +219,13 @@ class CashTransferAPIView(APIView):
             return Response({"error": "받는 사람을 찾을 수 없습니다."}, status=400)
         receiver_id = response.json().get('user_id')
 
-        # 5. 송금(잔액 차감/증가) user-service에 각각 요청
-        # 5-1. 보내는 사람 출금
+        # 4. user-service에 각각 잔액 차감/증가 요청
         withdraw_res = requests.post(
             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
             json={"user_id": sender_id, "amount": amount, "type": "withdraw"}
         )
         if not withdraw_res.ok:
             return Response({"error": "보내는 사람 잔액 차감 실패"}, status=500)
-        # 5-2. 받는 사람 입금
         deposit_res = requests.post(
             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
             json={"user_id": receiver_id, "amount": amount, "type": "deposit"}
@@ -187,7 +233,7 @@ class CashTransferAPIView(APIView):
         if not deposit_res.ok:
             return Response({"error": "받는 사람 잔액 증가 실패"}, status=500)
 
-        # 거래 내역 기록 (transaction-service DB)
+        # 5. 거래 내역 기록 (CashTransfer + CashTransaction)
         transfer = CashTransfer.objects.create(
             sender_id=sender_id,
             receiver_id=receiver_id,
@@ -198,17 +244,18 @@ class CashTransferAPIView(APIView):
             user_id=sender_id,
             transaction_type='transfer',
             amount=amount,
-            memo=memo
+            memo=memo,
+            related_transfer=transfer
         )
         CashTransaction.objects.create(
             user_id=receiver_id,
             transaction_type='receive',
             amount=amount,
-            memo=memo
+            memo=memo,
+            related_transfer=transfer
         )
+
         return Response({"message": "송금 완료!"}, status=200)
-
-
 class AllTransactionAPIView(APIView):
     def get(self, request):
         # JWT에서 user_id 추출
@@ -296,6 +343,16 @@ class CashWithdrawCompleteAPIView(APIView):
         if not auth_header or not auth_header.startswith('Bearer '):
             return Response({"error": "인증 토큰이 없습니다."}, status=401)
         token = auth_header.split(' ')[1]
+        # JWT에서 user_id 추출
+        try:
+            payload = jwt.decode(token, options={"verify_signature": False})
+            user_id = payload.get('user_id')
+            if not user_id:
+                return Response({"error": "user_id 없음"}, status=401)
+        except Exception as e:
+            return Response({"error": "토큰 파싱 실패"}, status=401)
+
+        # user-service에서 유저 정보 가져오기
         user_info = requests.get(
             f"{settings.USER_SERVICE_URL}/zapp/api/mypage/",
             headers={"Authorization": f"Bearer {token}"}
@@ -303,11 +360,13 @@ class CashWithdrawCompleteAPIView(APIView):
         if not user_info.ok:
             return Response({"error": "사용자 정보 조회 실패"}, status=400)
         user_data = user_info.json()
-        user_id = user_data.get('id')
+
+        # 최근 출금 내역 조회
         recent_withdraws = CashTransaction.objects.filter(
             user_id=user_id,
             transaction_type='withdraw'
         ).order_by('-created_at')[:5]
+
         response_data = {
             "name": user_data.get("name", ""),
             "email": user_data.get("email", ""),
@@ -318,11 +377,71 @@ class CashWithdrawCompleteAPIView(APIView):
                     "id": str(tx.id),
                     "amount": float(tx.amount),
                     "created_at": tx.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                    "transaction_method": tx.memo or "계좌 이체",
-                    "bank_name": getattr(tx, 'bank_name', None),
+                    "transaction_method": tx.memo or "계좌 이체"
                 }
                 for tx in recent_withdraws
             ]
+        }
+        return Response(response_data)
+
+
+class CashTransferCompleteAPIView(APIView):
+    def get(self, request):
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return Response({"error": "인증 토큰이 없습니다."}, status=401)
+        token = auth_header.split(' ')[1]
+        try:
+            payload = jwt.decode(token, options={"verify_signature": False})
+            user_id = payload.get('user_id')
+            if not user_id:
+                return Response({"error": "user_id 없음"}, status=401)
+        except Exception as e:
+            return Response({"error": "토큰 파싱 실패"}, status=401)
+
+        # user-service에서 유저 정보 가져오기
+        user_info = requests.get(
+            f"{settings.USER_SERVICE_URL}/zapp/api/mypage/",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        if not user_info.ok:
+            return Response({"error": "사용자 정보 조회 실패"}, status=400)
+        user_data = user_info.json()
+        sender_email = user_data.get("email", "")
+
+        # 최근 송금(CashTransfer) 내역 1건 조회
+        from .models import CashTransfer
+        tx = (
+            CashTransfer.objects
+            .filter(sender_id=user_id)
+            .order_by('-created_at')
+            .first()
+        )
+        if not tx:
+            return Response({"error": "최근 송금 내역이 없습니다."}, status=404)
+
+        receiver_id = tx.receiver_id
+
+        # user-service에 receiver_id로 유저 정보 요청 (API가 필요!)
+        receiver_email = ""
+        receiver_name = ""
+        receiver_info = requests.get(
+            f"{settings.USER_SERVICE_URL}/zapp/api/user/{receiver_id}/",
+            headers={"Authorization": f"Bearer {token}"}
+        )
+        if receiver_info.ok:
+            receiver_data = receiver_info.json()
+            receiver_email = receiver_data.get("email", "")
+            receiver_name = receiver_data.get("name", "")
+
+        response_data = {
+            "sender_email": sender_email,
+            "receiver_email": receiver_email,
+            "receiver_name": receiver_name,
+            "amount": float(tx.amount),
+            "memo": tx.memo,
+            "created_at": tx.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            "transaction_id": f"CP{tx.id:013d}",
         }
         return Response(response_data)
 

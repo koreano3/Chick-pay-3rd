@@ -3,7 +3,7 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
-from .views import OTPVerifyAPIView, PasswordChangeAPIView, RegisterAPIView, UnregisterAPIView
+from .views import OTPVerifyAPIView, PasswordChangeAPIView, RegisterAPIView, UnregisterAPIView, UserDetailByIdAPIView
 from .views import MyPageAPIView, UserExistsAPIView, CashUpdateAPIView
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
     path('api/otp/verify/', OTPVerifyAPIView.as_view(), name='api-otp-verify'),
     path('api/user/exists/', UserExistsAPIView.as_view(), name='user-exists'),
     path('api/cash/update/', CashUpdateAPIView.as_view(), name='cash-update'),
+    path('api/user/<int:user_id>/', UserDetailByIdAPIView.as_view()),
 ] 
