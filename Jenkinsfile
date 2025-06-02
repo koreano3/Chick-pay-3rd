@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   triggers {
-    githubPush()  // 🔔 GitHub Webhook 트리거
+    githubPush()
   }
 
   environment {
@@ -28,17 +28,6 @@ pipeline {
       }
     }
 
-    stage('Terraform IAM') {
-      steps {
-        dir('infra/terraform/iam') {
-          sh 'terraform init'
-          sh 'terraform plan -out=tfplan'
-          input message: '🔐 IAM apply 실행할까요?'
-          sh 'terraform apply -auto-approve tfplan'
-        }
-      }
-    }
-
     stage('Terraform EKS CICD') {
       steps {
         dir('infra/terraform/eks/cicd') {
@@ -56,6 +45,17 @@ pipeline {
           sh 'terraform init'
           sh 'terraform plan -out=tfplan'
           input message: '📦 EKS Service apply 실행할까요?'
+          sh 'terraform apply -auto-approve tfplan'
+        }
+      }
+    }
+
+    stage('Terraform IAM') {
+      steps {
+        dir('infra/terraform/iam') {
+          sh 'terraform init'
+          sh 'terraform plan -out=tfplan'
+          input message: '🔐 IAM apply 실행할까요?'
           sh 'terraform apply -auto-approve tfplan'
         }
       }
