@@ -10,6 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
@@ -54,113 +55,141 @@ const TransferComplete: React.FC = () => {
 
   if (loading)
     return (
-      <Container sx={{ mt: 8 }}>
-        <CircularProgress />
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <CircularProgress />
+        </Container>
+      </Layout>
     );
   if (error)
     return (
-      <Container sx={{ mt: 8 }}>
-        <Alert severity="error">{error}</Alert>
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <Alert severity="error">{error}</Alert>
+        </Container>
+      </Layout>
     );
   if (!data) return null;
 
   return (
-    <Container maxWidth="sm" sx={{ py: 8, display: "flex", justifyContent: "center" }}>
-      <Box width="100%" maxWidth={480}>
-        <Paper
-          elevation={3}
-          sx={{
-            p: 4,
-            borderRadius: 5,
-            border: "3px solid #ffe066",
-            textAlign: "center",
-          }}
-        >
-          <Box mb={3}>
-            <img
-              src="/static/images/image.png"
-              alt="Chick Pay"
-              style={{ width: 60, height: 60, marginBottom: 16 }}
-            />
-          </Box>
-          <Typography variant="h5" fontWeight={700} color="#7c4a03" gutterBottom>
-            송금이 완료되었습니다!
-          </Typography>
-          <Typography color="text.secondary" mb={4}>
-            송금 내역을 확인하세요.
-          </Typography>
-
-          <Box
+    <Layout>
+      <Container
+        maxWidth="sm"
+        sx={{ py: 8, display: "flex", justifyContent: "center" }}
+      >
+        <Box width="100%" maxWidth={480}>
+          <Paper
+            elevation={3}
             sx={{
-              bgcolor: "#fffde7",
-              borderRadius: 3,
-              p: 3,
-              mb: 4,
-              textAlign: "left",
+              p: 4,
+              borderRadius: 5,
+              border: "3px solid #ffe066",
+              textAlign: "center",
             }}
           >
-            <Box display="flex" justifyContent="space-between" mb={1}>
-              <span className="text-gray-600">보낸 계좌</span>
-              <span>{data.sender_email}</span>
+            <Box mb={3}>
+              <img
+                src="/static/images/image.png"
+                alt="Chick Pay"
+                style={{ width: 60, height: 60, marginBottom: 16 }}
+              />
             </Box>
-            <Box display="flex" justifyContent="space-between" mb={1}>
-              <span className="text-gray-600">받는 계좌</span>
-              <span>{data.receiver_email}</span>
-            </Box>
-            <Box display="flex" justifyContent="space-between" mb={1}>
-              <span className="text-gray-600">받는 분</span>
-              <span>{data.receiver_name}</span>
-            </Box>
-            <Box display="flex" justifyContent="space-between" mb={1}>
-              <span className="text-gray-600">송금 금액</span>
-              <span style={{ fontWeight: 700, fontSize: 20, color: "#7c4a03" }}>
-                ₩ {data.amount.toLocaleString()}
-              </span>
-            </Box>
-            <Box display="flex" justifyContent="space-between">
-              <span className="text-gray-600">메모</span>
-              <span>{data.memo || "-"}</span>
-            </Box>
-          </Box>
-
-          <Divider sx={{ mb: 2 }} />
-          <Box display="flex" justifyContent="space-between" mb={1} fontSize={14} color="#888">
-            <span>거래 번호</span>
-            <span>{data.transaction_id}</span>
-          </Box>
-          <Box display="flex" justifyContent="space-between" mb={3} fontSize={14} color="#888">
-            <span>거래 일시</span>
-            <span>{data.created_at}</span>
-          </Box>
-
-          <Box display="flex" gap={2} mt={2}>
-            <Button
-              fullWidth
-              variant="outlined"
-              sx={{ bgcolor: "#f5f5f5", color: "#7c4a03", fontWeight: 700 }}
-              onClick={() => navigate("/transfer")}
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              color="#7c4a03"
+              gutterBottom
             >
-              다시 송금하기
-            </Button>
-            <Button
-              fullWidth
-              variant="contained"
+              송금이 완료되었습니다!
+            </Typography>
+            <Typography color="text.secondary" mb={4}>
+              송금 내역을 확인하세요.
+            </Typography>
+
+            <Box
               sx={{
-                bgcolor: "#ffe066",
-                color: "#7c4a03",
-                fontWeight: 700,
-                "&:hover": { bgcolor: "#ffc93c" },
+                bgcolor: "#fffde7",
+                borderRadius: 3,
+                p: 3,
+                mb: 4,
+                textAlign: "left",
               }}
-              onClick={() => navigate("/")}
             >
-              메인으로
-            </Button>
-          </Box>
-        </Paper>
-      </Box>
-    </Container>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <span className="text-gray-600">보낸 계좌</span>
+                <span>{data.sender_email}</span>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <span className="text-gray-600">받는 계좌</span>
+                <span>{data.receiver_email}</span>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <span className="text-gray-600">받는 분</span>
+                <span>{data.receiver_name}</span>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb={1}>
+                <span className="text-gray-600">송금 금액</span>
+                <span
+                  style={{ fontWeight: 700, fontSize: 20, color: "#7c4a03" }}
+                >
+                  ₩ {data.amount.toLocaleString()}
+                </span>
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <span className="text-gray-600">메모</span>
+                <span>{data.memo || "-"}</span>
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 2 }} />
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              mb={1}
+              fontSize={14}
+              color="#888"
+            >
+              <span>거래 번호</span>
+              <span>{data.transaction_id}</span>
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              mb={3}
+              fontSize={14}
+              color="#888"
+            >
+              <span>거래 일시</span>
+              <span>{data.created_at}</span>
+            </Box>
+
+            <Box display="flex" gap={2} mt={2}>
+              <Button
+                fullWidth
+                variant="outlined"
+                sx={{ bgcolor: "#f5f5f5", color: "#7c4a03", fontWeight: 700 }}
+                onClick={() => navigate("/transfer")}
+              >
+                다시 송금하기
+              </Button>
+              <Button
+                fullWidth
+                variant="contained"
+                sx={{
+                  bgcolor: "#ffe066",
+                  color: "#7c4a03",
+                  fontWeight: 700,
+                  "&:hover": { bgcolor: "#ffc93c" },
+                }}
+                onClick={() => navigate("/")}
+              >
+                메인으로
+              </Button>
+            </Box>
+          </Paper>
+        </Box>
+      </Container>
+    </Layout>
   );
 };
 

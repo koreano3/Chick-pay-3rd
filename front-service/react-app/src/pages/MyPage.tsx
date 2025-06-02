@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Layout from "../components/Layout";
 
 interface UserInfo {
   name: string;
@@ -126,165 +127,171 @@ const MyPage: React.FC = () => {
 
   if (loading)
     return (
-      <Container sx={{ mt: 8 }}>
-        <Typography>로딩 중...</Typography>
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <Typography>로딩 중...</Typography>
+        </Container>
+      </Layout>
     );
   if (error)
     return (
-      <Container sx={{ mt: 8 }}>
-        <Alert severity="error">{error}</Alert>
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <Alert severity="error">{error}</Alert>
+        </Container>
+      </Layout>
     );
   if (!user) return null;
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <Typography
-        variant="h4"
-        align="center"
-        fontWeight={700}
-        gutterBottom
-        color="#7c4a03"
-      >
-        마이페이지
-      </Typography>
-      {/* 프로필 카드 */}
-      <Paper
-        elevation={3}
-        sx={{ p: 4, mb: 3, border: "3px solid #ffe066", borderRadius: 5 }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: { xs: "column", md: "row" },
-            gap: 3,
-            alignItems: "center",
-          }}
+    <Layout>
+      <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+        <Typography
+          variant="h4"
+          align="center"
+          fontWeight={700}
+          gutterBottom
+          color="#7c4a03"
+        >
+          마이페이지
+        </Typography>
+        {/* 프로필 카드 */}
+        <Paper
+          elevation={3}
+          sx={{ p: 4, mb: 3, border: "3px solid #ffe066", borderRadius: 5 }}
         >
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
-              width: { xs: "100%", md: "25%" },
+              flexDirection: { xs: "column", md: "row" },
+              gap: 3,
+              alignItems: "center",
             }}
           >
-            <Avatar sx={{ width: 90, height: 90, bgcolor: "#ffe066" }}>
-              <AccountCircleIcon sx={{ fontSize: 60, color: "#7c4a03" }} />
-            </Avatar>
-          </Box>
-          <Box sx={{ width: { xs: "100%", md: "75%" } }}>
-            <Typography variant="h6" color="#7c4a03">
-              {user.name}
-            </Typography>
-            <Typography color="text.secondary">{user.email}</Typography>
-            <Typography color="text.secondary">{user.birthdate}</Typography>
-            <Box mt={2} display="flex" gap={2}>
-              <Button
-                size="small"
-                onClick={() => setPwOpen(true)}
-                sx={{ color: "#7c4a03" }}
-              >
-                비밀번호 변경
-              </Button>
-              <Button
-                size="small"
-                variant="contained"
-                color="error"
-                onClick={() => navigate("/unregister")}
-                sx={{ borderRadius: 3 }}
-              >
-                회원탈퇴
-              </Button>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                width: { xs: "100%", md: "25%" },
+              }}
+            >
+              <Avatar sx={{ width: 90, height: 90, bgcolor: "#ffe066" }}>
+                <AccountCircleIcon sx={{ fontSize: 60, color: "#7c4a03" }} />
+              </Avatar>
+            </Box>
+            <Box sx={{ width: { xs: "100%", md: "75%" } }}>
+              <Typography variant="h6" color="#7c4a03">
+                {user.name}
+              </Typography>
+              <Typography color="text.secondary">{user.email}</Typography>
+              <Typography color="text.secondary">{user.birthdate}</Typography>
+              <Box mt={2} display="flex" gap={2}>
+                <Button
+                  size="small"
+                  onClick={() => setPwOpen(true)}
+                  sx={{ color: "#7c4a03" }}
+                >
+                  비밀번호 변경
+                </Button>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="error"
+                  onClick={() => navigate("/unregister")}
+                  sx={{ borderRadius: 3 }}
+                >
+                  회원탈퇴
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
-      </Paper>
-      {/* 비밀번호 변경 다이얼로그 */}
-      <Dialog open={pwOpen} onClose={() => setPwOpen(false)}>
-        <DialogTitle>비밀번호 변경</DialogTitle>
-        <DialogContent>
-          <Box component="form" onSubmit={handlePwChange} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              label="현재 비밀번호"
-              type="password"
-              fullWidth
-              required
-              value={pwForm.current_password}
-              onChange={(e) =>
-                setPwForm((f) => ({ ...f, current_password: e.target.value }))
-              }
-            />
-            <TextField
-              margin="normal"
-              label="새 비밀번호"
-              type="password"
-              fullWidth
-              required
-              value={pwForm.new_password}
-              onChange={(e) =>
-                setPwForm((f) => ({ ...f, new_password: e.target.value }))
-              }
-            />
-            <TextField
-              margin="normal"
-              label="새 비밀번호 확인"
-              type="password"
-              fullWidth
-              required
-              value={pwForm.confirm_password}
-              onChange={(e) =>
-                setPwForm((f) => ({ ...f, confirm_password: e.target.value }))
-              }
-            />
-            {pwError && (
-              <Alert severity="error" sx={{ mt: 1 }}>
-                {pwError}
-              </Alert>
-            )}
-            {pwSuccess && (
-              <Alert severity="success" sx={{ mt: 1 }}>
-                {pwSuccess}
-              </Alert>
-            )}
-            <DialogActions>
-              <Button onClick={() => setPwOpen(false)}>취소</Button>
-              <Button type="submit" variant="contained" color="primary">
-                변경
-              </Button>
-            </DialogActions>
-          </Box>
-        </DialogContent>
-      </Dialog>
-      {/* 잔액 카드 */}
-      <Paper
-        elevation={3}
-        sx={{ p: 4, mb: 3, border: "3px solid #ffe066", borderRadius: 5 }}
-      >
-        <Typography variant="h6" color="#7c4a03" gutterBottom>
-          내 잔액 정보
-        </Typography>
-        <Box
-          sx={{
-            bgcolor: "linear-gradient(90deg, #ffe066 0%, #ffb347 100%)",
-            borderRadius: 3,
-            p: 3,
-            display: "flex",
-            alignItems: "center",
-            gap: 2,
-          }}
+        </Paper>
+        {/* 비밀번호 변경 다이얼로그 */}
+        <Dialog open={pwOpen} onClose={() => setPwOpen(false)}>
+          <DialogTitle>비밀번호 변경</DialogTitle>
+          <DialogContent>
+            <Box component="form" onSubmit={handlePwChange} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                label="현재 비밀번호"
+                type="password"
+                fullWidth
+                required
+                value={pwForm.current_password}
+                onChange={(e) =>
+                  setPwForm((f) => ({ ...f, current_password: e.target.value }))
+                }
+              />
+              <TextField
+                margin="normal"
+                label="새 비밀번호"
+                type="password"
+                fullWidth
+                required
+                value={pwForm.new_password}
+                onChange={(e) =>
+                  setPwForm((f) => ({ ...f, new_password: e.target.value }))
+                }
+              />
+              <TextField
+                margin="normal"
+                label="새 비밀번호 확인"
+                type="password"
+                fullWidth
+                required
+                value={pwForm.confirm_password}
+                onChange={(e) =>
+                  setPwForm((f) => ({ ...f, confirm_password: e.target.value }))
+                }
+              />
+              {pwError && (
+                <Alert severity="error" sx={{ mt: 1 }}>
+                  {pwError}
+                </Alert>
+              )}
+              {pwSuccess && (
+                <Alert severity="success" sx={{ mt: 1 }}>
+                  {pwSuccess}
+                </Alert>
+              )}
+              <DialogActions>
+                <Button onClick={() => setPwOpen(false)}>취소</Button>
+                <Button type="submit" variant="contained" color="primary">
+                  변경
+                </Button>
+              </DialogActions>
+            </Box>
+          </DialogContent>
+        </Dialog>
+        {/* 잔액 카드 */}
+        <Paper
+          elevation={3}
+          sx={{ p: 4, mb: 3, border: "3px solid #ffe066", borderRadius: 5 }}
         >
-          <span style={{ fontSize: 28 }}>🏦</span>
-          <Box>
-            <Typography fontWeight={700}>Chick-Pay 캐시</Typography>
-            <Typography fontSize={20} fontWeight={700} color="#7c4a03">
-              ₩ {user.balance.toLocaleString()}
-            </Typography>
+          <Typography variant="h6" color="#7c4a03" gutterBottom>
+            내 잔액 정보
+          </Typography>
+          <Box
+            sx={{
+              bgcolor: "linear-gradient(90deg, #ffe066 0%, #ffb347 100%)",
+              borderRadius: 3,
+              p: 3,
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <span style={{ fontSize: 28 }}>🏦</span>
+            <Box>
+              <Typography fontWeight={700}>Chick-Pay 캐시</Typography>
+              <Typography fontSize={20} fontWeight={700} color="#7c4a03">
+                ₩ {Math.floor(user.balance).toLocaleString()}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Layout>
   );
 };
 

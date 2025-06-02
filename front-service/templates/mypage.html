@@ -182,7 +182,7 @@
                 document.getElementById('user-name').innerText = user.name;
                 document.getElementById('user-email').innerText = user.email;
                 document.getElementById('user-birthdate').innerText = user.birthdate;
-                document.getElementById('user-balance').innerText = `₩ ${Number(user.balance).toLocaleString()}`;
+                document.getElementById('user-balance').innerText = `₩ ${Math.floor(user.balance)}`;
             })
             .catch(err => {
                 if (err.message !== '인증 실패') {

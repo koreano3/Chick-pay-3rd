@@ -10,6 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 
 const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
@@ -61,162 +62,178 @@ const DepositComplete: React.FC = () => {
 
   if (loading)
     return (
-      <Container sx={{ mt: 8 }}>
-        <Typography>로딩 중...</Typography>
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <Typography>로딩 중...</Typography>
+        </Container>
+      </Layout>
     );
   if (error)
     return (
-      <Container sx={{ mt: 8 }}>
-        <Alert severity="error">{error}</Alert>
-      </Container>
+      <Layout>
+        <Container sx={{ mt: 8 }}>
+          <Alert severity="error">{error}</Alert>
+        </Container>
+      </Layout>
     );
   if (!data) return null;
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
-      <Button
-        onClick={() => navigate("/deposit")}
-        sx={{ mb: 2, color: "#7c4a03" }}
-      >
-        ← 입금 페이지로 돌아가기
-      </Button>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 5, mb: 4 }}>
-        <Typography variant="h5" color="#7c4a03" fontWeight={700} gutterBottom>
-          <span style={{ fontSize: 32, marginRight: 8 }}>💰</span>입금 상세 정보
-        </Typography>
-        <Box
-          sx={{
-            bgcolor: "linear-gradient(90deg, #ffe066 0%, #ffb347 100%)",
-            borderRadius: 3,
-            p: 3,
-            mb: 3,
-          }}
+    <Layout>
+      <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+        <Button
+          onClick={() => navigate("/deposit")}
+          sx={{ mb: 2, color: "#7c4a03" }}
         >
-          <Typography fontWeight={700} fontSize={20}>
-            Cash 🏦
+          ← 입금 페이지로 돌아가기
+        </Button>
+        <Paper elevation={3} sx={{ p: 4, borderRadius: 5, mb: 4 }}>
+          <Typography
+            variant="h5"
+            color="#7c4a03"
+            fontWeight={700}
+            gutterBottom
+          >
+            <span style={{ fontSize: 32, marginRight: 8 }}>💰</span>입금 상세
+            정보
           </Typography>
-          <Typography fontSize={18}>{data.email}</Typography>
+          <Box
+            sx={{
+              bgcolor: "linear-gradient(90deg, #ffe066 0%, #ffb347 100%)",
+              borderRadius: 3,
+              p: 3,
+              mb: 3,
+            }}
+          >
+            <Typography fontWeight={700} fontSize={20}>
+              Cash 🏦
+            </Typography>
+            <Typography fontSize={18}>{data.email}</Typography>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mt={1}
+            >
+              <Typography>{data.name}</Typography>
+              <Typography fontWeight={700} fontSize={28} color="#7c4a03">
+                ₩ {data.balance.toLocaleString()}
+              </Typography>
+            </Box>
+          </Box>
+          <Divider sx={{ my: 2 }} />
+          <Typography variant="h6" color="#7c4a03" gutterBottom>
+            입금 내역
+          </Typography>
+          <Paper sx={{ p: 2, mb: 2, bgcolor: "#fffde7" }}>
+            <Box display="flex" justifyContent="space-between" mb={1}>
+              <span>입금 금액</span>
+              <span className="text-2xl font-bold text-chick-brown">
+                ₩ {data.recent_deposits[0]?.amount?.toLocaleString() ?? 0}
+              </span>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mb={1}>
+              <span>입금 일시</span>
+              <span>{data.recent_deposits[0]?.created_at ?? "내역 없음"}</span>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mb={1}>
+              <span>거래 ID</span>
+              <span>DP2025040154321</span>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <span>상태</span>
+              <span
+                style={{
+                  background: "#e0ffe0",
+                  color: "#388e3c",
+                  borderRadius: 8,
+                  padding: "2px 12px",
+                }}
+              >
+                완료
+              </span>
+            </Box>
+          </Paper>
+          <Divider sx={{ my: 2 }} />
+          <Typography variant="h6" color="#7c4a03" gutterBottom>
+            입금 후 잔액
+          </Typography>
+          <Box display="flex" justifyContent="space-between" mb={1}>
+            <span>이전 잔액</span>
+            <span>₩ {data.previous_balance.toLocaleString()}</span>
+          </Box>
+          <Box display="flex" justifyContent="space-between" mb={1}>
+            <span>입금 금액</span>
+            <span style={{ color: "#388e3c" }}>
+              + ₩ {data.recent_deposits[0]?.amount?.toLocaleString() ?? 0}
+            </span>
+          </Box>
           <Box
             display="flex"
             justifyContent="space-between"
-            alignItems="center"
-            mt={1}
+            fontWeight={700}
+            fontSize={18}
           >
-            <Typography>{data.name}</Typography>
-            <Typography fontWeight={700} fontSize={28} color="#7c4a03">
+            <span>현재 잔액</span>
+            <span style={{ color: "#7c4a03" }}>
               ₩ {data.balance.toLocaleString()}
-            </Typography>
-          </Box>
-        </Box>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="h6" color="#7c4a03" gutterBottom>
-          입금 내역
-        </Typography>
-        <Paper sx={{ p: 2, mb: 2, bgcolor: "#fffde7" }}>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <span>입금 금액</span>
-            <span className="text-2xl font-bold text-chick-brown">
-              ₩ {data.recent_deposits[0]?.amount?.toLocaleString() ?? 0}
-            </span>
-          </Box>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <span>입금 일시</span>
-            <span>{data.recent_deposits[0]?.created_at ?? "내역 없음"}</span>
-          </Box>
-          <Box display="flex" justifyContent="space-between" mb={1}>
-            <span>거래 ID</span>
-            <span>DP2025040154321</span>
-          </Box>
-          <Box display="flex" justifyContent="space-between">
-            <span>상태</span>
-            <span
-              style={{
-                background: "#e0ffe0",
-                color: "#388e3c",
-                borderRadius: 8,
-                padding: "2px 12px",
-              }}
-            >
-              완료
             </span>
           </Box>
         </Paper>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="h6" color="#7c4a03" gutterBottom>
-          입금 후 잔액
-        </Typography>
-        <Box display="flex" justifyContent="space-between" mb={1}>
-          <span>이전 잔액</span>
-          <span>₩ {data.previous_balance.toLocaleString()}</span>
-        </Box>
-        <Box display="flex" justifyContent="space-between" mb={1}>
-          <span>입금 금액</span>
-          <span style={{ color: "#388e3c" }}>
-            + ₩ {data.recent_deposits[0]?.amount?.toLocaleString() ?? 0}
-          </span>
-        </Box>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          fontWeight={700}
-          fontSize={18}
-        >
-          <span>현재 잔액</span>
-          <span style={{ color: "#7c4a03" }}>
-            ₩ {data.balance.toLocaleString()}
-          </span>
-        </Box>
-      </Paper>
-      {/* 최근 입금 내역 */}
-      <Paper elevation={2} sx={{ p: 4, borderRadius: 5 }}>
-        <Typography variant="h6" color="#7c4a03" gutterBottom>
-          최근 입금 내역
-        </Typography>
-        {data.recent_deposits.length === 0 && (
-          <Typography color="text.secondary">입금 내역이 없습니다.</Typography>
-        )}
-        {(showAll
-          ? data.recent_deposits
-          : data.recent_deposits.slice(0, 3)
-        ).map((tx, idx) => (
-          <Box
-            key={tx.id}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            py={1}
-            borderBottom={idx < data.recent_deposits.length - 1 ? 1 : 0}
-            borderColor="#eee"
-          >
-            <Box>
-              <Typography fontWeight={600}>{tx.bank_name || "입금"}</Typography>
-              <Typography fontSize={14} color="text.secondary">
-                {tx.created_at}
-              </Typography>
-            </Box>
-            <Box textAlign="right">
-              <Typography fontWeight={700} color="green">
-                + ₩ {tx.amount.toLocaleString()}
-              </Typography>
-              <Typography fontSize={14} color="text.secondary">
-                {tx.transaction_method || "계좌 이체"}
-              </Typography>
-            </Box>
-          </Box>
-        ))}
-        {data.recent_deposits.length > 3 && (
-          <Box textAlign="center" mt={2}>
-            <Button
-              onClick={() => setShowAll((v) => !v)}
-              sx={{ color: "#7c4a03" }}
+        {/* 최근 입금 내역 */}
+        <Paper elevation={2} sx={{ p: 4, borderRadius: 5 }}>
+          <Typography variant="h6" color="#7c4a03" gutterBottom>
+            최근 입금 내역
+          </Typography>
+          {data.recent_deposits.length === 0 && (
+            <Typography color="text.secondary">
+              입금 내역이 없습니다.
+            </Typography>
+          )}
+          {(showAll
+            ? data.recent_deposits
+            : data.recent_deposits.slice(0, 3)
+          ).map((tx, idx) => (
+            <Box
+              key={tx.id}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              py={1}
+              borderBottom={idx < data.recent_deposits.length - 1 ? 1 : 0}
+              borderColor="#eee"
             >
-              {showAll ? "입금 내역 접기" : "모든 입금 내역 보기"}
-            </Button>
-          </Box>
-        )}
-      </Paper>
-    </Container>
+              <Box>
+                <Typography fontWeight={600}>
+                  {tx.bank_name || "입금"}
+                </Typography>
+                <Typography fontSize={14} color="text.secondary">
+                  {tx.created_at}
+                </Typography>
+              </Box>
+              <Box textAlign="right">
+                <Typography fontWeight={700} color="green">
+                  + ₩ {tx.amount.toLocaleString()}
+                </Typography>
+                <Typography fontSize={14} color="text.secondary">
+                  {tx.transaction_method || "계좌 이체"}
+                </Typography>
+              </Box>
+            </Box>
+          ))}
+          {data.recent_deposits.length > 3 && (
+            <Box textAlign="center" mt={2}>
+              <Button
+                onClick={() => setShowAll((v) => !v)}
+                sx={{ color: "#7c4a03" }}
+              >
+                {showAll ? "입금 내역 접기" : "모든 입금 내역 보기"}
+              </Button>
+            </Box>
+          )}
+        </Paper>
+      </Container>
+    </Layout>
   );
 };
 

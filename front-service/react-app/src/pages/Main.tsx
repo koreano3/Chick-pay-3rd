@@ -8,6 +8,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Layout from "../components/Layout";
 
 const features = [
   {
@@ -103,153 +104,7 @@ const Main: React.FC = () => {
   }
 
   return (
-    <Box sx={{ bgcolor: "#FFF9E5", minHeight: "100vh" }}>
-      {/* 헤더 */}
-      <Box sx={{ bgcolor: "#FFDE59", py: 3, boxShadow: 2 }}>
-        <Container maxWidth="lg">
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 2,
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 2,
-                flex: "1 1 auto",
-                minWidth: 0,
-              }}
-            >
-              <img
-                src="/static/images/image.png"
-                alt="Chick Pay"
-                style={{ width: 50, height: "auto" }}
-              />
-              <Typography variant="h5" fontWeight={700} color="#B85C38">
-                Chick Pay
-              </Typography>
-              {user && (
-                <Typography sx={{ ml: 2 }} color="grey.700">
-                  안녕하세요, <strong>{user.name}</strong>님!
-                </Typography>
-              )}
-            </Box>
-
-            {/* 네비게이션 메뉴 */}
-            <Box
-              sx={{
-                display: { xs: "none", md: "flex" },
-                gap: 3,
-                mr: 4,
-              }}
-            >
-              {user ? (
-                <>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={() => navigate("/account")}
-                  >
-                    계좌조회
-                  </Button>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={() => navigate("/transfer")}
-                  >
-                    송금하기
-                  </Button>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={() => navigate("/deposit")}
-                  >
-                    입금하기
-                  </Button>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={() => navigate("/withdraw")}
-                  >
-                    출금하기
-                  </Button>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={() => navigate("/mypage")}
-                  >
-                    마이페이지
-                  </Button>
-                  <Button
-                    sx={{
-                      color: "#B85C38",
-                      fontWeight: "bold",
-                      "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                    }}
-                    onClick={handleLogout}
-                  >
-                    로그아웃
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      bgcolor: "#B85C38",
-                      color: "#fff",
-                      fontWeight: "bold",
-                      borderRadius: 2,
-                      px: 3,
-                      minWidth: { xs: "100%", sm: "auto" },
-                    }}
-                    onClick={() => navigate("/login")}
-                  >
-                    로그인하기
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      color: "#B85C38",
-                      borderColor: "#B85C38",
-                      fontWeight: "bold",
-                      borderRadius: 2,
-                      px: 3,
-                      bgcolor: "#fff",
-                      "&:hover": { bgcolor: "#FFF9E5" },
-                      minWidth: { xs: "100%", sm: "auto" },
-                    }}
-                    onClick={() => navigate("/register")}
-                  >
-                    회원가입
-                  </Button>
-                </>
-              )}
-            </Box>
-          </Box>
-        </Container>
-      </Box>
-
+    <Layout>
       {/* Hero Section */}
       <Box
         sx={{
@@ -457,42 +312,7 @@ const Main: React.FC = () => {
           </Box>
         </Container>
       </Box>
-
-      {/* 푸터 */}
-      <Box sx={{ bgcolor: "#FFDE59", py: 5 }}>
-        <Container maxWidth="lg">
-          <Box
-            display="flex"
-            flexDirection={{ xs: "column", md: "row" }}
-            justifyContent="space-between"
-            alignItems="center"
-            mb={4}
-            gap={2}
-          >
-            <Box display="flex" alignItems="center" gap={2}>
-              <img
-                src="/static/images/image.png"
-                alt="Chick Pay"
-                style={{ width: 50, height: "auto" }}
-              />
-              <Typography variant="h5" fontWeight={700} color="#B85C38">
-                Chick Pay
-              </Typography>
-            </Box>
-            <Box display="flex" flexWrap="wrap" gap={3} justifyContent="center">
-              <Button sx={{ color: "#B85C38" }}>서비스 소개</Button>
-              <Button sx={{ color: "#B85C38" }}>이용약관</Button>
-              <Button sx={{ color: "#B85C38" }}>개인정보처리방침</Button>
-              <Button sx={{ color: "#B85C38" }}>고객센터</Button>
-              <Button sx={{ color: "#B85C38" }}>채용정보</Button>
-            </Box>
-          </Box>
-          <Typography textAlign="center" color="#B85C38">
-            &copy; 2025 Chick Pay. 모든 권리 보유.
-          </Typography>
-        </Container>
-      </Box>
-    </Box>
+    </Layout>
   );
 };
 
