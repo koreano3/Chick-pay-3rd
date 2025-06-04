@@ -80,58 +80,6 @@ class MyPageSerializer(serializers.ModelSerializer):
         fields = ['email', 'name', 'birthdate', 'balance']
 
 
-
-# class UserRegisterSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(write_only=True)
-
-
-#     class Meta:
-#         model = User
-#         fields = ('username', 'password')
-#     def create(self, validated_data):
-#         user = User.objects.create_user(
-#             username=validated_data['username'],
-#             password=validated_data['password']
-#         )
-#         return user
-
-
-# class LoginSerializer(serializers.Serializer):
-#     email = serializers.EmailField()
-#     password = serializers.CharField(write_only=True)
-    
-
-#     def validate(self, data):
-#         from django.contrib.auth import authenticate # type: ignore
-
-#         email = data.get('email')
-#         password = data.get('password')
-
-#         if not email or not password:
-#             raise serializers.ValidationError("이메일과 비밀번호를 모두 입력하세요.")
-
-#         user = authenticate(username=email, password=password)
-
-#         if user is None:
-#             raise serializers.ValidationError("이메일 또는 비밀번호가 틀렸습니다.")
-
-#         if not user.is_active:
-#             raise serializers.ValidationError("비활성화된 계정입니다.")
-
-#         data['user'] = user
-#         return data
-    
-
-# # 💰 캐시 정보 Serializer (조회용)
-# # class CashSerializer(serializers.ModelSerializer):
-# #     email = serializers.EmailField(source='user.email', read_only=True)
-
-# #     class Meta:
-# #         model = Cash
-# #         fields = ['name', 'user', 'email', 'balance', 'created_at', 'updated_at']
-# #         read_only_fields = ['nane' ,'user', 'email', 'balance', 'created_at', 'updated_at']
-
-# 🔐 비밀번호 변경 Serializer
 class PasswordChangeSerializer(serializers.Serializer):
     old_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True)
