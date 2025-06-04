@@ -29,7 +29,11 @@ from dotenv import load_dotenv
 from pathlib import Path
 from core.secrets import load_aws_secret
 
+<<<<<<< HEAD
 # load_aws_secret("chickpay/prod/credentials")
+=======
+#load_aws_secret("chickpay/prod/credentials")
+>>>>>>> bf16a125113946d0a544d3560876db38674c9c5a
 load_aws_secret("koreano3")
 
 
