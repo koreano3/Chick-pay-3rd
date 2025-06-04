@@ -89,7 +89,11 @@
 
 
             try {
+<<<<<<< HEAD:front-service/templates/transfer.html
+                const response = await fetch("http://localhost:8002/zapp/api/cash/transfer/", {
+=======
                 const response = await fetch("{% url 'api-cash-transfer' %}", {
+>>>>>>> bf16a125113946d0a544d3560876db38674c9c5a:templates/transfer.html
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

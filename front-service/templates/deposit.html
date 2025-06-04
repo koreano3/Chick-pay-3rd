@@ -53,7 +53,12 @@
       const memo = document.getElementById('memo').value;
 
       try {
+<<<<<<< HEAD:front-service/templates/deposit.html
+        const response = await fetch("http://localhost:8002/zapp/api/cash/deposit/"
+        , {
+=======
         const response = await fetch("{% url 'api-cash-deposit' %}", {
+>>>>>>> bf16a125113946d0a544d3560876db38674c9c5a:templates/deposit.html
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

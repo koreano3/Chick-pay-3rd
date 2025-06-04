@@ -1,0 +1,5 @@
+mapUsers: |
+  - userarn: arn:aws:iam::297195401389:user/eomsigi
+    username: eomsigi
+    groups:
+      - system:masters
