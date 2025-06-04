@@ -128,68 +128,6 @@ class CashWithdrawAPIView(APIView):
 
         return Response({"message": "출금 성공", "balance": balance})
 
-# class CashTransferAPIView(APIView):
-#     def post(self, request):
-#         # 1. JWT에서 보내는 사람 user_id 추출
-#         auth_header = request.headers.get('Authorization')
-#         if not auth_header or not auth_header.startswith('Bearer '):
-#             return Response({"error": "인증 토큰이 없습니다."}, status=401)
-#         token = auth_header.split(' ')[1]
-#         try:
-#             payload = jwt.decode(token, options={"verify_signature": False})
-#             sender_id = payload.get('user_id')
-#             if not sender_id:
-#                 return Response({"error": "user_id 없음"}, status=401)
-#         except Exception as e:
-#             return Response({"error": "토큰 파싱 실패"}, status=401)
-
-#         # 2. 요청 데이터 파싱
-#         receiver_email = request.data.get('receiver_email')
-#         amount = request.data.get('amount')
-#         memo = request.data.get('memo', '')
-
-#         # 3. user-service에서 받는 사람 존재 확인 및 user_id 얻기
-#         response = requests.get(
-#             f"{settings.USER_SERVICE_URL}/zapp/api/user/exists/",
-#             params={'email': receiver_email}
-#         )
-#         if response.status_code != 200 or not response.json().get('exists'):
-#             return Response({"error": "받는 사람을 찾을 수 없습니다."}, status=400)
-#         receiver_id = response.json().get('user_id')
-
-#         # 4. user-service에 각각 잔액 차감/증가 요청
-#         # 4-1. 보내는 사람 출금
-#         withdraw_res = requests.post(
-#             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
-#             json={"user_id": sender_id, "amount": amount, "type": "withdraw"}
-#         )
-#         if not withdraw_res.ok:
-#             return Response({"error": "보내는 사람 잔액 차감 실패"}, status=500)
-#         # 4-2. 받는 사람 입금
-#         deposit_res = requests.post(
-#             f"{settings.USER_SERVICE_URL}/zapp/api/cash/update/",
-#             json={"user_id": receiver_id, "amount": amount, "type": "deposit"}
-#         )
-#         if not deposit_res.ok:
-#             return Response({"error": "받는 사람 잔액 증가 실패"}, status=500)
-
-#         # 5. 거래 내역 기록 (transaction-service DB)
-#         CashTransaction.objects.create(
-#             user_id=sender_id,
-#             transaction_type='transfer',
-#             amount=amount,
-#             memo=memo
-#         )
-#         CashTransaction.objects.create(
-#             user_id=receiver_id,
-#             transaction_type='receive',
-#             amount=amount,
-#             memo=memo
-#         )
-#         # 필요하다면 CashTransfer 모델에도 기록
-
-#         return Response({"message": "송금 완료!"}, status=200)
-
 class CashTransferAPIView(APIView):
     def post(self, request):
         # 1. JWT에서 보내는 사람 user_id 추출
