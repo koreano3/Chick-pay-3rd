@@ -1,0 +1,33 @@
+# playbooks/setup-velero.yaml
+- name: Setup Velero in Kubernetes
+  hosts: bastion
+  become: true
+  tasks:
+    - name: Download Velero CLI
+      get_url:
+        url: https://github.com/vmware-tanzu/velero/releases/download/v1.13.1/velero-v1.13.1-linux-amd64.tar.gz
+        dest: /tmp/velero.tar.gz
+
+    - name: Extract and move Velero binary
+      unarchive:
+        src: /tmp/velero.tar.gz
+        dest: /tmp/
+        remote_src: yes
+
+    - name: Move velero binary to /usr/local/bin
+      copy:
+        src: /tmp/velero-v1.13.1-linux-amd64/velero
+        dest: /usr/local/bin/velero
+        mode: '0755'
+
+    - name: Install Velero via Helm
+      shell: >
+        helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts &&
+        helm repo update &&
+        helm upgrade --install velero vmware-tanzu/velero
+        --namespace velero --create-namespace
+        --set configuration.provider=aws
+        --set configuration.backupStorageLocation.name=default
+        --set configuration.backupStorageLocation.bucket={{ s3_bucket_name }}
+        --set configuration.backupStorageLocation.config.region={{ aws_region }}
+        --set credentials.secretContents.cloud={{ lookup('file', 'files/credentials-velero') }}

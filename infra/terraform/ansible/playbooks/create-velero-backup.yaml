@@ -1,0 +1,18 @@
+# playbooks/create-velero-backup.yaml
+- name: Create Velero backup
+  hosts: bastion
+  tasks:
+    - name: Apply Velero Backup manifest
+      kubernetes.core.k8s:
+        kubeconfig: ~/.kube/config
+        state: present
+        definition:
+          apiVersion: velero.io/v1
+          kind: Backup
+          metadata:
+            name: daily-backup
+            namespace: velero
+          spec:
+            includedNamespaces:
+              - default
+            ttl: 240h
