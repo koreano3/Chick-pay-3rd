@@ -3,17 +3,19 @@ serviceAccount:
     eks.amazonaws.com/role-arn: "${irsa_role_arn}"
 
 configuration:
-  provider: aws
-  backupStorageLocation:
-    name: default
-    bucket: your-velero-backup-bucket
-    config:
-      region: ap-northeast-2
+  backupStorageLocations:
+    - name: default
+      provider: "${provider}"
+      bucket: "${bucket}"
+      config:
+        region: "${region}"
+        s3ForcePathStyle: true
+        s3Url: https://s3.${region}.amazonaws.com
+  volumeSnapshotLocations:
+    - name: default
+      provider: "${provider}"
+      config:
+        region: "${region}"
 
 credentials:
-  useSecret: true
-  secretContents:
-    cloud: |
-      [default]
-      aws_access_key_id = YOUR_KEY
-      aws_secret_access_key = YOUR_SECRET
+  useSecret: false

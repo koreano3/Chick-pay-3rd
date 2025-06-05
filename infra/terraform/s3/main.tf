@@ -1,63 +1,77 @@
-# KMS 키 생성
-resource "aws_kms_key" "velero" {
-  description             = "KMS key for Velero S3 bucket encryption"
-  deletion_window_in_days = 10
-  enable_key_rotation     = true
+# ────────────────────────────────────────────────
+# AWS Provider
+# ────────────────────────────────────────────────
+provider "aws" {
+  region  = "ap-northeast-2"
+  profile = "eomsigi"
 }
 
-resource "aws_kms_alias" "velero" {
-  name          = "alias/velero-backup-key"
-  target_key_id = aws_kms_key.velero.key_id
-}
+# ────────────────────────────────────────────────
+# KMS Key for SSE-KMS Encryption
+# ────────────────────────────────────────────────
+# resource "aws_kms_key" "velero" {
+#   description             = "KMS key for Velero S3 bucket encryption"
+#   deletion_window_in_days = 10
+#   enable_key_rotation     = true
+# }
 
-# S3 버킷 생성
-resource "aws_s3_bucket" "velero" {
-  bucket = var.bucket_name
+# resource "aws_kms_alias" "velero" {
+#   name          = "alias/velero-backup-key"
+#   target_key_id = aws_kms_key.velero.key_id
+# }
 
-  tags = {
-    Name        = "velero-backup-bucket"
-    Environment = "prod"
-  }
-}
+# # ────────────────────────────────────────────────
+# # S3 Bucket for Velero
+# # ────────────────────────────────────────────────
+# resource "aws_s3_bucket" "velero" {
+#   bucket        = var.bucket_name
+#   force_destroy = true  # 옵션: terraform destroy 시 객체까지 제거
 
-resource "aws_s3_bucket_versioning" "velero" {
-  bucket = aws_s3_bucket.velero.id
+#   tags = {
+#     Name        = "velero-backup-bucket"
+#     Environment = "prod"
+#   }
+# }
 
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "velero" {
+#   bucket = aws_s3_bucket.velero.id
 
-# SSE-KMS 암호화 적용
-resource "aws_s3_bucket_server_side_encryption_configuration" "velero" {
-  bucket = aws_s3_bucket.velero.id
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm     = "aws:kms"
-      kms_master_key_id = aws_kms_key.velero.arn
-    }
-  }
-}
+# resource "aws_s3_bucket_server_side_encryption_configuration" "velero" {
+#   bucket = aws_s3_bucket.velero.id
 
-resource "aws_s3_bucket_public_access_block" "velero" {
-  bucket = aws_s3_bucket.velero.id
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       sse_algorithm     = "aws:kms"
+#       kms_master_key_id = aws_kms_key.velero.arn
+#     }
+#   }
 
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
+#   depends_on = [aws_kms_key.velero]
+# }
 
-resource "aws_s3_bucket_lifecycle_configuration" "velero" {
-  bucket = aws_s3_bucket.velero.id
+# resource "aws_s3_bucket_public_access_block" "velero" {
+#   bucket = aws_s3_bucket.velero.id
 
-  rule {
-    id     = "auto-expire"
-    status = "Enabled"
+#   block_public_acls       = true
+#   block_public_policy     = true
+#   ignore_public_acls      = true
+#   restrict_public_buckets = true
+# }
 
-    expiration {
-      days = var.expire_after_days
-    }
-  }
-}
+# resource "aws_s3_bucket_lifecycle_configuration" "velero" {
+#   bucket = aws_s3_bucket.velero.id
+
+#   rule {
+#     id     = "auto-expire"
+#     status = "Enabled"
+
+#     expiration {
+#       days = var.expire_after_days
+#     }
+#   }
+# }
