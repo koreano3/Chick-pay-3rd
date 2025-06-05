@@ -26,11 +26,17 @@ resource "kubernetes_config_map" "aws_auth" {
         groups   = ["system:masters"]
       }
     ,
-     {
-        userarn  = "arn:aws:iam::297195401389:root"
-        username = "root"
+    {
+        userarn  = "arn:aws:iam::297195401389:user/sujin"
+        username = "sujin"
         groups   = ["system:masters"]
       }
+      ,
+    {
+        userarn  = "arn:aws:iam::297195401389:user/eomsigi"
+        username = "eomsigi"
+        groups   = ["system:masters"]
+    }
     ])
   }
 }
