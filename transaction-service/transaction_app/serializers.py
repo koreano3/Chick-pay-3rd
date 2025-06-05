@@ -1,7 +1,22 @@
+import re
 from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from transaction_app.models import CashTransaction
+from django.contrib.auth import get_user_model , password_validation
 
+
+
+
+
+# 💰 캐시 정보 Serializer (조회용)
+# class CashSerializer(serializers.ModelSerializer):
+#     email = serializers.EmailField(source='user.email', read_only=True)
+
+#     class Meta:
+#         model = Cash
+#         fields = ['name', 'user', 'email', 'balance', 'created_at', 'updated_at']
+#         read_only_fields = ['nane' ,'user', 'email', 'balance', 'created_at', 'updated_at']
+
+
+# 💸 캐시 충전/사용 Serializer 이거 쓰임
 class CashTransactionSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=12, decimal_places=2)
 
@@ -9,32 +24,16 @@ class CashTransactionSerializer(serializers.Serializer):
         if value <= 0:
             raise serializers.ValidationError("금액은 0보다 커야 합니다.")
         return value
-    
+
+#쓰임
 class TransferSerializer(serializers.Serializer):
     receiver_email = serializers.EmailField()
     amount = serializers.DecimalField(max_digits=12, decimal_places=2)
     memo = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     def validate(self, data):
-        request = self.context['request']
-        sender = request.user
-
-        # 1. 본인에게 송금 불가
-        if sender.email == data['receiver_email']:
-            raise serializers.ValidationError({"receiver_email": "자기 자신에게 송금할 수 없습니다."})
-
-        # 2. 받는 사람 존재 여부
-        try:
-            receiver = CustomUser.objects.get(email=data['receiver_email'])
-        except CustomUser.DoesNotExist:
-            raise serializers.ValidationError({"receiver_email": "받는 사람을 찾을 수 없습니다."})
-
         # 3. 송금액 > 0
         if data['amount'] <= 0:
             raise serializers.ValidationError({"amount": "송금액은 0보다 커야 합니다."})
+        return data
 
-        # 4. 잔액 부족
-        if sender.cash.balance < data['amount']:
-            raise serializers.ValidationError({"amount": "잔액이 부족합니다."})
-
-        return data 
