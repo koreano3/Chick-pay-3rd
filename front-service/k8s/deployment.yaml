@@ -16,17 +16,12 @@ spec:
     spec:
       containers:
         - name: front-service
-          image: front-service:latest
+          image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/react-app:latest
           ports:
             - containerPort: 8000
           env:
             - name: DJANGO_SETTINGS_MODULE
               value: "front_service.settings"
-            - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: db-secrets
-                  key: database-url
           resources:
             requests:
               memory: "256Mi"
@@ -34,3 +29,4 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+
