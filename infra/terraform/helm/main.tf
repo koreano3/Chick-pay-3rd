@@ -98,16 +98,6 @@ resource "helm_release" "prometheus" {
   create_namespace = false
 }
 
-resource "helm_release" "grafana" {
-  provider   = helm.service
-  name       = "grafana"
-  namespace  = kubernetes_namespace.monitoring.metadata[0].name
-  repository = "https://grafana.github.io/helm-charts"
-  chart      = "grafana"
-  version    = "7.3.10"
-  create_namespace = false
-}
-
 resource "helm_release" "velero" {
   provider   = helm.service
   name       = "velero"
