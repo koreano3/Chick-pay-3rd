@@ -17,6 +17,18 @@ pipeline {
       }
     }
 
+    // ✅ S3 상태값 먼저 apply
+    stage('Terraform S3') {
+      steps {
+        dir('infra/terraform/s3') {
+          sh 'terraform init'
+          sh 'terraform plan -out=tfplan'
+          input message: '🪣 S3 apply 실행할까요?'
+          sh 'terraform apply -auto-approve tfplan'
+        }
+      }
+    }
+
     stage('Terraform VPC') {
       steps {
         dir('infra/terraform/vpc') {
