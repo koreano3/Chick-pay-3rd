@@ -1,4 +1,3 @@
-# files/aws-auth-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,12 +5,26 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: arn:aws:iam::123456789012:role/eks-node-role
+    - rolearn: arn:aws:iam::297195401389:role/EKSNodeRole
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
         - system:nodes
-    - rolearn: arn:aws:iam::123456789012:role/admin-role
-      username: admin
+
+  mapUsers: |
+    - userarn: arn:aws:iam::297195401389:user/jaesung
+      username: jaesung
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::297195401389:user/eunsan
+      username: eunsan
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::297195401389:user/sujin
+      username: sujin
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::297195401389:user/eomsigi
+      username: eomsigi
       groups:
         - system:masters

@@ -28,6 +28,6 @@
         --namespace velero --create-namespace
         --set configuration.provider=aws
         --set configuration.backupStorageLocation.name=default
-        --set configuration.backupStorageLocation.bucket={{ s3_bucket_name }}
-        --set configuration.backupStorageLocation.config.region={{ aws_region }}
+        --set configuration.backupStorageLocation.bucket={{ s3velero-backup-for-chickpay }}
+        --set configuration.backupStorageLocation.config.region={{ ap-northeast-2 }}
         --set credentials.secretContents.cloud={{ lookup('file', 'files/credentials-velero') }}
