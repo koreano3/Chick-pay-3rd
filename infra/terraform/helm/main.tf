@@ -107,6 +107,7 @@ resource "helm_release" "prometheus" {
   chart      = "kube-prometheus-stack"
   version    = "58.2.0"
   create_namespace = false
+  depends_on = [helm_release.aws_load_balancer_controller]
 }
 
 
