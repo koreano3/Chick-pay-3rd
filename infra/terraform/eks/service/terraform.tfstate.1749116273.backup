@@ -1,31 +1,31 @@
 {
   "version": 4,
   "terraform_version": "1.12.1",
-  "serial": 492,
-  "lineage": "7e8c207d-f3ab-653b-b6c8-25f54660756e",
+  "serial": 540,
+  "lineage": "0b734025-667e-43f0-8903-6ceb4453008d",
   "outputs": {
     "cluster_certificate_authority_data": {
-      "value": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUjlMNUxLYmVnYlV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBMk1EVXhOVEUxTlRaYUZ3MHpOVEEyTURNeE5USXdOVFphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURWZkZpMWR0Sm1ibk84VEJ4a3JLMzhNdkNuYlBQQk5xNlpySEhkTEdNVjZ5UllJdXpYaWpJYzBabGsKOGVzbTM5ZXZsOHJSZzZRY3Fjd2NLRDhxSUFhMTg0MVRSbnQ1dVFIVWNhZXdodnQ3QnFqNms5K1JtQ0IyWVFWcwpOL3FsaDl0VmE5TElUTm5scTBRRG1GdmQ0Mm1CY0k3UHhueVdOb2ppVHM0UDVrQ1E0eUluUzc1TitPdXFlNjlmCi9aZzRmK1kwL1hzbFNBTTNBam5aTVkwa0EzR3MzT0tpYjJ3ZGFXeCtmRll0NXNZcWJmYU1COWFwTXVLcXk3aGoKSEwvUTA0a1MzZ2x1a1MzalN1MGlCWXh4V1MrVittS0dBM2JBRHNiNndOZzhYNDZiQVpsSFVsZUt6Nnp4ZWFNLwpLQml2b3VrblBscWpQaG1aYm5STVdDQkRJd1lGQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSQTQ1OTBoZHM1RzZaYzBQWE04cUlqWGZwRUl6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQjVkMnNQdW9kOQorT2tXNWhhMXNBcTZRSE5YYjN6VU9zMytDOUVlU3B0YnVOczZuMTJ3UFhzU3VPS3g2eklPbUE2UjUrR0hlMVowCnYrRytGUEw4ZHBYWTF4MlJaSVI1Y093ZXpmd3Z2Z01WbTdvRUUwMTdMYmRtNW52OUZMdW0rRkZ4TlVibk95ZUoKNm56eDlQd3A4TDlwL3pDOUZrZGhpZEhSUVpZUTRGRHh0Z2JUclBhRGU1UUw5T3RQNEhYekErbmtqbHFtUS9ybApyck44MytKSWVyZVNrY2lKSmNaa1c5RWZBM0Z6VEc0Z0phYkNVRXlBN29OWENqTWpRWEF2SFRmWkdGOWNJdjdVCnZwZ0svMUI0V1IwVEM1Si9iLzZpTFlCOVhDdURjUFB2MnNRb0hBeHBBeXhtYjRFaGtMZmVqTmFXcU1hbFVTclEKcFdrS2tTRko1Q0Q0Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+      "value": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCRENDQWV5Z0F3SUJBZ0lISHorY2FUQXJSakFOQmdrcWhraUc5dzBCQVFzRkFEQVZNUk13RVFZRFZRUUQKRXdwcmRXSmxjbTVsZEdWek1CNFhEVEkxTURZd05UQXlNRFF3TWxvWERUTTFNRFl3TXpBeU1Ea3dNbG93RlRFVApNQkVHQTFVRUF4TUthM1ZpWlhKdVpYUmxjekNDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DCmdnRUJBSnYxY3ZMWTluYnYyYU1OS0JaSXpURDJHSVV4WXIwUS9Pc0pUSnB4TkNLbC9CWFo5SEFRUVYrR0ZqaGgKVkhLb0tQSEdQcEYyRHRYOTdjNHNCbUtEN0RnZUJjNWg3MU5lTUZSTU9FMnFzdDBnOUtNa1RRY2pjSG1kMUk5MwoxMSt6L1Vvbi9PZEhnK3kvM0QzZUc4N3JmcnlEdVdDL3lGTTZXSlJnYTh2L082dEZOWVNVeWZHSU03Q0kvTmFlCkxXcjFxUXNseDJ1a0diZ05mOEtkdVV2dTBKa0l6YnlsK3BhaWMyQUdSSVdkZXg0c1YyUjd3dGtiaUtodXBHbjMKNDBkZmUzY2t6UG85T1krajNHRkpSdk5ZVWJNc2NMTHQ0WkxoM3B6LzhLdXFDTEhSWGhyV05uOHlnaGlJNkZvSwpiOURrdll6WklaNlNyWkQ5eXNyaENVNVA4eWtDQXdFQUFhTlpNRmN3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHCkExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRkJPNmoxN2R6N3hORTdiNnoxUmJESjZBVDJXN01CVUcKQTFVZEVRUU9NQXlDQ210MVltVnlibVYwWlhNd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCWXIyeUdyYkxkcApwOVZDT0VIZzM5d0xadVduWjRWN2dVUUFWb1ppYkIvNFRXeUhpZUE1UjhiS1BDSU1zY2dJRk1qNjl6c3FwcmRNCkRhSDN3WXdiV1ptUTRRUk10QWExUE1mZXhGemhhdXQrU2p5Z2w5VmFUcENnbEVRUWVKMXFiTDhFMjA0Vk1MZEMKQis4eXpJMm5aZkpBVTJXMGFOU0h2Nm9BN0pIMVl3UGRQNCs5OGRPQ08wckJOYTF2c2JTSm03NFdIZk53eTVOYwpDemZOTjk5UzkydnFiTWNTNFlORGZFK0N2MnFPZUxoUjY2VGZmMXBqRWNKTTJVNVdjaVZzR29Lc0J5Zk9PakwxCkkyVkpBdk9ndFZaNzJBa1pPeWUvSmgvaXVOOUVzKzY1TTE1SGwrUkZiem5wSjFvcG11emhIY3l5U1hYaHg1WGkKbGtObWpwQ0tuOWM9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
       "type": "string"
     },
     "cluster_endpoint": {
-      "value": "https://8AB35466BEC443F8D67A8E39B6ADE5B6.gr7.ap-northeast-2.eks.amazonaws.com",
+      "value": "https://01F49E7DF5D8A22C6BCE7BF97C6CA9A2.gr7.ap-northeast-2.eks.amazonaws.com",
       "type": "string"
     },
     "cluster_name": {
-      "value": "eks-chickpay-cicd",
+      "value": "eks-service",
       "type": "string"
     },
     "cluster_oidc_issuer_url": {
-      "value": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6",
+      "value": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2",
       "type": "string"
     },
     "cluster_security_group_id": {
-      "value": "sg-05f058d0f4aa0a71b",
+      "value": "sg-0fc36aa17eb2a6721",
       "type": "string"
     },
     "cluster_token": {
-      "value": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MDUlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjA1VDE1MTYwOFomWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9MzM0Y2FiODRkMzYxYWMxOGRlNDkyZWY2YjE1NzE1MTNhOGE1NmQ5Njg3ODdkYTA0YmZhOTM4Zjc1NjVlOTgyNw",
+      "value": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1k2NlZYQ1NRJTJGMjAyNTA2MDUlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjA1VDAyMjIzMFomWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9MmE2MjdkM2NiYTNlMzdhODcwMDJiMjkyNDJmZTNjNzNmZWM2NjNjYjAzODk3M2ZiMjI2YmIwZWM4MjZjNWU1MQ",
       "type": "string",
       "sensitive": true
     }
@@ -46,27 +46,27 @@
                 "bootstrap_cluster_creator_admin_permissions": true
               }
             ],
-            "arn": "arn:aws:eks:ap-northeast-2:297195401389:cluster/eks-chickpay-cicd",
+            "arn": "arn:aws:eks:ap-northeast-2:297195401389:cluster/eks-service",
             "certificate_authority": [
               {
-                "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUjlMNUxLYmVnYlV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBMk1EVXhOVEUxTlRaYUZ3MHpOVEEyTURNeE5USXdOVFphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURWZkZpMWR0Sm1ibk84VEJ4a3JLMzhNdkNuYlBQQk5xNlpySEhkTEdNVjZ5UllJdXpYaWpJYzBabGsKOGVzbTM5ZXZsOHJSZzZRY3Fjd2NLRDhxSUFhMTg0MVRSbnQ1dVFIVWNhZXdodnQ3QnFqNms5K1JtQ0IyWVFWcwpOL3FsaDl0VmE5TElUTm5scTBRRG1GdmQ0Mm1CY0k3UHhueVdOb2ppVHM0UDVrQ1E0eUluUzc1TitPdXFlNjlmCi9aZzRmK1kwL1hzbFNBTTNBam5aTVkwa0EzR3MzT0tpYjJ3ZGFXeCtmRll0NXNZcWJmYU1COWFwTXVLcXk3aGoKSEwvUTA0a1MzZ2x1a1MzalN1MGlCWXh4V1MrVittS0dBM2JBRHNiNndOZzhYNDZiQVpsSFVsZUt6Nnp4ZWFNLwpLQml2b3VrblBscWpQaG1aYm5STVdDQkRJd1lGQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSQTQ1OTBoZHM1RzZaYzBQWE04cUlqWGZwRUl6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQjVkMnNQdW9kOQorT2tXNWhhMXNBcTZRSE5YYjN6VU9zMytDOUVlU3B0YnVOczZuMTJ3UFhzU3VPS3g2eklPbUE2UjUrR0hlMVowCnYrRytGUEw4ZHBYWTF4MlJaSVI1Y093ZXpmd3Z2Z01WbTdvRUUwMTdMYmRtNW52OUZMdW0rRkZ4TlVibk95ZUoKNm56eDlQd3A4TDlwL3pDOUZrZGhpZEhSUVpZUTRGRHh0Z2JUclBhRGU1UUw5T3RQNEhYekErbmtqbHFtUS9ybApyck44MytKSWVyZVNrY2lKSmNaa1c5RWZBM0Z6VEc0Z0phYkNVRXlBN29OWENqTWpRWEF2SFRmWkdGOWNJdjdVCnZwZ0svMUI0V1IwVEM1Si9iLzZpTFlCOVhDdURjUFB2MnNRb0hBeHBBeXhtYjRFaGtMZmVqTmFXcU1hbFVTclEKcFdrS2tTRko1Q0Q0Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+                "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCRENDQWV5Z0F3SUJBZ0lISHorY2FUQXJSakFOQmdrcWhraUc5dzBCQVFzRkFEQVZNUk13RVFZRFZRUUQKRXdwcmRXSmxjbTVsZEdWek1CNFhEVEkxTURZd05UQXlNRFF3TWxvWERUTTFNRFl3TXpBeU1Ea3dNbG93RlRFVApNQkVHQTFVRUF4TUthM1ZpWlhKdVpYUmxjekNDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DCmdnRUJBSnYxY3ZMWTluYnYyYU1OS0JaSXpURDJHSVV4WXIwUS9Pc0pUSnB4TkNLbC9CWFo5SEFRUVYrR0ZqaGgKVkhLb0tQSEdQcEYyRHRYOTdjNHNCbUtEN0RnZUJjNWg3MU5lTUZSTU9FMnFzdDBnOUtNa1RRY2pjSG1kMUk5MwoxMSt6L1Vvbi9PZEhnK3kvM0QzZUc4N3JmcnlEdVdDL3lGTTZXSlJnYTh2L082dEZOWVNVeWZHSU03Q0kvTmFlCkxXcjFxUXNseDJ1a0diZ05mOEtkdVV2dTBKa0l6YnlsK3BhaWMyQUdSSVdkZXg0c1YyUjd3dGtiaUtodXBHbjMKNDBkZmUzY2t6UG85T1krajNHRkpSdk5ZVWJNc2NMTHQ0WkxoM3B6LzhLdXFDTEhSWGhyV05uOHlnaGlJNkZvSwpiOURrdll6WklaNlNyWkQ5eXNyaENVNVA4eWtDQXdFQUFhTlpNRmN3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHCkExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRkJPNmoxN2R6N3hORTdiNnoxUmJESjZBVDJXN01CVUcKQTFVZEVRUU9NQXlDQ210MVltVnlibVYwWlhNd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCWXIyeUdyYkxkcApwOVZDT0VIZzM5d0xadVduWjRWN2dVUUFWb1ppYkIvNFRXeUhpZUE1UjhiS1BDSU1zY2dJRk1qNjl6c3FwcmRNCkRhSDN3WXdiV1ptUTRRUk10QWExUE1mZXhGemhhdXQrU2p5Z2w5VmFUcENnbEVRUWVKMXFiTDhFMjA0Vk1MZEMKQis4eXpJMm5aZkpBVTJXMGFOU0h2Nm9BN0pIMVl3UGRQNCs5OGRPQ08wckJOYTF2c2JTSm03NFdIZk53eTVOYwpDemZOTjk5UzkydnFiTWNTNFlORGZFK0N2MnFPZUxoUjY2VGZmMXBqRWNKTTJVNVdjaVZzR29Lc0J5Zk9PakwxCkkyVkpBdk9ndFZaNzJBa1pPeWUvSmgvaXVOOUVzKzY1TTE1SGwrUkZiem5wSjFvcG11emhIY3l5U1hYaHg1WGkKbGtObWpwQ0tuOWM9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
               }
             ],
             "cluster_id": null,
             "compute_config": [],
-            "created_at": "2025-06-05T15:16:37Z",
+            "created_at": "2025-06-05T02:04:51Z",
             "enabled_cluster_log_types": [
               "api",
               "audit",
               "authenticator"
             ],
-            "endpoint": "https://8AB35466BEC443F8D67A8E39B6ADE5B6.gr7.ap-northeast-2.eks.amazonaws.com",
-            "id": "eks-chickpay-cicd",
+            "endpoint": "https://01F49E7DF5D8A22C6BCE7BF97C6CA9A2.gr7.ap-northeast-2.eks.amazonaws.com",
+            "id": "eks-service",
             "identity": [
               {
                 "oidc": [
                   {
-                    "issuer": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6"
+                    "issuer": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2"
                   }
                 ]
               }
@@ -83,15 +83,15 @@
                 "service_ipv6_cidr": ""
               }
             ],
-            "name": "eks-chickpay-cicd",
+            "name": "eks-service",
             "outpost_config": [],
-            "platform_version": "eks.4",
+            "platform_version": "eks.38",
             "remote_network_config": [],
-            "role_arn": "arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003",
+            "role_arn": "arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002",
             "status": "ACTIVE",
             "storage_config": [],
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service",
               "terraform-aws-modules": "eks"
             },
@@ -100,23 +100,23 @@
                 "support_type": "EXTENDED"
               }
             ],
-            "version": "1.33",
+            "version": "1.29",
             "vpc_config": [
               {
-                "cluster_security_group_id": "sg-051bbc8814d6953d9",
+                "cluster_security_group_id": "sg-02392e86c04ca106d",
                 "endpoint_private_access": true,
                 "endpoint_public_access": true,
                 "public_access_cidrs": [
                   "0.0.0.0/0"
                 ],
                 "security_group_ids": [
-                  "sg-05f058d0f4aa0a71b"
+                  "sg-0fc36aa17eb2a6721"
                 ],
                 "subnet_ids": [
-                  "subnet-09a946f0ec01eae50",
-                  "subnet-0be6a85ebba54d758"
+                  "subnet-0d45b4fcb3e652fce",
+                  "subnet-0dbcac440a76426da"
                 ],
-                "vpc_id": "vpc-0094391c383433b84"
+                "vpc_id": "vpc-0a5cfb574c929c732"
               }
             ],
             "zonal_shift_config": []
@@ -135,9 +135,9 @@
         {
           "schema_version": 0,
           "attributes": {
-            "id": "eks-chickpay-cicd",
-            "name": "eks-chickpay-cicd",
-            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MDUlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjA1VDE1MTYwOFomWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9MzM0Y2FiODRkMzYxYWMxOGRlNDkyZWY2YjE1NzE1MTNhOGE1NmQ5Njg3ODdkYTA0YmZhOTM4Zjc1NjVlOTgyNw"
+            "id": "eks-service",
+            "name": "eks-service",
+            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1k2NlZYQ1NRJTJGMjAyNTA2MDUlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjA1VDAyMjIzMFomWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9MmE2MjdkM2NiYTNlMzdhODcwMDJiMjkyNDJmZTNjNzNmZWM2NjNjYjAzODk3M2ZiMjI2YmIwZWM4MjZjNWU1MQ"
           },
           "sensitive_attributes": [
             [
@@ -176,14 +176,14 @@
             "outputs": {
               "value": {
                 "private_subnet_ids": [
-                  "subnet-0be6a85ebba54d758",
-                  "subnet-09a946f0ec01eae50"
+                  "subnet-0d45b4fcb3e652fce",
+                  "subnet-0dbcac440a76426da"
                 ],
                 "public_subnet_ids": [
-                  "subnet-051d66d84e6e9d944",
-                  "subnet-0c0df0024b55e03f5"
+                  "subnet-0e7c20f2eb3c77935",
+                  "subnet-00b17256c42d12ea4"
                 ],
-                "vpc_id": "vpc-0094391c383433b84"
+                "vpc_id": "vpc-0a5cfb574c929c732"
               },
               "type": [
                 "object",
@@ -214,6 +214,259 @@
       ]
     },
     {
+      "mode": "managed",
+      "type": "kubernetes_config_map",
+      "name": "aws_auth",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"].eks",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "binary_data": {},
+            "data": {
+              "mapRoles": "- \"groups\":\n  - \"system:bootstrappers\"\n  - \"system:nodes\"\n  \"rolearn\": \"arn:aws:iam::297195401389:role/EKSNodeRole\"\n  \"username\": \"system:node:{{EC2PrivateDNSName}}\"\n",
+              "mapUsers": "- \"groups\":\n  - \"system:masters\"\n  \"userarn\": \"arn:aws:iam::297195401389:user/jaesung\"\n  \"username\": \"jaesung\"\n- \"groups\":\n  - \"system:masters\"\n  \"userarn\": \"arn:aws:iam::297195401389:user/eunsan\"\n  \"username\": \"eunsan\"\n- \"groups\":\n  - \"system:masters\"\n  \"userarn\": \"arn:aws:iam::297195401389:user/sujin\"\n  \"username\": \"sujin\"\n- \"groups\":\n  - \"system:masters\"\n  \"userarn\": \"arn:aws:iam::297195401389:user/eomsigi\"\n  \"username\": \"eomsigi\"\n"
+            },
+            "id": "kube-system/aws-auth",
+            "immutable": false,
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "aws-auth",
+                "namespace": "kube-system",
+                "resource_version": "2537",
+                "uid": "62795e1d-a6ab-4058-bfe2-6b86be223fbb"
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "ConfigMap",
+            "name": "aws-auth",
+            "namespace": "kube-system"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_eks_cluster.this",
+            "data.aws_eks_cluster_auth.this",
+            "data.terraform_remote_state.vpc",
+            "module.eks.aws_cloudwatch_log_group.this",
+            "module.eks.aws_ec2_tag.cluster_primary_security_group",
+            "module.eks.aws_eks_access_entry.this",
+            "module.eks.aws_eks_access_policy_association.this",
+            "module.eks.aws_eks_addon.before_compute",
+            "module.eks.aws_eks_addon.this",
+            "module.eks.aws_eks_cluster.this",
+            "module.eks.aws_eks_identity_provider_config.this",
+            "module.eks.aws_iam_openid_connect_provider.oidc_provider",
+            "module.eks.aws_iam_policy.cluster_encryption",
+            "module.eks.aws_iam_policy.cni_ipv6_policy",
+            "module.eks.aws_iam_policy.custom",
+            "module.eks.aws_iam_role.eks_auto",
+            "module.eks.aws_iam_role.this",
+            "module.eks.aws_iam_role_policy_attachment.additional",
+            "module.eks.aws_iam_role_policy_attachment.cluster_encryption",
+            "module.eks.aws_iam_role_policy_attachment.custom",
+            "module.eks.aws_iam_role_policy_attachment.eks_auto",
+            "module.eks.aws_iam_role_policy_attachment.eks_auto_additional",
+            "module.eks.aws_iam_role_policy_attachment.this",
+            "module.eks.aws_security_group.cluster",
+            "module.eks.aws_security_group.node",
+            "module.eks.aws_security_group_rule.cluster",
+            "module.eks.aws_security_group_rule.node",
+            "module.eks.data.aws_caller_identity.current",
+            "module.eks.data.aws_eks_addon_version.this",
+            "module.eks.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.data.aws_iam_policy_document.cni_ipv6_policy",
+            "module.eks.data.aws_iam_policy_document.custom",
+            "module.eks.data.aws_iam_policy_document.node_assume_role_policy",
+            "module.eks.data.aws_iam_session_context.current",
+            "module.eks.data.aws_partition.current",
+            "module.eks.data.tls_certificate.this",
+            "module.eks.module.eks_managed_node_group.aws_autoscaling_schedule.this",
+            "module.eks.module.eks_managed_node_group.aws_eks_node_group.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this",
+            "module.eks.module.eks_managed_node_group.aws_launch_template.this",
+            "module.eks.module.eks_managed_node_group.aws_placement_group.this",
+            "module.eks.module.eks_managed_node_group.data.aws_caller_identity.current",
+            "module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type.this",
+            "module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type_offerings.this",
+            "module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.role",
+            "module.eks.module.eks_managed_node_group.data.aws_partition.current",
+            "module.eks.module.eks_managed_node_group.data.aws_ssm_parameter.ami",
+            "module.eks.module.eks_managed_node_group.data.aws_subnets.placement_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.linux_eks_managed_node_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
+            "module.eks.module.fargate_profile.aws_eks_fargate_profile.this",
+            "module.eks.module.fargate_profile.aws_iam_role.this",
+            "module.eks.module.fargate_profile.aws_iam_role_policy.this",
+            "module.eks.module.fargate_profile.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.fargate_profile.aws_iam_role_policy_attachment.this",
+            "module.eks.module.fargate_profile.data.aws_caller_identity.current",
+            "module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.fargate_profile.data.aws_iam_policy_document.role",
+            "module.eks.module.fargate_profile.data.aws_partition.current",
+            "module.eks.module.fargate_profile.data.aws_region.current",
+            "module.eks.module.kms.aws_kms_alias.this",
+            "module.eks.module.kms.aws_kms_external_key.this",
+            "module.eks.module.kms.aws_kms_grant.this",
+            "module.eks.module.kms.aws_kms_key.this",
+            "module.eks.module.kms.aws_kms_replica_external_key.this",
+            "module.eks.module.kms.aws_kms_replica_key.this",
+            "module.eks.module.kms.data.aws_caller_identity.current",
+            "module.eks.module.kms.data.aws_iam_policy_document.this",
+            "module.eks.module.kms.data.aws_partition.current",
+            "module.eks.module.self_managed_node_group.aws_autoscaling_group.this",
+            "module.eks.module.self_managed_node_group.aws_autoscaling_schedule.this",
+            "module.eks.module.self_managed_node_group.aws_eks_access_entry.this",
+            "module.eks.module.self_managed_node_group.aws_iam_instance_profile.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this",
+            "module.eks.module.self_managed_node_group.aws_launch_template.this",
+            "module.eks.module.self_managed_node_group.aws_placement_group.this",
+            "module.eks.module.self_managed_node_group.data.aws_caller_identity.current",
+            "module.eks.module.self_managed_node_group.data.aws_ec2_instance_type.this",
+            "module.eks.module.self_managed_node_group.data.aws_ec2_instance_type_offerings.this",
+            "module.eks.module.self_managed_node_group.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.self_managed_node_group.data.aws_iam_policy_document.role",
+            "module.eks.module.self_managed_node_group.data.aws_partition.current",
+            "module.eks.module.self_managed_node_group.data.aws_ssm_parameter.ami",
+            "module.eks.module.self_managed_node_group.data.aws_subnets.placement_group",
+            "module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group",
+            "module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.linux_eks_managed_node_group",
+            "module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
+            "module.eks.time_sleep.this",
+            "null_resource.wait_for_eks"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "wait_for_eks",
+      "provider": "provider[\"registry.terraform.io/hashicorp/null\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "917581453",
+            "triggers": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "dependencies": [
+            "data.terraform_remote_state.vpc",
+            "module.eks.aws_cloudwatch_log_group.this",
+            "module.eks.aws_ec2_tag.cluster_primary_security_group",
+            "module.eks.aws_eks_access_entry.this",
+            "module.eks.aws_eks_access_policy_association.this",
+            "module.eks.aws_eks_addon.before_compute",
+            "module.eks.aws_eks_addon.this",
+            "module.eks.aws_eks_cluster.this",
+            "module.eks.aws_eks_identity_provider_config.this",
+            "module.eks.aws_iam_openid_connect_provider.oidc_provider",
+            "module.eks.aws_iam_policy.cluster_encryption",
+            "module.eks.aws_iam_policy.cni_ipv6_policy",
+            "module.eks.aws_iam_policy.custom",
+            "module.eks.aws_iam_role.eks_auto",
+            "module.eks.aws_iam_role.this",
+            "module.eks.aws_iam_role_policy_attachment.additional",
+            "module.eks.aws_iam_role_policy_attachment.cluster_encryption",
+            "module.eks.aws_iam_role_policy_attachment.custom",
+            "module.eks.aws_iam_role_policy_attachment.eks_auto",
+            "module.eks.aws_iam_role_policy_attachment.eks_auto_additional",
+            "module.eks.aws_iam_role_policy_attachment.this",
+            "module.eks.aws_security_group.cluster",
+            "module.eks.aws_security_group.node",
+            "module.eks.aws_security_group_rule.cluster",
+            "module.eks.aws_security_group_rule.node",
+            "module.eks.data.aws_caller_identity.current",
+            "module.eks.data.aws_eks_addon_version.this",
+            "module.eks.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.data.aws_iam_policy_document.cni_ipv6_policy",
+            "module.eks.data.aws_iam_policy_document.custom",
+            "module.eks.data.aws_iam_policy_document.node_assume_role_policy",
+            "module.eks.data.aws_iam_session_context.current",
+            "module.eks.data.aws_partition.current",
+            "module.eks.data.tls_certificate.this",
+            "module.eks.module.eks_managed_node_group.aws_autoscaling_schedule.this",
+            "module.eks.module.eks_managed_node_group.aws_eks_node_group.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy.this",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.eks_managed_node_group.aws_iam_role_policy_attachment.this",
+            "module.eks.module.eks_managed_node_group.aws_launch_template.this",
+            "module.eks.module.eks_managed_node_group.aws_placement_group.this",
+            "module.eks.module.eks_managed_node_group.data.aws_caller_identity.current",
+            "module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type.this",
+            "module.eks.module.eks_managed_node_group.data.aws_ec2_instance_type_offerings.this",
+            "module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.eks_managed_node_group.data.aws_iam_policy_document.role",
+            "module.eks.module.eks_managed_node_group.data.aws_partition.current",
+            "module.eks.module.eks_managed_node_group.data.aws_ssm_parameter.ami",
+            "module.eks.module.eks_managed_node_group.data.aws_subnets.placement_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.data.cloudinit_config.linux_eks_managed_node_group",
+            "module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
+            "module.eks.module.fargate_profile.aws_eks_fargate_profile.this",
+            "module.eks.module.fargate_profile.aws_iam_role.this",
+            "module.eks.module.fargate_profile.aws_iam_role_policy.this",
+            "module.eks.module.fargate_profile.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.fargate_profile.aws_iam_role_policy_attachment.this",
+            "module.eks.module.fargate_profile.data.aws_caller_identity.current",
+            "module.eks.module.fargate_profile.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.fargate_profile.data.aws_iam_policy_document.role",
+            "module.eks.module.fargate_profile.data.aws_partition.current",
+            "module.eks.module.fargate_profile.data.aws_region.current",
+            "module.eks.module.kms.aws_kms_alias.this",
+            "module.eks.module.kms.aws_kms_external_key.this",
+            "module.eks.module.kms.aws_kms_grant.this",
+            "module.eks.module.kms.aws_kms_key.this",
+            "module.eks.module.kms.aws_kms_replica_external_key.this",
+            "module.eks.module.kms.aws_kms_replica_key.this",
+            "module.eks.module.kms.data.aws_caller_identity.current",
+            "module.eks.module.kms.data.aws_iam_policy_document.this",
+            "module.eks.module.kms.data.aws_partition.current",
+            "module.eks.module.self_managed_node_group.aws_autoscaling_group.this",
+            "module.eks.module.self_managed_node_group.aws_autoscaling_schedule.this",
+            "module.eks.module.self_managed_node_group.aws_eks_access_entry.this",
+            "module.eks.module.self_managed_node_group.aws_iam_instance_profile.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy.this",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.additional",
+            "module.eks.module.self_managed_node_group.aws_iam_role_policy_attachment.this",
+            "module.eks.module.self_managed_node_group.aws_launch_template.this",
+            "module.eks.module.self_managed_node_group.aws_placement_group.this",
+            "module.eks.module.self_managed_node_group.data.aws_caller_identity.current",
+            "module.eks.module.self_managed_node_group.data.aws_ec2_instance_type.this",
+            "module.eks.module.self_managed_node_group.data.aws_ec2_instance_type_offerings.this",
+            "module.eks.module.self_managed_node_group.data.aws_iam_policy_document.assume_role_policy",
+            "module.eks.module.self_managed_node_group.data.aws_iam_policy_document.role",
+            "module.eks.module.self_managed_node_group.data.aws_partition.current",
+            "module.eks.module.self_managed_node_group.data.aws_ssm_parameter.ami",
+            "module.eks.module.self_managed_node_group.data.aws_subnets.placement_group",
+            "module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.al2023_eks_managed_node_group",
+            "module.eks.module.self_managed_node_group.module.user_data.data.cloudinit_config.linux_eks_managed_node_group",
+            "module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
+            "module.eks.time_sleep.this"
+          ]
+        }
+      ]
+    },
+    {
       "module": "module.eks",
       "mode": "data",
       "type": "aws_caller_identity",
@@ -225,9 +478,9 @@
           "schema_version": 0,
           "attributes": {
             "account_id": "297195401389",
-            "arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "arn": "arn:aws:iam::297195401389:user/sujin",
             "id": "297195401389",
-            "user_id": "AIDAUKMRZ6CW55YHFW32T"
+            "user_id": "AIDAUKMRZ6CWTIAMLXHDC"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0
@@ -489,9 +742,9 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:user/eomsigi",
-            "id": "arn:aws:iam::297195401389:user/eomsigi",
-            "issuer_arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "arn": "arn:aws:iam::297195401389:user/sujin",
+            "id": "arn:aws:iam::297195401389:user/sujin",
+            "issuer_arn": "arn:aws:iam::297195401389:user/sujin",
             "issuer_id": "",
             "issuer_name": "",
             "session_name": ""
@@ -576,7 +829,7 @@
             ],
             "content": null,
             "id": "2f4c12273dfce0668da79492f884c5b681951fb9",
-            "url": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6",
+            "url": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2",
             "verify_chain": true
           },
           "sensitive_attributes": [],
@@ -595,20 +848,20 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:logs:ap-northeast-2:297195401389:log-group:/aws/eks/eks-chickpay-cicd/cluster",
-            "id": "/aws/eks/eks-chickpay-cicd/cluster",
+            "arn": "arn:aws:logs:ap-northeast-2:297195401389:log-group:/aws/eks/eks-service/cluster",
+            "id": "/aws/eks/eks-service/cluster",
             "kms_key_id": "",
             "log_group_class": "STANDARD",
-            "name": "/aws/eks/eks-chickpay-cicd/cluster",
+            "name": "/aws/eks/eks-service/cluster",
             "name_prefix": "",
             "retention_in_days": 90,
             "skip_destroy": false,
             "tags": {
-              "Name": "/aws/eks/eks-chickpay-cicd/cluster",
+              "Name": "/aws/eks/eks-service/cluster",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "/aws/eks/eks-chickpay-cicd/cluster",
+              "Name": "/aws/eks/eks-service/cluster",
               "Purpose": "msa-service"
             }
           },
@@ -630,9 +883,9 @@
           "index_key": "Purpose",
           "schema_version": 0,
           "attributes": {
-            "id": "sg-051bbc8814d6953d9,Purpose",
+            "id": "sg-02392e86c04ca106d,Purpose",
             "key": "Purpose",
-            "resource_id": "sg-051bbc8814d6953d9",
+            "resource_id": "sg-02392e86c04ca106d",
             "value": "msa-service"
           },
           "sensitive_attributes": [],
@@ -678,24 +931,24 @@
           "index_key": "cluster_creator",
           "schema_version": 0,
           "attributes": {
-            "access_entry_arn": "arn:aws:eks:ap-northeast-2:297195401389:access-entry/eks-chickpay-cicd/user/297195401389/eomsigi/e6cba059-5239-1d36-ada4-5994fe998da7",
-            "cluster_name": "eks-chickpay-cicd",
-            "created_at": "2025-06-05T15:25:38Z",
-            "id": "eks-chickpay-cicd:arn:aws:iam::297195401389:user/eomsigi",
+            "access_entry_arn": "arn:aws:eks:ap-northeast-2:297195401389:access-entry/eks-service/user/297195401389/sujin/accb9eee-7c73-712c-0d2a-6896fd6ce522",
+            "cluster_name": "eks-service",
+            "created_at": "2025-06-05T02:13:01Z",
+            "id": "eks-service:arn:aws:iam::297195401389:user/sujin",
             "kubernetes_groups": [],
-            "modified_at": "2025-06-05T15:25:38Z",
-            "principal_arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "modified_at": "2025-06-05T02:13:01Z",
+            "principal_arn": "arn:aws:iam::297195401389:user/sujin",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "timeouts": null,
             "type": "STANDARD",
-            "user_name": "arn:aws:iam::297195401389:user/eomsigi"
+            "user_name": "arn:aws:iam::297195401389:user/sujin"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -742,16 +995,16 @@
           "attributes": {
             "access_scope": [
               {
-                "namespaces": null,
+                "namespaces": [],
                 "type": "cluster"
               }
             ],
-            "associated_at": "2025-06-05 15:25:39.616 +0000 UTC",
-            "cluster_name": "eks-chickpay-cicd",
-            "id": "eks-chickpay-cicd#arn:aws:iam::297195401389:user/eomsigi#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
-            "modified_at": "2025-06-05 15:25:39.616 +0000 UTC",
+            "associated_at": "2025-06-05 02:13:02.079 +0000 UTC",
+            "cluster_name": "eks-service",
+            "id": "eks-service#arn:aws:iam::297195401389:user/sujin#arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
+            "modified_at": "2025-06-05 02:13:02.079 +0000 UTC",
             "policy_arn": "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy",
-            "principal_arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "principal_arn": "arn:aws:iam::297195401389:user/sujin",
             "timeouts": null
           },
           "sensitive_attributes": [],
@@ -804,16 +1057,16 @@
                 "bootstrap_cluster_creator_admin_permissions": false
               }
             ],
-            "arn": "arn:aws:eks:ap-northeast-2:297195401389:cluster/eks-chickpay-cicd",
+            "arn": "arn:aws:eks:ap-northeast-2:297195401389:cluster/eks-service",
             "bootstrap_self_managed_addons": true,
             "certificate_authority": [
               {
-                "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUjlMNUxLYmVnYlV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBMk1EVXhOVEUxTlRaYUZ3MHpOVEEyTURNeE5USXdOVFphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURWZkZpMWR0Sm1ibk84VEJ4a3JLMzhNdkNuYlBQQk5xNlpySEhkTEdNVjZ5UllJdXpYaWpJYzBabGsKOGVzbTM5ZXZsOHJSZzZRY3Fjd2NLRDhxSUFhMTg0MVRSbnQ1dVFIVWNhZXdodnQ3QnFqNms5K1JtQ0IyWVFWcwpOL3FsaDl0VmE5TElUTm5scTBRRG1GdmQ0Mm1CY0k3UHhueVdOb2ppVHM0UDVrQ1E0eUluUzc1TitPdXFlNjlmCi9aZzRmK1kwL1hzbFNBTTNBam5aTVkwa0EzR3MzT0tpYjJ3ZGFXeCtmRll0NXNZcWJmYU1COWFwTXVLcXk3aGoKSEwvUTA0a1MzZ2x1a1MzalN1MGlCWXh4V1MrVittS0dBM2JBRHNiNndOZzhYNDZiQVpsSFVsZUt6Nnp4ZWFNLwpLQml2b3VrblBscWpQaG1aYm5STVdDQkRJd1lGQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSQTQ1OTBoZHM1RzZaYzBQWE04cUlqWGZwRUl6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQjVkMnNQdW9kOQorT2tXNWhhMXNBcTZRSE5YYjN6VU9zMytDOUVlU3B0YnVOczZuMTJ3UFhzU3VPS3g2eklPbUE2UjUrR0hlMVowCnYrRytGUEw4ZHBYWTF4MlJaSVI1Y093ZXpmd3Z2Z01WbTdvRUUwMTdMYmRtNW52OUZMdW0rRkZ4TlVibk95ZUoKNm56eDlQd3A4TDlwL3pDOUZrZGhpZEhSUVpZUTRGRHh0Z2JUclBhRGU1UUw5T3RQNEhYekErbmtqbHFtUS9ybApyck44MytKSWVyZVNrY2lKSmNaa1c5RWZBM0Z6VEc0Z0phYkNVRXlBN29OWENqTWpRWEF2SFRmWkdGOWNJdjdVCnZwZ0svMUI0V1IwVEM1Si9iLzZpTFlCOVhDdURjUFB2MnNRb0hBeHBBeXhtYjRFaGtMZmVqTmFXcU1hbFVTclEKcFdrS2tTRko1Q0Q0Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+                "data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCRENDQWV5Z0F3SUJBZ0lISHorY2FUQXJSakFOQmdrcWhraUc5dzBCQVFzRkFEQVZNUk13RVFZRFZRUUQKRXdwcmRXSmxjbTVsZEdWek1CNFhEVEkxTURZd05UQXlNRFF3TWxvWERUTTFNRFl3TXpBeU1Ea3dNbG93RlRFVApNQkVHQTFVRUF4TUthM1ZpWlhKdVpYUmxjekNDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DCmdnRUJBSnYxY3ZMWTluYnYyYU1OS0JaSXpURDJHSVV4WXIwUS9Pc0pUSnB4TkNLbC9CWFo5SEFRUVYrR0ZqaGgKVkhLb0tQSEdQcEYyRHRYOTdjNHNCbUtEN0RnZUJjNWg3MU5lTUZSTU9FMnFzdDBnOUtNa1RRY2pjSG1kMUk5MwoxMSt6L1Vvbi9PZEhnK3kvM0QzZUc4N3JmcnlEdVdDL3lGTTZXSlJnYTh2L082dEZOWVNVeWZHSU03Q0kvTmFlCkxXcjFxUXNseDJ1a0diZ05mOEtkdVV2dTBKa0l6YnlsK3BhaWMyQUdSSVdkZXg0c1YyUjd3dGtiaUtodXBHbjMKNDBkZmUzY2t6UG85T1krajNHRkpSdk5ZVWJNc2NMTHQ0WkxoM3B6LzhLdXFDTEhSWGhyV05uOHlnaGlJNkZvSwpiOURrdll6WklaNlNyWkQ5eXNyaENVNVA4eWtDQXdFQUFhTlpNRmN3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHCkExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRkJPNmoxN2R6N3hORTdiNnoxUmJESjZBVDJXN01CVUcKQTFVZEVRUU9NQXlDQ210MVltVnlibVYwWlhNd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCWXIyeUdyYkxkcApwOVZDT0VIZzM5d0xadVduWjRWN2dVUUFWb1ppYkIvNFRXeUhpZUE1UjhiS1BDSU1zY2dJRk1qNjl6c3FwcmRNCkRhSDN3WXdiV1ptUTRRUk10QWExUE1mZXhGemhhdXQrU2p5Z2w5VmFUcENnbEVRUWVKMXFiTDhFMjA0Vk1MZEMKQis4eXpJMm5aZkpBVTJXMGFOU0h2Nm9BN0pIMVl3UGRQNCs5OGRPQ08wckJOYTF2c2JTSm03NFdIZk53eTVOYwpDemZOTjk5UzkydnFiTWNTNFlORGZFK0N2MnFPZUxoUjY2VGZmMXBqRWNKTTJVNVdjaVZzR29Lc0J5Zk9PakwxCkkyVkpBdk9ndFZaNzJBa1pPeWUvSmgvaXVOOUVzKzY1TTE1SGwrUkZiem5wSjFvcG11emhIY3l5U1hYaHg1WGkKbGtObWpwQ0tuOWM9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
               }
             ],
             "cluster_id": null,
             "compute_config": [],
-            "created_at": "2025-06-05T15:16:37Z",
+            "created_at": "2025-06-05T02:04:51Z",
             "enabled_cluster_log_types": [
               "api",
               "audit",
@@ -823,7 +1076,7 @@
               {
                 "provider": [
                   {
-                    "key_arn": "arn:aws:kms:ap-northeast-2:297195401389:key/c9cee8cd-3561-4dd8-9629-b7ddd786f9c6"
+                    "key_arn": "arn:aws:kms:ap-northeast-2:297195401389:key/54e224ad-e0ad-499a-856c-c293e6d92fae"
                   }
                 ],
                 "resources": [
@@ -831,14 +1084,14 @@
                 ]
               }
             ],
-            "endpoint": "https://8AB35466BEC443F8D67A8E39B6ADE5B6.gr7.ap-northeast-2.eks.amazonaws.com",
+            "endpoint": "https://01F49E7DF5D8A22C6BCE7BF97C6CA9A2.gr7.ap-northeast-2.eks.amazonaws.com",
             "force_update_version": null,
-            "id": "eks-chickpay-cicd",
+            "id": "eks-service",
             "identity": [
               {
                 "oidc": [
                   {
-                    "issuer": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6"
+                    "issuer": "https://oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2"
                   }
                 ]
               }
@@ -855,20 +1108,20 @@
                 "service_ipv6_cidr": ""
               }
             ],
-            "name": "eks-chickpay-cicd",
+            "name": "eks-service",
             "outpost_config": [],
-            "platform_version": "eks.4",
+            "platform_version": "eks.38",
             "remote_network_config": [],
-            "role_arn": "arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003",
+            "role_arn": "arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002",
             "status": "ACTIVE",
             "storage_config": [],
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service",
               "terraform-aws-modules": "eks"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service",
               "terraform-aws-modules": "eks"
             },
@@ -882,23 +1135,23 @@
                 "support_type": "EXTENDED"
               }
             ],
-            "version": "1.33",
+            "version": "1.29",
             "vpc_config": [
               {
-                "cluster_security_group_id": "sg-051bbc8814d6953d9",
+                "cluster_security_group_id": "sg-02392e86c04ca106d",
                 "endpoint_private_access": true,
                 "endpoint_public_access": true,
                 "public_access_cidrs": [
                   "0.0.0.0/0"
                 ],
                 "security_group_ids": [
-                  "sg-05f058d0f4aa0a71b"
+                  "sg-0fc36aa17eb2a6721"
                 ],
                 "subnet_ids": [
-                  "subnet-09a946f0ec01eae50",
-                  "subnet-0be6a85ebba54d758"
+                  "subnet-0d45b4fcb3e652fce",
+                  "subnet-0dbcac440a76426da"
                 ],
-                "vpc_id": "vpc-0094391c383433b84"
+                "vpc_id": "vpc-0a5cfb574c929c732"
               }
             ],
             "zonal_shift_config": []
@@ -946,23 +1199,23 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:oidc-provider/oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6",
+            "arn": "arn:aws:iam::297195401389:oidc-provider/oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2",
             "client_id_list": [
               "sts.amazonaws.com"
             ],
-            "id": "arn:aws:iam::297195401389:oidc-provider/oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6",
+            "id": "arn:aws:iam::297195401389:oidc-provider/oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "thumbprint_list": [
               "06b25927c42a721631c1efd9431e648fa62e1e39"
             ],
-            "url": "oidc.eks.ap-northeast-2.amazonaws.com/id/8AB35466BEC443F8D67A8E39B6ADE5B6"
+            "url": "oidc.eks.ap-northeast-2.amazonaws.com/id/01F49E7DF5D8A22C6BCE7BF97C6CA9A2"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1008,21 +1261,21 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-ClusterEncryption2025060515163833490000000c",
-            "attachment_count": 0,
+            "arn": "arn:aws:iam::297195401389:policy/eks-service-cluster-ClusterEncryption2025060416080028610000000c",
+            "attachment_count": 1,
             "description": "Cluster encryption policy to allow cluster role to utilize CMK provided",
-            "id": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-ClusterEncryption2025060515163833490000000c",
-            "name": "eks-chickpay-cicd-cluster-ClusterEncryption2025060515163833490000000c",
-            "name_prefix": "eks-chickpay-cicd-cluster-ClusterEncryption",
+            "id": "arn:aws:iam::297195401389:policy/eks-service-cluster-ClusterEncryption2025060416080028610000000c",
+            "name": "eks-service-cluster-ClusterEncryption2025060416080028610000000c",
+            "name_prefix": "eks-service-cluster-ClusterEncryption",
             "path": "/",
-            "policy": "{\"Statement\":[{\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\",\"kms:ListGrants\",\"kms:DescribeKey\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:kms:ap-northeast-2:297195401389:key/c9cee8cd-3561-4dd8-9629-b7ddd786f9c6\"}],\"Version\":\"2012-10-17\"}",
-            "policy_id": "ANPAUKMRZ6CWWLEPZ75ED",
+            "policy": "{\"Statement\":[{\"Action\":[\"kms:Encrypt\",\"kms:Decrypt\",\"kms:ListGrants\",\"kms:DescribeKey\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:kms:ap-northeast-2:297195401389:key/54e224ad-e0ad-499a-856c-c293e6d92fae\"}],\"Version\":\"2012-10-17\"}",
+            "policy_id": "ANPAUKMRZ6CWYYSV3YNQ2",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             }
           },
@@ -1056,21 +1309,21 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-20250605151615053100000002",
-            "attachment_count": 0,
+            "arn": "arn:aws:iam::297195401389:policy/eks-service-cluster-20250604160729631000000001",
+            "attachment_count": 1,
             "description": "",
-            "id": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-20250605151615053100000002",
-            "name": "eks-chickpay-cicd-cluster-20250605151615053100000002",
-            "name_prefix": "eks-chickpay-cicd-cluster-",
+            "id": "arn:aws:iam::297195401389:policy/eks-service-cluster-20250604160729631000000001",
+            "name": "eks-service-cluster-20250604160729631000000001",
+            "name_prefix": "eks-service-cluster-",
             "path": "/",
             "policy": "{\"Statement\":[{\"Action\":[\"ec2:RunInstances\",\"ec2:CreateLaunchTemplate\",\"ec2:CreateFleet\"],\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\"},\"StringLike\":{\"aws:RequestTag/eks:kubernetes-node-class-name\":\"*\",\"aws:RequestTag/eks:kubernetes-node-pool-name\":\"*\"}},\"Effect\":\"Allow\",\"Resource\":\"*\",\"Sid\":\"Compute\"},{\"Action\":[\"ec2:CreateVolume\",\"ec2:CreateSnapshot\"],\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\"}},\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:ec2:*:*:volume/*\",\"arn:aws:ec2:*:*:snapshot/*\"],\"Sid\":\"Storage\"},{\"Action\":\"ec2:CreateNetworkInterface\",\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\",\"aws:RequestTag/eks:kubernetes-cni-node-name\":\"*\"}},\"Effect\":\"Allow\",\"Resource\":\"*\",\"Sid\":\"Networking\"},{\"Action\":[\"elasticloadbalancing:CreateTargetGroup\",\"elasticloadbalancing:CreateRule\",\"elasticloadbalancing:CreateLoadBalancer\",\"elasticloadbalancing:CreateListener\",\"ec2:CreateSecurityGroup\"],\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\"}},\"Effect\":\"Allow\",\"Resource\":\"*\",\"Sid\":\"LoadBalancer\"},{\"Action\":\"shield:CreateProtection\",\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\"}},\"Effect\":\"Allow\",\"Resource\":\"*\",\"Sid\":\"ShieldProtection\"},{\"Action\":\"shield:TagResource\",\"Condition\":{\"StringEquals\":{\"aws:RequestTag/eks:eks-cluster-name\":\"${aws:PrincipalTag/eks:eks-cluster-name}\"}},\"Effect\":\"Allow\",\"Resource\":\"arn:aws:shield::*:protection/*\",\"Sid\":\"ShieldTagResource\"}],\"Version\":\"2012-10-17\"}",
-            "policy_id": "ANPAUKMRZ6CW3OF6TEDGL",
+            "policy_id": "ANPAUKMRZ6CWZQNXYIRMJ",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             }
           },
@@ -1095,28 +1348,33 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003",
+            "arn": "arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002",
             "assume_role_policy": "{\"Statement\":[{\"Action\":[\"sts:TagSession\",\"sts:AssumeRole\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"eks.amazonaws.com\"},\"Sid\":\"EKSClusterAssumeRole\"}],\"Version\":\"2012-10-17\"}",
-            "create_date": "2025-06-05T15:16:12Z",
+            "create_date": "2025-06-04T16:07:28Z",
             "description": "",
             "force_detach_policies": true,
-            "id": "eks-chickpay-cicd-cluster-20250605151615053600000003",
+            "id": "eks-service-cluster-20250604160729631000000002",
             "inline_policy": [],
-            "managed_policy_arns": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::297195401389:policy/eks-service-cluster-20250604160729631000000001",
+              "arn:aws:iam::297195401389:policy/eks-service-cluster-ClusterEncryption2025060416080028610000000c",
+              "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
+              "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+            ],
             "max_session_duration": 3600,
-            "name": "eks-chickpay-cicd-cluster-20250605151615053600000003",
-            "name_prefix": "eks-chickpay-cicd-cluster-",
+            "name": "eks-service-cluster-20250604160729631000000002",
+            "name_prefix": "eks-service-cluster-",
             "path": "/",
             "permissions_boundary": "",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
-            "unique_id": "AROAUKMRZ6CWQCL2GLXTX"
+            "unique_id": "AROAUKMRZ6CW5YWFPMXAA"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1139,9 +1397,9 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "id": "eks-chickpay-cicd-cluster-20250605151615053600000003-2025060515163942470000000d",
-            "policy_arn": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-ClusterEncryption2025060515163833490000000c",
-            "role": "eks-chickpay-cicd-cluster-20250605151615053600000003"
+            "id": "eks-service-cluster-20250604160729631000000002-2025060416080136390000000d",
+            "policy_arn": "arn:aws:iam::297195401389:policy/eks-service-cluster-ClusterEncryption2025060416080028610000000c",
+            "role": "eks-service-cluster-20250604160729631000000002"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1174,9 +1432,9 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "id": "eks-chickpay-cicd-cluster-20250605151615053600000003-20250605151617603600000009",
-            "policy_arn": "arn:aws:iam::297195401389:policy/eks-chickpay-cicd-cluster-20250605151615053100000002",
-            "role": "eks-chickpay-cicd-cluster-20250605151615053600000003"
+            "id": "eks-service-cluster-20250604160729631000000002-20250604160731566200000006",
+            "policy_arn": "arn:aws:iam::297195401389:policy/eks-service-cluster-20250604160729631000000001",
+            "role": "eks-service-cluster-20250604160729631000000002"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1202,9 +1460,9 @@
           "index_key": "AmazonEKSClusterPolicy",
           "schema_version": 0,
           "attributes": {
-            "id": "eks-chickpay-cicd-cluster-20250605151615053600000003-2025060515161812370000000b",
+            "id": "eks-service-cluster-20250604160729631000000002-20250604160731594800000008",
             "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy",
-            "role": "eks-chickpay-cicd-cluster-20250605151615053600000003"
+            "role": "eks-service-cluster-20250604160729631000000002"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1220,9 +1478,9 @@
           "index_key": "AmazonEKSVPCResourceController",
           "schema_version": 0,
           "attributes": {
-            "id": "eks-chickpay-cicd-cluster-20250605151615053600000003-2025060515161811270000000a",
+            "id": "eks-service-cluster-20250604160729631000000002-20250604160731577700000007",
             "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController",
-            "role": "eks-chickpay-cicd-cluster-20250605151615053600000003"
+            "role": "eks-service-cluster-20250604160729631000000002"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1247,25 +1505,39 @@
           "index_key": 0,
           "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:security-group/sg-05f058d0f4aa0a71b",
+            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:security-group/sg-0fc36aa17eb2a6721",
             "description": "EKS cluster security group",
             "egress": [],
-            "id": "sg-05f058d0f4aa0a71b",
-            "ingress": [],
-            "name": "eks-chickpay-cicd-cluster-20250605151615053600000004",
-            "name_prefix": "eks-chickpay-cicd-cluster-",
+            "id": "sg-0fc36aa17eb2a6721",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "Node groups to cluster API",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0658d8b477c3d726c"
+                ],
+                "self": false,
+                "to_port": 443
+              }
+            ],
+            "name": "eks-service-cluster-20250605020444540800000001",
+            "name_prefix": "eks-service-cluster-",
             "owner_id": "297195401389",
             "revoke_rules_on_delete": false,
             "tags": {
-              "Name": "eks-chickpay-cicd-cluster",
+              "Name": "eks-service-cluster",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd-cluster",
+              "Name": "eks-service-cluster",
               "Purpose": "msa-service"
             },
             "timeouts": null,
-            "vpc_id": "vpc-0094391c383433b84"
+            "vpc_id": "vpc-0a5cfb574c929c732"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1288,27 +1560,153 @@
           "index_key": 0,
           "schema_version": 1,
           "attributes": {
-            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:security-group/sg-023c8919b5c1e7ffb",
+            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:security-group/sg-0658d8b477c3d726c",
             "description": "EKS node shared security group",
-            "egress": [],
-            "id": "sg-023c8919b5c1e7ffb",
-            "ingress": [],
-            "name": "eks-chickpay-cicd-node-20250605151615054200000005",
-            "name_prefix": "eks-chickpay-cicd-node-",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "Allow all egress",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0658d8b477c3d726c",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node 4443/tcp webhook",
+                "from_port": 4443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 4443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node 6443/tcp webhook",
+                "from_port": 6443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 6443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node 8443/tcp webhook",
+                "from_port": 8443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 8443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node 9443/tcp webhook",
+                "from_port": 9443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 9443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node groups",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 443
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Cluster API to node kubelets",
+                "from_port": 10250,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0fc36aa17eb2a6721"
+                ],
+                "self": false,
+                "to_port": 10250
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Node to node CoreDNS UDP",
+                "from_port": 53,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "udp",
+                "security_groups": [],
+                "self": true,
+                "to_port": 53
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Node to node CoreDNS",
+                "from_port": 53,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": true,
+                "to_port": 53
+              },
+              {
+                "cidr_blocks": [],
+                "description": "Node to node ingress on ephemeral ports",
+                "from_port": 1025,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": true,
+                "to_port": 65535
+              }
+            ],
+            "name": "eks-service-node-20250605020444540800000002",
+            "name_prefix": "eks-service-node-",
             "owner_id": "297195401389",
             "revoke_rules_on_delete": false,
             "tags": {
-              "Name": "eks-chickpay-cicd-node",
+              "Name": "eks-service-node",
               "Purpose": "msa-service",
-              "kubernetes.io/cluster/eks-chickpay-cicd": "owned"
+              "kubernetes.io/cluster/eks-service": "owned"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd-node",
+              "Name": "eks-service-node",
               "Purpose": "msa-service",
-              "kubernetes.io/cluster/eks-chickpay-cicd": "owned"
+              "kubernetes.io/cluster/eks-service": "owned"
             },
             "timeouts": null,
-            "vpc_id": "vpc-0094391c383433b84"
+            "vpc_id": "vpc-0a5cfb574c929c732"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1334,14 +1732,14 @@
             "cidr_blocks": null,
             "description": "Node groups to cluster API",
             "from_port": 443,
-            "id": "sgrule-1112419769",
+            "id": "sgrule-874297426",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": null,
             "protocol": "tcp",
-            "security_group_id": "sg-05f058d0f4aa0a71b",
-            "security_group_rule_id": "sgr-02da116289f68be2f",
+            "security_group_id": "sg-0fc36aa17eb2a6721",
+            "security_group_rule_id": "sgr-0e270994dd8c26d2b",
             "self": false,
-            "source_security_group_id": "sg-023c8919b5c1e7ffb",
+            "source_security_group_id": "sg-0658d8b477c3d726c",
             "timeouts": null,
             "to_port": 443,
             "type": "ingress"
@@ -1374,12 +1772,12 @@
             ],
             "description": "Allow all egress",
             "from_port": 0,
-            "id": "sgrule-1044985686",
+            "id": "sgrule-39438692",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "-1",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0806fbf08843e25e1",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-0de7fea944203b710",
             "self": false,
             "source_security_group_id": null,
             "timeouts": null,
@@ -1403,14 +1801,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node groups",
             "from_port": 443,
-            "id": "sgrule-939867996",
+            "id": "sgrule-819697065",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-05c43e6b23173378b",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-0bf51ba60b7c1fdbe",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 443,
             "type": "ingress"
@@ -1432,14 +1830,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node 4443/tcp webhook",
             "from_port": 4443,
-            "id": "sgrule-660423524",
+            "id": "sgrule-327697774",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0687daa176373a09b",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-0ece79ec7f1624157",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 4443,
             "type": "ingress"
@@ -1461,14 +1859,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node 6443/tcp webhook",
             "from_port": 6443,
-            "id": "sgrule-299948810",
+            "id": "sgrule-624286984",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0638da5e65c24a09b",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-0a1f3a2f63fcd5efa",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 6443,
             "type": "ingress"
@@ -1490,14 +1888,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node 8443/tcp webhook",
             "from_port": 8443,
-            "id": "sgrule-45934379",
+            "id": "sgrule-912908583",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0bacdc63ed112380b",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-077ce6590879d1885",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 8443,
             "type": "ingress"
@@ -1519,14 +1917,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node 9443/tcp webhook",
             "from_port": 9443,
-            "id": "sgrule-1713231072",
+            "id": "sgrule-1388892910",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0ae9a415cbdab51ab",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-06688e0fb2f94a834",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 9443,
             "type": "ingress"
@@ -1548,14 +1946,14 @@
             "cidr_blocks": null,
             "description": "Cluster API to node kubelets",
             "from_port": 10250,
-            "id": "sgrule-770241958",
+            "id": "sgrule-1434049810",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-0b062408d6b35358b",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-051fb8e59a5fbda66",
             "self": false,
-            "source_security_group_id": "sg-05f058d0f4aa0a71b",
+            "source_security_group_id": "sg-0fc36aa17eb2a6721",
             "timeouts": null,
             "to_port": 10250,
             "type": "ingress"
@@ -1577,12 +1975,12 @@
             "cidr_blocks": null,
             "description": "Node to node ingress on ephemeral ports",
             "from_port": 1025,
-            "id": "sgrule-1165935716",
+            "id": "sgrule-655105766",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-06937e50d4d312bbf",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-085d1d2c2b5eea303",
             "self": true,
             "source_security_group_id": null,
             "timeouts": null,
@@ -1606,12 +2004,12 @@
             "cidr_blocks": null,
             "description": "Node to node CoreDNS",
             "from_port": 53,
-            "id": "sgrule-592721953",
+            "id": "sgrule-86407886",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "tcp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-05793e73c34dc8891",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-08ab87f1192357dc6",
             "self": true,
             "source_security_group_id": null,
             "timeouts": null,
@@ -1635,12 +2033,12 @@
             "cidr_blocks": null,
             "description": "Node to node CoreDNS UDP",
             "from_port": 53,
-            "id": "sgrule-2029282354",
+            "id": "sgrule-1585850079",
             "ipv6_cidr_blocks": null,
             "prefix_list_ids": [],
             "protocol": "udp",
-            "security_group_id": "sg-023c8919b5c1e7ffb",
-            "security_group_rule_id": "sgr-076b39fc1690fd21c",
+            "security_group_id": "sg-0658d8b477c3d726c",
+            "security_group_rule_id": "sgr-0ecccf469b9176819",
             "self": true,
             "source_security_group_id": null,
             "timeouts": null,
@@ -1672,13 +2070,13 @@
           "attributes": {
             "create_duration": "30s",
             "destroy_duration": null,
-            "id": "2025-06-05T15:26:11Z",
+            "id": "2025-06-05T02:13:33Z",
             "triggers": {
-              "cluster_certificate_authority_data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJUjlMNUxLYmVnYlV3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TlRBMk1EVXhOVEUxTlRaYUZ3MHpOVEEyTURNeE5USXdOVFphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURWZkZpMWR0Sm1ibk84VEJ4a3JLMzhNdkNuYlBQQk5xNlpySEhkTEdNVjZ5UllJdXpYaWpJYzBabGsKOGVzbTM5ZXZsOHJSZzZRY3Fjd2NLRDhxSUFhMTg0MVRSbnQ1dVFIVWNhZXdodnQ3QnFqNms5K1JtQ0IyWVFWcwpOL3FsaDl0VmE5TElUTm5scTBRRG1GdmQ0Mm1CY0k3UHhueVdOb2ppVHM0UDVrQ1E0eUluUzc1TitPdXFlNjlmCi9aZzRmK1kwL1hzbFNBTTNBam5aTVkwa0EzR3MzT0tpYjJ3ZGFXeCtmRll0NXNZcWJmYU1COWFwTXVLcXk3aGoKSEwvUTA0a1MzZ2x1a1MzalN1MGlCWXh4V1MrVittS0dBM2JBRHNiNndOZzhYNDZiQVpsSFVsZUt6Nnp4ZWFNLwpLQml2b3VrblBscWpQaG1aYm5STVdDQkRJd1lGQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSQTQ1OTBoZHM1RzZaYzBQWE04cUlqWGZwRUl6QVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQjVkMnNQdW9kOQorT2tXNWhhMXNBcTZRSE5YYjN6VU9zMytDOUVlU3B0YnVOczZuMTJ3UFhzU3VPS3g2eklPbUE2UjUrR0hlMVowCnYrRytGUEw4ZHBYWTF4MlJaSVI1Y093ZXpmd3Z2Z01WbTdvRUUwMTdMYmRtNW52OUZMdW0rRkZ4TlVibk95ZUoKNm56eDlQd3A4TDlwL3pDOUZrZGhpZEhSUVpZUTRGRHh0Z2JUclBhRGU1UUw5T3RQNEhYekErbmtqbHFtUS9ybApyck44MytKSWVyZVNrY2lKSmNaa1c5RWZBM0Z6VEc0Z0phYkNVRXlBN29OWENqTWpRWEF2SFRmWkdGOWNJdjdVCnZwZ0svMUI0V1IwVEM1Si9iLzZpTFlCOVhDdURjUFB2MnNRb0hBeHBBeXhtYjRFaGtMZmVqTmFXcU1hbFVTclEKcFdrS2tTRko1Q0Q0Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
-              "cluster_endpoint": "https://8AB35466BEC443F8D67A8E39B6ADE5B6.gr7.ap-northeast-2.eks.amazonaws.com",
-              "cluster_name": "eks-chickpay-cicd",
+              "cluster_certificate_authority_data": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCRENDQWV5Z0F3SUJBZ0lISHorY2FUQXJSakFOQmdrcWhraUc5dzBCQVFzRkFEQVZNUk13RVFZRFZRUUQKRXdwcmRXSmxjbTVsZEdWek1CNFhEVEkxTURZd05UQXlNRFF3TWxvWERUTTFNRFl3TXpBeU1Ea3dNbG93RlRFVApNQkVHQTFVRUF4TUthM1ZpWlhKdVpYUmxjekNDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFEZ2dFUEFEQ0NBUW9DCmdnRUJBSnYxY3ZMWTluYnYyYU1OS0JaSXpURDJHSVV4WXIwUS9Pc0pUSnB4TkNLbC9CWFo5SEFRUVYrR0ZqaGgKVkhLb0tQSEdQcEYyRHRYOTdjNHNCbUtEN0RnZUJjNWg3MU5lTUZSTU9FMnFzdDBnOUtNa1RRY2pjSG1kMUk5MwoxMSt6L1Vvbi9PZEhnK3kvM0QzZUc4N3JmcnlEdVdDL3lGTTZXSlJnYTh2L082dEZOWVNVeWZHSU03Q0kvTmFlCkxXcjFxUXNseDJ1a0diZ05mOEtkdVV2dTBKa0l6YnlsK3BhaWMyQUdSSVdkZXg0c1YyUjd3dGtiaUtodXBHbjMKNDBkZmUzY2t6UG85T1krajNHRkpSdk5ZVWJNc2NMTHQ0WkxoM3B6LzhLdXFDTEhSWGhyV05uOHlnaGlJNkZvSwpiOURrdll6WklaNlNyWkQ5eXNyaENVNVA4eWtDQXdFQUFhTlpNRmN3RGdZRFZSMFBBUUgvQkFRREFnS2tNQThHCkExVWRFd0VCL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRkJPNmoxN2R6N3hORTdiNnoxUmJESjZBVDJXN01CVUcKQTFVZEVRUU9NQXlDQ210MVltVnlibVYwWlhNd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCWXIyeUdyYkxkcApwOVZDT0VIZzM5d0xadVduWjRWN2dVUUFWb1ppYkIvNFRXeUhpZUE1UjhiS1BDSU1zY2dJRk1qNjl6c3FwcmRNCkRhSDN3WXdiV1ptUTRRUk10QWExUE1mZXhGemhhdXQrU2p5Z2w5VmFUcENnbEVRUWVKMXFiTDhFMjA0Vk1MZEMKQis4eXpJMm5aZkpBVTJXMGFOU0h2Nm9BN0pIMVl3UGRQNCs5OGRPQ08wckJOYTF2c2JTSm03NFdIZk53eTVOYwpDemZOTjk5UzkydnFiTWNTNFlORGZFK0N2MnFPZUxoUjY2VGZmMXBqRWNKTTJVNVdjaVZzR29Lc0J5Zk9PakwxCkkyVkpBdk9ndFZaNzJBa1pPeWUvSmgvaXVOOUVzKzY1TTE1SGwrUkZiem5wSjFvcG11emhIY3l5U1hYaHg1WGkKbGtObWpwQ0tuOWM9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K",
+              "cluster_endpoint": "https://01F49E7DF5D8A22C6BCE7BF97C6CA9A2.gr7.ap-northeast-2.eks.amazonaws.com",
+              "cluster_name": "eks-service",
               "cluster_service_cidr": "172.20.0.0/16",
-              "cluster_version": "1.33"
+              "cluster_version": "1.29"
             }
           },
           "sensitive_attributes": [],
@@ -1724,9 +2122,9 @@
           "schema_version": 0,
           "attributes": {
             "account_id": "297195401389",
-            "arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "arn": "arn:aws:iam::297195401389:user/sujin",
             "id": "297195401389",
-            "user_id": "AIDAUKMRZ6CW55YHFW32T"
+            "user_id": "AIDAUKMRZ6CWTIAMLXHDC"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0
@@ -1812,35 +2210,35 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "ami_type": "AL2023_x86_64_STANDARD",
-            "arn": "arn:aws:eks:ap-northeast-2:297195401389:nodegroup/eks-chickpay-cicd/service-nodes-20250605152617233300000010/58cba059-97bb-7921-00b3-0da28afcafb0",
+            "ami_type": "AL2_x86_64",
+            "arn": "arn:aws:eks:ap-northeast-2:297195401389:nodegroup/eks-service/service-nodes-20250605021339377500000004/3ecb9eee-c235-826e-4148-28c591a730a3",
             "capacity_type": "ON_DEMAND",
-            "cluster_name": "eks-chickpay-cicd",
+            "cluster_name": "eks-service",
             "disk_size": 0,
             "force_update_version": null,
-            "id": "eks-chickpay-cicd:service-nodes-20250605152617233300000010",
+            "id": "eks-service:service-nodes-20250605021339377500000004",
             "instance_types": [
               "t3.medium"
             ],
-            "labels": null,
+            "labels": {},
             "launch_template": [
               {
-                "id": "lt-0c85e9fe35a4f613a",
-                "name": "service-nodes-2025060515261169170000000e",
-                "version": "1"
+                "id": "lt-03305acb7633584fd",
+                "name": "service-nodes-20250604162222380600000001",
+                "version": "2"
               }
             ],
-            "node_group_name": "service-nodes-20250605152617233300000010",
+            "node_group_name": "service-nodes-20250605021339377500000004",
             "node_group_name_prefix": "service-nodes-",
             "node_repair_config": [],
-            "node_role_arn": "arn:aws:iam::297195401389:role/service-nodes-eks-node-group-20250605151615053100000001",
-            "release_version": "1.33.0-20250519",
+            "node_role_arn": "arn:aws:iam::297195401389:role/service-nodes-eks-node-group-20250604160729631000000003",
+            "release_version": "1.29.15-20250519",
             "remote_access": [],
             "resources": [
               {
                 "autoscaling_groups": [
                   {
-                    "name": "eks-service-nodes-20250605152617233300000010-58cba059-97bb-7921-00b3-0da28afcafb0"
+                    "name": "eks-service-nodes-20250605021339377500000004-3ecb9eee-c235-826e-4148-28c591a730a3"
                   }
                 ],
                 "remote_access_security_group_id": ""
@@ -1855,8 +2253,8 @@
             ],
             "status": "ACTIVE",
             "subnet_ids": [
-              "subnet-09a946f0ec01eae50",
-              "subnet-0be6a85ebba54d758"
+              "subnet-0d45b4fcb3e652fce",
+              "subnet-0dbcac440a76426da"
             ],
             "tags": {
               "Name": "service-nodes",
@@ -1878,7 +2276,7 @@
                 "max_unavailable_percentage": 33
               }
             ],
-            "version": "1.33"
+            "version": "1.29"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1939,28 +2337,33 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:iam::297195401389:role/service-nodes-eks-node-group-20250605151615053100000001",
+            "arn": "arn:aws:iam::297195401389:role/service-nodes-eks-node-group-20250604160729631000000003",
             "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ec2.amazonaws.com\"},\"Sid\":\"EKSNodeAssumeRole\"}],\"Version\":\"2012-10-17\"}",
-            "create_date": "2025-06-05T15:16:12Z",
+            "create_date": "2025-06-04T16:07:28Z",
             "description": "EKS managed node group IAM role",
             "force_detach_policies": true,
-            "id": "service-nodes-eks-node-group-20250605151615053100000001",
+            "id": "service-nodes-eks-node-group-20250604160729631000000003",
             "inline_policy": [],
-            "managed_policy_arns": [],
+            "managed_policy_arns": [
+              "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
+              "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+              "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+              "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+            ],
             "max_session_duration": 3600,
-            "name": "service-nodes-eks-node-group-20250605151615053100000001",
+            "name": "service-nodes-eks-node-group-20250604160729631000000003",
             "name_prefix": "service-nodes-eks-node-group-",
             "path": "/",
             "permissions_boundary": "",
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
-            "unique_id": "AROAUKMRZ6CW7GSLCQ4VP"
+            "unique_id": "AROAUKMRZ6CWQXVECZT5B"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -1983,9 +2386,9 @@
           "index_key": "AmazonEC2ContainerRegistryReadOnly",
           "schema_version": 0,
           "attributes": {
-            "id": "service-nodes-eks-node-group-20250605151615053100000001-20250605151616960700000007",
+            "id": "service-nodes-eks-node-group-20250604160729631000000003-2025060416073186400000000a",
             "policy_arn": "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",
-            "role": "service-nodes-eks-node-group-20250605151615053100000001"
+            "role": "service-nodes-eks-node-group-20250604160729631000000003"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -2002,9 +2405,9 @@
           "index_key": "AmazonEKSWorkerNodePolicy",
           "schema_version": 0,
           "attributes": {
-            "id": "service-nodes-eks-node-group-20250605151615053100000001-20250605151616930900000006",
+            "id": "service-nodes-eks-node-group-20250604160729631000000003-2025060416073189460000000b",
             "policy_arn": "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
-            "role": "service-nodes-eks-node-group-20250605151615053100000001"
+            "role": "service-nodes-eks-node-group-20250604160729631000000003"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -2021,9 +2424,9 @@
           "index_key": "AmazonEKS_CNI_Policy",
           "schema_version": 0,
           "attributes": {
-            "id": "service-nodes-eks-node-group-20250605151615053100000001-20250605151617011400000008",
+            "id": "service-nodes-eks-node-group-20250604160729631000000003-20250604160731835500000009",
             "policy_arn": "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
-            "role": "service-nodes-eks-node-group-20250605151615053100000001"
+            "role": "service-nodes-eks-node-group-20250604160729631000000003"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -2049,12 +2452,12 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:launch-template/lt-0c85e9fe35a4f613a",
+            "arn": "arn:aws:ec2:ap-northeast-2:297195401389:launch-template/lt-03305acb7633584fd",
             "block_device_mappings": [],
             "capacity_reservation_specification": [],
             "cpu_options": [],
             "credit_specification": [],
-            "default_version": 1,
+            "default_version": 2,
             "description": "Custom launch template for service-nodes EKS managed node group",
             "disable_api_stop": false,
             "disable_api_termination": false,
@@ -2064,7 +2467,7 @@
             "enclave_options": [],
             "hibernation_options": [],
             "iam_instance_profile": [],
-            "id": "lt-0c85e9fe35a4f613a",
+            "id": "lt-03305acb7633584fd",
             "image_id": "",
             "instance_initiated_shutdown_behavior": "",
             "instance_market_options": [],
@@ -2072,7 +2475,7 @@
             "instance_type": "",
             "kernel_id": "",
             "key_name": "",
-            "latest_version": 1,
+            "latest_version": 2,
             "license_specification": [],
             "maintenance_options": [],
             "metadata_options": [
@@ -2089,13 +2492,13 @@
                 "enabled": true
               }
             ],
-            "name": "service-nodes-2025060515261169170000000e",
+            "name": "service-nodes-20250604162222380600000001",
             "name_prefix": "service-nodes-",
             "network_interfaces": [],
             "placement": [],
             "private_dns_name_options": [],
             "ram_disk_id": "",
-            "security_group_names": null,
+            "security_group_names": [],
             "tag_specifications": [
               {
                 "resource_type": "instance",
@@ -2120,17 +2523,17 @@
               }
             ],
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service"
             },
             "update_default_version": true,
             "user_data": "",
             "vpc_security_group_ids": [
-              "sg-023c8919b5c1e7ffb"
+              "sg-0658d8b477c3d726c"
             ]
           },
           "sensitive_attributes": [],
@@ -2187,7 +2590,7 @@
         {
           "schema_version": 0,
           "attributes": {
-            "id": "198890839",
+            "id": "1265645750",
             "triggers": null
           },
           "sensitive_attributes": [],
@@ -2234,9 +2637,9 @@
           "schema_version": 0,
           "attributes": {
             "account_id": "297195401389",
-            "arn": "arn:aws:iam::297195401389:user/eomsigi",
+            "arn": "arn:aws:iam::297195401389:user/sujin",
             "id": "297195401389",
-            "user_id": "AIDAUKMRZ6CW55YHFW32T"
+            "user_id": "AIDAUKMRZ6CWTIAMLXHDC"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0
@@ -2254,9 +2657,9 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "id": "1002655088",
-            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"Default\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:*\",\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:root\"\n      }\n    },\n    {\n      \"Sid\": \"KeyAdministration\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:Update*\",\n        \"kms:UntagResource\",\n        \"kms:TagResource\",\n        \"kms:ScheduleKeyDeletion\",\n        \"kms:Revoke*\",\n        \"kms:ReplicateKey\",\n        \"kms:Put*\",\n        \"kms:List*\",\n        \"kms:ImportKeyMaterial\",\n        \"kms:Get*\",\n        \"kms:Enable*\",\n        \"kms:Disable*\",\n        \"kms:Describe*\",\n        \"kms:Delete*\",\n        \"kms:Create*\",\n        \"kms:CancelKeyDeletion\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:user/eomsigi\"\n      }\n    },\n    {\n      \"Sid\": \"KeyUsage\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:ReEncrypt*\",\n        \"kms:GenerateDataKey*\",\n        \"kms:Encrypt\",\n        \"kms:DescribeKey\",\n        \"kms:Decrypt\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003\"\n      }\n    }\n  ]\n}",
-            "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"Default\",\"Effect\":\"Allow\",\"Action\":\"kms:*\",\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:root\"}},{\"Sid\":\"KeyAdministration\",\"Effect\":\"Allow\",\"Action\":[\"kms:Update*\",\"kms:UntagResource\",\"kms:TagResource\",\"kms:ScheduleKeyDeletion\",\"kms:Revoke*\",\"kms:ReplicateKey\",\"kms:Put*\",\"kms:List*\",\"kms:ImportKeyMaterial\",\"kms:Get*\",\"kms:Enable*\",\"kms:Disable*\",\"kms:Describe*\",\"kms:Delete*\",\"kms:Create*\",\"kms:CancelKeyDeletion\"],\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:user/eomsigi\"}},{\"Sid\":\"KeyUsage\",\"Effect\":\"Allow\",\"Action\":[\"kms:ReEncrypt*\",\"kms:GenerateDataKey*\",\"kms:Encrypt\",\"kms:DescribeKey\",\"kms:Decrypt\"],\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003\"}}]}",
+            "id": "330273052",
+            "json": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"Default\",\n      \"Effect\": \"Allow\",\n      \"Action\": \"kms:*\",\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:root\"\n      }\n    },\n    {\n      \"Sid\": \"KeyAdministration\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:Update*\",\n        \"kms:UntagResource\",\n        \"kms:TagResource\",\n        \"kms:ScheduleKeyDeletion\",\n        \"kms:Revoke*\",\n        \"kms:ReplicateKey\",\n        \"kms:Put*\",\n        \"kms:List*\",\n        \"kms:ImportKeyMaterial\",\n        \"kms:Get*\",\n        \"kms:Enable*\",\n        \"kms:Disable*\",\n        \"kms:Describe*\",\n        \"kms:Delete*\",\n        \"kms:Create*\",\n        \"kms:CancelKeyDeletion\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:user/sujin\"\n      }\n    },\n    {\n      \"Sid\": \"KeyUsage\",\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"kms:ReEncrypt*\",\n        \"kms:GenerateDataKey*\",\n        \"kms:Encrypt\",\n        \"kms:DescribeKey\",\n        \"kms:Decrypt\"\n      ],\n      \"Resource\": \"*\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002\"\n      }\n    }\n  ]\n}",
+            "minified_json": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"Default\",\"Effect\":\"Allow\",\"Action\":\"kms:*\",\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:root\"}},{\"Sid\":\"KeyAdministration\",\"Effect\":\"Allow\",\"Action\":[\"kms:Update*\",\"kms:UntagResource\",\"kms:TagResource\",\"kms:ScheduleKeyDeletion\",\"kms:Revoke*\",\"kms:ReplicateKey\",\"kms:Put*\",\"kms:List*\",\"kms:ImportKeyMaterial\",\"kms:Get*\",\"kms:Enable*\",\"kms:Disable*\",\"kms:Describe*\",\"kms:Delete*\",\"kms:Create*\",\"kms:CancelKeyDeletion\"],\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:user/sujin\"}},{\"Sid\":\"KeyUsage\",\"Effect\":\"Allow\",\"Action\":[\"kms:ReEncrypt*\",\"kms:GenerateDataKey*\",\"kms:Encrypt\",\"kms:DescribeKey\",\"kms:Decrypt\"],\"Resource\":\"*\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002\"}}]}",
             "override_json": null,
             "override_policy_documents": null,
             "policy_id": null,
@@ -2312,7 +2715,7 @@
                 "principals": [
                   {
                     "identifiers": [
-                      "arn:aws:iam::297195401389:user/eomsigi"
+                      "arn:aws:iam::297195401389:user/sujin"
                     ],
                     "type": "AWS"
                   }
@@ -2338,7 +2741,7 @@
                 "principals": [
                   {
                     "identifiers": [
-                      "arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003"
+                      "arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002"
                     ],
                     "type": "AWS"
                   }
@@ -2388,12 +2791,12 @@
           "index_key": "cluster",
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:kms:ap-northeast-2:297195401389:alias/eks/eks-chickpay-cicd",
-            "id": "alias/eks/eks-chickpay-cicd",
-            "name": "alias/eks/eks-chickpay-cicd",
+            "arn": "arn:aws:kms:ap-northeast-2:297195401389:alias/eks/eks-service",
+            "id": "alias/eks/eks-service",
+            "name": "alias/eks/eks-service",
             "name_prefix": "",
-            "target_key_arn": "arn:aws:kms:ap-northeast-2:297195401389:key/c9cee8cd-3561-4dd8-9629-b7ddd786f9c6",
-            "target_key_id": "c9cee8cd-3561-4dd8-9629-b7ddd786f9c6"
+            "target_key_arn": "arn:aws:kms:ap-northeast-2:297195401389:key/54e224ad-e0ad-499a-856c-c293e6d92fae",
+            "target_key_id": "54e224ad-e0ad-499a-856c-c293e6d92fae"
           },
           "sensitive_attributes": [],
           "identity_schema_version": 0,
@@ -2425,27 +2828,27 @@
           "index_key": 0,
           "schema_version": 0,
           "attributes": {
-            "arn": "arn:aws:kms:ap-northeast-2:297195401389:key/c9cee8cd-3561-4dd8-9629-b7ddd786f9c6",
+            "arn": "arn:aws:kms:ap-northeast-2:297195401389:key/54e224ad-e0ad-499a-856c-c293e6d92fae",
             "bypass_policy_lockout_safety_check": false,
             "custom_key_store_id": "",
             "customer_master_key_spec": "SYMMETRIC_DEFAULT",
             "deletion_window_in_days": null,
-            "description": "eks-chickpay-cicd cluster encryption key",
+            "description": "eks-service cluster encryption key",
             "enable_key_rotation": true,
-            "id": "c9cee8cd-3561-4dd8-9629-b7ddd786f9c6",
+            "id": "54e224ad-e0ad-499a-856c-c293e6d92fae",
             "is_enabled": true,
-            "key_id": "c9cee8cd-3561-4dd8-9629-b7ddd786f9c6",
+            "key_id": "54e224ad-e0ad-499a-856c-c293e6d92fae",
             "key_usage": "ENCRYPT_DECRYPT",
             "multi_region": false,
-            "policy": "{\"Statement\":[{\"Action\":\"kms:*\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:root\"},\"Resource\":\"*\",\"Sid\":\"Default\"},{\"Action\":[\"kms:Update*\",\"kms:UntagResource\",\"kms:TagResource\",\"kms:ScheduleKeyDeletion\",\"kms:Revoke*\",\"kms:ReplicateKey\",\"kms:Put*\",\"kms:List*\",\"kms:ImportKeyMaterial\",\"kms:Get*\",\"kms:Enable*\",\"kms:Disable*\",\"kms:Describe*\",\"kms:Delete*\",\"kms:Create*\",\"kms:CancelKeyDeletion\"],\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:user/eomsigi\"},\"Resource\":\"*\",\"Sid\":\"KeyAdministration\"},{\"Action\":[\"kms:ReEncrypt*\",\"kms:GenerateDataKey*\",\"kms:Encrypt\",\"kms:DescribeKey\",\"kms:Decrypt\"],\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:role/eks-chickpay-cicd-cluster-20250605151615053600000003\"},\"Resource\":\"*\",\"Sid\":\"KeyUsage\"}],\"Version\":\"2012-10-17\"}",
+            "policy": "{\"Statement\":[{\"Action\":\"kms:*\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:root\"},\"Resource\":\"*\",\"Sid\":\"Default\"},{\"Action\":[\"kms:Update*\",\"kms:UntagResource\",\"kms:TagResource\",\"kms:ScheduleKeyDeletion\",\"kms:Revoke*\",\"kms:ReplicateKey\",\"kms:Put*\",\"kms:List*\",\"kms:ImportKeyMaterial\",\"kms:Get*\",\"kms:Enable*\",\"kms:Disable*\",\"kms:Describe*\",\"kms:Delete*\",\"kms:Create*\",\"kms:CancelKeyDeletion\"],\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:user/sujin\"},\"Resource\":\"*\",\"Sid\":\"KeyAdministration\"},{\"Action\":[\"kms:ReEncrypt*\",\"kms:GenerateDataKey*\",\"kms:Encrypt\",\"kms:DescribeKey\",\"kms:Decrypt\"],\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::297195401389:role/eks-service-cluster-20250604160729631000000002\"},\"Resource\":\"*\",\"Sid\":\"KeyUsage\"}],\"Version\":\"2012-10-17\"}",
             "rotation_period_in_days": 365,
             "tags": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service",
               "terraform-aws-modules": "eks"
             },
             "tags_all": {
-              "Name": "eks-chickpay-cicd",
+              "Name": "eks-service",
               "Purpose": "msa-service",
               "terraform-aws-modules": "eks"
             },
@@ -2472,6 +2875,12 @@
   "check_results": [
     {
       "object_kind": "resource",
+      "config_addr": "module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
+      "status": "pass",
+      "objects": null
+    },
+    {
+      "object_kind": "resource",
       "config_addr": "module.eks.module.eks_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
       "status": "pass",
       "objects": [
@@ -2484,12 +2893,6 @@
     {
       "object_kind": "var",
       "config_addr": "module.eks.module.self_managed_node_group.var.platform",
-      "status": "pass",
-      "objects": null
-    },
-    {
-      "object_kind": "resource",
-      "config_addr": "module.eks.module.self_managed_node_group.module.user_data.null_resource.validate_cluster_service_cidr",
       "status": "pass",
       "objects": null
     }

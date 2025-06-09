@@ -1,11 +1,14 @@
 variable "region" {
-  default = "ap-northeast-2"
+  description = "AWS region"
+  type        = string
 }
 
 variable "cluster_name" {
-  default = "eks-service"
+  description = "EKS cluster name"
+  type        = string
 }
 
 variable "cluster_version" {
-  default = "1.29"
+  description = "Kubernetes version"
+  type        = string
 }

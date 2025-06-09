@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true           # 인스턴스가 DNS로 외부와 통신 가능하게 함
   enable_dns_hostnames = true           # 퍼블릭 IP에 대해 DNS 호스트네임 부여 가능
   tags = {
-    Name = "vpc-for-cicdEKS"
+    Name = "vpc-for-cicdEKS2"
   }
 }
 
@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id       # 위에서 만든 VPC와 연결
   tags = {
-    Name = "main-igw"
+    Name = "main-igw2"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat.id                   # 위에서 만든 EIP와 연결
   subnet_id     = aws_subnet.public[0].id          # 퍼블릭 서브넷에 위치시켜야 함
   tags = {
-    Name = "nat-gateway"
+    Name = "nat-gateway2"
   }
 }
 
