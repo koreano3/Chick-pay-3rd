@@ -72,12 +72,8 @@ pipeline {
       }
     }
 
-    // ✅ Helm 전에 RBAC 권한 부여
-    stage('Apply RBAC for Jaesung') {
-      steps {
-        sh 'kubectl apply -f infra/terraform/helm/rbac/rbac-jaesung.yaml'
-      }
-    }
+    
+    
 
     stage('Terraform Helm') {
       steps {
