@@ -17,7 +17,6 @@ pipeline {
       }
     }
 
-    // ✅ S3 상태값 먼저 apply
     stage('Terraform S3') {
       steps {
         dir('infra/terraform/s3') {
@@ -70,6 +69,13 @@ pipeline {
           input message: '🔐 IAM apply 실행할까요?'
           sh 'terraform apply -auto-approve tfplan'
         }
+      }
+    }
+
+    // ✅ Helm 전에 RBAC 권한 부여
+    stage('Apply RBAC for Jaesung') {
+      steps {
+        sh 'kubectl apply -f infra/terraform/helm/rbac/rbac-jaesung.yaml'
       }
     }
 
