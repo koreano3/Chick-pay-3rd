@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: user-service
+  namespace: user-service
   labels:
     app: user-service
 spec:
@@ -27,10 +28,26 @@ spec:
                 secretKeyRef:
                   name: user-postgres-secrets
                   key: database-url
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka.kafka.svc.cluster.local:9092"
+            - name: KAFKA_USERNAME
+              value: "user1"
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: kafka-user-passwords
+                  key: client-passwords
+            - name: REDIS_HOST
+              value: "redis-master.redis.svc.cluster.local"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis
+                  key: redis-password
           resources:
-            requests:
-              memory: "256Mi"
-              cpu: "200m"
             limits:
+              cpu: "250m"
               memory: "512Mi"
-              cpu: "500m"
+            requests:
+              cpu: "200m"
+              memory: "256Mi"

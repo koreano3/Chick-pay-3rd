@@ -22,6 +22,9 @@ from django.db import transaction, IntegrityError
 from rest_framework.permissions import IsAuthenticated
 from user_app.serializers import MyPageSerializer
 from decimal import Decimal
+from user_service.clients.kafka_client import producer
+from user_service.clients.redis_client import redis_client
+
 
 # API Views
 
@@ -257,3 +260,13 @@ class UserDetailByIdAPIView(APIView):
             })
         except CustomUser.DoesNotExist:
             return Response({"error": "유저를 찾을 수 없습니다."}, status=404)
+
+
+def send_message(request):
+    # Kafka 메시지 전송
+    producer.send("test", b"hello from user-service")
+
+    # Redis에 데이터 캐시
+    redis_client.set("example_key", "example_value")
+
+    return JsonResponse({"status": "ok"})
