@@ -13,7 +13,6 @@ terraform {
 
 provider "aws" {
   region = "ap-northeast-2"
-  profile = "eomsigi"
 }
 
 # VPC 정보 불러오기
