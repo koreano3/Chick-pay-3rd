@@ -1,5 +1,4 @@
-
-# ---------------- Remote State ------------------
+# ---------------- Remote States ------------------
 data "terraform_remote_state" "cicd" {
   backend = "local"
   config = {
@@ -27,7 +26,6 @@ data "terraform_remote_state" "vpc" {
     path = "../vpc/terraform.tfstate"
   }
 }
-
 
 # ---------------- EKS Auth ------------------
 data "aws_eks_cluster_auth" "cicd" {
@@ -87,7 +85,6 @@ resource "helm_release" "argocd" {
   chart      = "argo-cd"
   version    = "5.51.6"
   create_namespace = false
-
   depends_on = [kubernetes_namespace.argocd]
 }
 
@@ -110,41 +107,52 @@ resource "helm_release" "prometheus" {
   depends_on = [helm_release.aws_load_balancer_controller]
 }
 
+# ---------------- ALB용 IRSA & ServiceAccount ------------------
+resource "aws_iam_role" "alb_controller" {
+  name = "alb-controller-role"
 
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Principal = {
+        Federated = data.terraform_remote_state.service.outputs.oidc_provider_arn
+      },
+      Action = "sts:AssumeRoleWithWebIdentity",
+      Condition = {
+        StringEquals = {
+          "${replace(data.terraform_remote_state.service.outputs.oidc_provider_url, "https://", "")}:sub" = "system:serviceaccount:alb-system:aws-load-balancer-controller"
+        }
+      }
+    }]
+  })
+}
 
+resource "aws_iam_policy" "alb_policy" {
+  name   = "AWSLoadBalancerControllerIAMPolicy"
+  policy = file("iam-policy.json")
+}
 
-# resource "kubernetes_namespace" "velero" {
-#   provider = kubernetes.service
-#   metadata {
-#     name = "velero"
-#   }
-# }
+resource "aws_iam_role_policy_attachment" "alb_attach" {
+  role       = aws_iam_role.alb_controller.name
+  policy_arn = aws_iam_policy.alb_policy.arn
+}
 
-# resource "helm_release" "velero" {
-#   provider   = helm.service
-#   name       = "velero"
-#   namespace  = kubernetes_namespace.velero.metadata[0].name
-#   repository = "https://vmware-tanzu.github.io/helm-charts"
-#   chart      = "velero"
-#   version    = "6.0.0"
-#   create_namespace = false
-  
-#   values = [templatefile("${path.module}/values/velero.yaml", {
-#   irsa_role_arn = data.terraform_remote_state.iam.outputs.velero_irsa_role_arn,
-#   region = "ap-northeast-2",
-#   bucket = "velero-backup-for-chickpay",
-#   provider = "aws"
-# })
-# ]
-
-# depends_on = [kubernetes_namespace.velero]
-# }
-
-# AWS load Balancer Controller
 resource "kubernetes_namespace" "alb" {
   provider = kubernetes.service
   metadata {
     name = "alb-system"
+  }
+}
+
+resource "kubernetes_service_account" "alb_sa" {
+  provider = kubernetes.service
+  metadata {
+    name      = "aws-load-balancer-controller"
+    namespace = kubernetes_namespace.alb.metadata[0].name
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.alb_controller.arn
+    }
   }
 }
 
@@ -154,7 +162,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   namespace  = kubernetes_namespace.alb.metadata[0].name
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
-  version    = "1.7.1" # (최신 버전 확인 후 사용)
+  version    = "1.7.1"
   create_namespace = false
 
   set {
@@ -179,6 +187,8 @@ resource "helm_release" "aws_load_balancer_controller" {
 
   set {
     name  = "serviceAccount.name"
-    value = "aws-load-balancer-controller"
+    value = kubernetes_service_account.alb_sa.metadata[0].name
   }
+
+  depends_on = [kubernetes_service_account.alb_sa]
 }
