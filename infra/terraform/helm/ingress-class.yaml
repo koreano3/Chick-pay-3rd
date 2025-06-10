@@ -4,8 +4,8 @@ metadata:
   name: alb
 spec:
   controller: ingress.k8s.aws/alb
-
-  apiVersion: networking.k8s.io/v1
+---
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: front-ingress
@@ -19,13 +19,13 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: chick-pay.com  # 도메인 없으면 생략 가능
+    - host: chick-pay.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: front-service
+                name: front-nginx
                 port:
                   number: 80

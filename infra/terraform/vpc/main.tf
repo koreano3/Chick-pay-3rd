@@ -1,67 +1,77 @@
-# VPC 생성: 기본 네트워크의 범위를 정의
+# VPC 생성: 전체 네트워크 범위를 정의하고 AWS 내 자원들을 논리적으로 묶어줌
 resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr   # 예: "10.0.0.0/16"
-  enable_dns_support   = true           # 인스턴스가 DNS로 외부와 통신 가능하게 함
-  enable_dns_hostnames = true           # 퍼블릭 IP에 대해 DNS 호스트네임 부여 가능
+  cidr_block           = var.vpc_cidr
+  enable_dns_support   = true  # 인스턴스가 DNS로 외부와 통신할 수 있게 함
+  enable_dns_hostnames = true  # 퍼블릭 IP에 대해 호스트네임 부여 가능
+
   tags = {
-    Name = "vpc-for-cicdEKS2"
+    Name = "vpc-for-eks-chickpay-service"
   }
 }
 
-# 인터넷 게이트웨이 생성: VPC 외부 인터넷과 통신하기 위한 장치
+# 인터넷 게이트웨이 생성: 퍼블릭 서브넷이 인터넷과 통신할 수 있게 해줌
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id       # 위에서 만든 VPC와 연결
+  vpc_id = aws_vpc.main.id
+
   tags = {
-    Name = "main-igw2"
+    Name = "eks-chickpay-igw"
   }
 }
 
-# 퍼블릭 서브넷 생성: 인터넷과 직접 통신 가능한 서브넷
+# 퍼블릭 서브넷: 외부에서 직접 접근 가능한 서브넷으로 ALB와 NAT Gateway 등을 배치함
 resource "aws_subnet" "public" {
-  count                   = length(var.public_subnets)    # 서브넷 개수만큼 반복 생성
+  count                   = length(var.public_subnets)
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = var.public_subnets[count.index]   # 예: ["10.0.1.0/24", ...]
-  availability_zone       = element(var.azs, count.index)     # 예: ["ap-northeast-2a", ...]
-  map_public_ip_on_launch = true         # 인스턴스가 자동으로 퍼블릭 IP 할당받음
+  cidr_block              = var.public_subnets[count.index]
+  availability_zone       = element(var.azs, count.index)
+  map_public_ip_on_launch = true  # 인스턴스가 자동으로 퍼블릭 IP를 할당받음
+
   tags = {
-    Name = "public-${count.index}"
+    Name = "chickpay-public-${count.index}"
+    "kubernetes.io/role/elb"                    = "1"  # ALB가 이 서브넷을 사용할 수 있게 함
+    "kubernetes.io/cluster/eks-chickpay-service" = "shared"  # EKS 클러스터에서 이 서브넷을 공유함
   }
 }
 
-# 프라이빗 서브넷 생성: 외부 인터넷과 직접 통신은 불가능한 내부 서브넷
+# 프라이빗 서브넷: 외부 접근이 불가능한 내부 서브넷. EKS 노드 등이 배치됨
 resource "aws_subnet" "private" {
-  count             = length(var.private_subnets)          # 서브넷 개수만큼 반복 생성
+  count             = length(var.private_subnets)
   vpc_id            = aws_vpc.main.id
-  cidr_block        = var.private_subnets[count.index]     # 예: ["10.0.101.0/24", ...]
+  cidr_block        = var.private_subnets[count.index]
   availability_zone = element(var.azs, count.index)
+
   tags = {
-    Name = "private-${count.index}"
+    Name = "chickpay-private-${count.index}"
+    "kubernetes.io/cluster/eks-chickpay-service" = "shared"  # EKS 클러스터에서 이 서브넷을 공유함
   }
 }
 
-# NAT Gateway를 위한 탄력적 IP (EIP) 할당
+# NAT Gateway를 위한 퍼블릭 IP 할당: 프라이빗 서브넷이 외부로 나갈 때 사용
 resource "aws_eip" "nat" {
-  vpc = true   # VPC 전용 EIP 할당 (Classic AWS 아닌 VPC 환경용)
+    domain = "vpc"
 }
 
-# NAT Gateway 생성: 프라이빗 서브넷이 인터넷으로 나갈 수 있도록 지원
+# NAT Gateway: 프라이빗 서브넷에서 외부 인터넷으로 나갈 수 있게 함
 resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat.id                   # 위에서 만든 EIP와 연결
-  subnet_id     = aws_subnet.public[0].id          # 퍼블릭 서브넷에 위치시켜야 함
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public[0].id  # 퍼블릭 서브넷에 위치해야 함
+
   tags = {
-    Name = "nat-gateway2"
+    Name = "chickpay-nat"
   }
 }
 
-# 퍼블릭 라우트 테이블 생성: 인터넷 게이트웨이와 연결된 라우팅
+# 퍼블릭 라우트 테이블: 퍼블릭 서브넷이 IGW를 통해 외부와 통신할 수 있도록 라우팅
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
+
   route {
-    cidr_block = "0.0.0.0/0"                       # 모든 외부 트래픽
-    gateway_id = aws_internet_gateway.igw.id      # IGW를 통해 나감
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
   }
+
   tags = {
-    Name = "public-rt"
+    Name = "chickpay-public-rt"
   }
 }
 
@@ -72,15 +82,17 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# 프라이빗 라우트 테이블 생성: NAT Gateway 경유하여 외부와 통신 가능하게 함
+# 프라이빗 라우트 테이블: NAT Gateway를 통해 외부로 나가는 라우팅 설정
 resource "aws_route_table" "private" {
   vpc_id = aws_vpc.main.id
+
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
+
   tags = {
-    Name = "private-rt"
+    Name = "chickpay-private-rt"
   }
 }
 
@@ -90,4 +102,3 @@ resource "aws_route_table_association" "private" {
   subnet_id      = aws_subnet.private[count.index].id
   route_table_id = aws_route_table.private.id
 }
-
