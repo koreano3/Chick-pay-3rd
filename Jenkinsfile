@@ -72,8 +72,27 @@ pipeline {
       }
     }
 
-    
-    
+    // ✅ 클러스터 kubeconfig 생성 + 권한 부여
+    stage('EKS kubeconfig 설정 및 권한 패치') {
+      steps {
+        sh '''
+          aws eks update-kubeconfig \
+            --region ap-northeast-2 \
+            --name eks-chickpay-service-jenkins
+
+          kubectl patch configmap aws-auth \
+            -n kube-system \
+            --patch "$(cat infra/terraform/aws-auth-patch.yaml)"
+        '''
+      }
+    }
+
+    // ✅ Helm 전에 RBAC 권한 부여
+    stage('Apply RBAC for Jaesung') {
+      steps {
+        sh 'kubectl apply -f infra/terraform/helm/rbac/rbac-jaesung.yaml'
+      }
+    }
 
     stage('Terraform Helm') {
       steps {
