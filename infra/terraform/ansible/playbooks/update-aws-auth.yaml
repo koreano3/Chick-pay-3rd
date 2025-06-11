@@ -1,9 +1,6 @@
-# - name: Apply aws-auth ConfigMap
-#   hosts: bastion
-#   tasks:
-#     - name: Apply aws-auth configmap
-#       kubernetes.core.k8s:
-#         kubeconfig: ~/.kube/config
-#         namespace: kube-system
-#         state: present
-#         src: ../files/aws-auth-configmap.yaml
+- name: Update aws-auth ConfigMap
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Apply aws-auth configmap
+      shell: kubectl apply -f {{ playbook_dir }}/../files/aws-auth-configmap.yaml
