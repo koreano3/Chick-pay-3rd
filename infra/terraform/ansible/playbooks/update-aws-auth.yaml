@@ -1,9 +1,9 @@
-- name: Apply aws-auth ConfigMap
-  hosts: bastion
-  tasks:
-    - name: Apply aws-auth configmap
-      kubernetes.core.k8s:
-        kubeconfig: ~/.kube/config
-        namespace: kube-system
-        state: present
-        src: ../files/aws-auth-configmap.yaml
+# - name: Apply aws-auth ConfigMap
+#   hosts: bastion
+#   tasks:
+#     - name: Apply aws-auth configmap
+#       kubernetes.core.k8s:
+#         kubeconfig: ~/.kube/config
+#         namespace: kube-system
+#         state: present
+#         src: ../files/aws-auth-configmap.yaml

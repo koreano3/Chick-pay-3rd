@@ -1,6 +1,5 @@
-# playbooks/setup-velero.yaml
 - name: Setup Velero in Kubernetes
-  hosts: bastion
+  hosts: localhost
   become: true
   tasks:
     - name: Download Velero CLI
@@ -8,26 +7,38 @@
         url: https://github.com/vmware-tanzu/velero/releases/download/v1.13.1/velero-v1.13.1-linux-amd64.tar.gz
         dest: /tmp/velero.tar.gz
 
-    - name: Extract and move Velero binary
+    - name: Extract Velero binary
       unarchive:
         src: /tmp/velero.tar.gz
         dest: /tmp/
         remote_src: yes
 
-    - name: Move velero binary to /usr/local/bin
+    - name: Move Velero binary to /usr/local/bin
       copy:
         src: /tmp/velero-v1.13.1-linux-amd64/velero
         dest: /usr/local/bin/velero
         mode: '0755'
 
-    - name: Install Velero via Helm
-      shell: >
-        helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts &&
-        helm repo update &&
-        helm upgrade --install velero vmware-tanzu/velero
-        --namespace velero --create-namespace
-        --set configuration.provider=aws
-        --set configuration.backupStorageLocation.name=default
-        --set configuration.backupStorageLocation.bucket={{ s3velero-backup-for-chickpay }}
-        --set configuration.backupStorageLocation.config.region={{ ap-northeast-2 }}
-        --set credentials.secretContents.cloud={{ lookup('file', 'files/credentials-velero') }}
+    - name: Create velero namespace
+      command: kubectl create namespace velero
+      ignore_errors: true
+
+    - name: Create cloud credentials secret
+      command: >
+        kubectl create secret generic cloud-credentials
+        --namespace velero
+        --from-file cloud=files/credentials-velero
+      args:
+        chdir: "{{ playbook_dir }}"
+
+    - name: Install Velero with Helm
+      shell: |
+        helm repo add vmware-tanzu https://vmware-tanzu.github.io/helm-charts
+        helm repo update
+        helm upgrade --install velero vmware-tanzu/velero \
+          --namespace velero \
+          --set configuration.provider=aws \
+          --set configuration.backupStorageLocation.name=default \
+          --set configuration.backupStorageLocation.bucket=s3velero-backup-for-chickpay \
+          --set configuration.backupStorageLocation.config.region=ap-northeast-2 \
+          --set credentials.existingSecret=cloud-credentials
