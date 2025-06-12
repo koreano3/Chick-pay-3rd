@@ -22,6 +22,7 @@ from django.db import transaction, IntegrityError
 from rest_framework.permissions import IsAuthenticated
 from user_app.serializers import MyPageSerializer
 from decimal import Decimal
+from user_service.clients.kafka_producer import send_user_created_event
 # from user_service.clients.kafka_client import producer
 # from user_service.clients.redis_client import redis_client
 
@@ -94,6 +95,10 @@ class RegisterAPIView(APIView):
                 with transaction.atomic():  # 💥 여기!
                     user = serializer.save()
                     Cash.objects.create(user=user, balance=0)
+
+                    # ✅ Kafka 이벤트 전송
+                    send_user_created_event(user.id, user.email)
+
                 return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

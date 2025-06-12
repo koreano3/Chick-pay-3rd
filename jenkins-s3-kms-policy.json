@@ -1,0 +1,23 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::chickpay-backup",
+        "arn:aws:s3:::chickpay-backup/*"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["kms:Decrypt", "kms:Encrypt", "kms:GenerateDataKey"],
+      "Resource": "arn:aws:kms:ap-northeast-2:297195401389:key/9bac7e18-9030-4f64-9c18-7fbf8a5a22b1"
+    }
+  ]
+}
