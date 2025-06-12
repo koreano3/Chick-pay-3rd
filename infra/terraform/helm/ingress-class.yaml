@@ -14,14 +14,36 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/backend-protocol: HTTP
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
     alb.ingress.kubernetes.io/group.name: chickpay
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:297195401389:certificate/f2112377-d54f-4e0a-b61b-204020b536c9
 spec:
   ingressClassName: alb
   rules:
     - host: chick-pay.com
       http:
         paths:
+          - path: /zapp/api/
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 8001
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 8001
+          - path: /zapp/transaction/api/
+            pathType: Prefix
+            backend:
+              service:
+                name: transaction-service
+                port:
+                  number: 8002
           - path: /
             pathType: Prefix
             backend:

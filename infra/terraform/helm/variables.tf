@@ -11,3 +11,8 @@ variable "argocd_chart_version" {
   type        = string
   default     = "5.51.6"
 }
+
+variable "alb_controller_iam_role_arn" {
+  description = "Pre-created IAM role for ALB controller"
+  type        = string
+}

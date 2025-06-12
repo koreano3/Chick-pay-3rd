@@ -1,3 +1,11 @@
+locals {
+  common_tags = {
+    Project     = "chick-pay-3rd"
+    Environment = "dev"
+    Owner       = "sujin"
+  }
+}
+
 terraform {
   required_providers {
     aws = {
@@ -34,10 +42,10 @@ module "eks" {
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
-  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_id     = data.terraform_remote_state.vpc.outputs.vpc_id
   subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
 
-  enable_irsa = true
+  enable_irsa                              = true
   enable_cluster_creator_admin_permissions = true
 
   eks_managed_node_groups = {
@@ -46,13 +54,18 @@ module "eks" {
       desired_size   = 2
       min_size       = 1
       max_size       = 3
+
+      iam_role_additional_policies = {
+        ebs_csi = "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy"
+      }
     }
   }
 
-  tags = {
+  tags = merge(local.common_tags, {
     Name    = var.cluster_name
     Purpose = "msa-service"
-  }
+    Service = "EKS"
+  })
 }
 
 # 클러스터 정보 불러오기
@@ -65,7 +78,7 @@ data "aws_eks_cluster_auth" "this" {
   name = module.eks.cluster_name
 }
 
-# kubernetes provider 설정 (try()로 에러 방지 + alias)
+# kubernetes provider 설정
 provider "kubernetes" {
   alias                  = "eks"
   host                   = try(data.aws_eks_cluster.this.endpoint, "https://dummy")
@@ -76,3 +89,4 @@ provider "kubernetes" {
 resource "null_resource" "wait_for_eks" {
   depends_on = [module.eks]
 }
+

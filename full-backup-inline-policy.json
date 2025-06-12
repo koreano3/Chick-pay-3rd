@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "FullBackupAccess",
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateSnapshot",
+        "ec2:DescribeVolumes",
+        "ec2:CreateTags",
+        "ec2:DeleteSnapshot",
+        "backup:StartBackupJob",
+        "backup:CreateBackupVault",
+        "backup:CreateRecoveryPoint",
+        "backup:ListRecoveryPointsByBackupVault",
+        "backup:GetRecoveryPointRestoreMetadata",
+        "backup:StartRestoreJob",
+        "backup:DeleteRecoveryPoint",
+        "backup:ListBackupJobs",
+        "backup:GetBackupVaultAccessPolicy",
+        "backup:PutBackupVaultAccessPolicy",
+        "backup:ListBackupVaults"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

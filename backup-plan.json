@@ -1,0 +1,16 @@
+{
+  "BackupPlanName": "eks-ebs-backup-plan",
+  "Rules": [
+    {
+      "RuleName": "DailyEBSBackup",
+      "TargetBackupVaultName": "Default",
+      "ScheduleExpression": "cron(0 5 * * ? *)",
+      "StartWindowMinutes": 60,
+      "CompletionWindowMinutes": 180,
+      "Lifecycle": {
+        "MoveToColdStorageAfterDays": 2,
+        "DeleteAfterDays": 92
+      }
+    }
+  ]
+}

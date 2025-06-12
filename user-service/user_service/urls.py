@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -22,7 +23,11 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+def health_check(request):
+    return JsonResponse({'status': 'ok'})
+
 urlpatterns = [
+    path('', health_check),
     path('admin/', admin.site.urls),
     path('zapp/', include('user_app.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

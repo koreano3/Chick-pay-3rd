@@ -1,15 +1,15 @@
 from pathlib import Path
 from datetime import timedelta
 
-
-USER_SERVICE_URL = "http://localhost:8001"
+USER_SERVICE_URL = "https://chick-pay.com"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-q07@^m=o0w39dgbwq(qzj5y)7osx2oi@%39%oe9cat4gx=24za'
+
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,10 +55,15 @@ WSGI_APPLICATION = 'transaction_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'transaction_db',
+        'USER': 'transaction_user',
+        'PASSWORD': 'transaction_pass',
+        'HOST': 'transaction-postgres',
+        'PORT': '5432',
     }
 }
+
 
 LANGUAGE_CODE = 'ko-kr'
 TIME_ZONE = 'Asia/Seoul'
@@ -74,6 +79,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "http://chick-pay.com",
+    "https://chick-pay.com",
 ]
 
 CORS_ALLOW_CREDENTIALS = True

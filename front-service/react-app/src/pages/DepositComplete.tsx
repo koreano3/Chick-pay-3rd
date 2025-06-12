@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
+  process.env.REACT_APP_API_BASE_URL || "https://chick-pay.com";
 
 interface DepositTx {
   id: string;
@@ -44,7 +44,7 @@ const DepositComplete: React.FC = () => {
       navigate("/login");
       return;
     }
-    fetch(`${API_BASE_URL}/zapp/api/cash/deposit/complete/`, {
+    fetch(`${API_BASE_URL}/zapp/transaction/api/cash/deposit/complete/`, {
       headers: { Authorization: `Bearer ${access}` },
     })
       .then(async (res) => {

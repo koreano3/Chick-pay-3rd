@@ -58,7 +58,7 @@ const Unregister: React.FC = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8001/zapp/api/unregister/",
+        "https://chick-pay.com/zapp/api/unregister/",
         {
           method: "DELETE",
           headers: {
@@ -198,7 +198,11 @@ const Unregister: React.FC = () => {
                   control={<Radio />}
                   label="개인정보 보호가 걱정돼요"
                 />
-                <FormControlLabel value="etc" control={<Radio />} label="기타" />
+                <FormControlLabel
+                  value="etc"
+                  control={<Radio />}
+                  label="기타"
+                />
               </RadioGroup>
             </FormControl>
             <TextField

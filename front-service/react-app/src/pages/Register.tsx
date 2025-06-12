@@ -38,7 +38,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8001/zapp/api/register/",
+        `https://chick-pay.com/zapp/api/register/`,
         {
           name: formData.name,
           email: formData.email,

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 
@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-q07@^m=o0w39dgbwq(qzj5y)7osx2oi@%39%oe9cat4gx=24zm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+raw = os.getenv('DJANGO_ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in raw.split(',') if h.strip()]
+
 
 AUTH_USER_MODEL = 'user_app.CustomUser'
 
@@ -138,6 +140,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://127.0.0.1:3000",
     'http://localhost:3000',
+    "http://chick-pay.com",
+    "https://chick-pay.com",
 ]
 
 REST_FRAMEWORK = {

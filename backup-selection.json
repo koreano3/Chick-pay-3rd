@@ -1,0 +1,7 @@
+{
+  "SelectionName": "SelectEBS",
+  "IamRoleArn": "arn:aws:iam::297195401389:role/eks-ebs-backup-role",
+  "Resources": [
+    "arn:aws:ec2:ap-northeast-2:297195401389:volume/vol-0272441055dea0c87"
+  ]
+}

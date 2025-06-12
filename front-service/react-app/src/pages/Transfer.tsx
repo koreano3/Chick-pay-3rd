@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
+  process.env.REACT_APP_API_BASE_URL || "https://chick-pay.com";
 
 const Transfer: React.FC = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Transfer: React.FC = () => {
     // 사용자 정보 가져오기
     const fetchUserInfo = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/zapp/api/mypage/`, {
+        const response = await fetch(`${API_BASE_URL}/zapp/transaction/api/mypage/`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -58,7 +58,7 @@ const Transfer: React.FC = () => {
     setError("");
 
     try {
-      const response = await fetch(`${API_BASE_URL}/zapp/api/cash/transfer/`, {
+      const response = await fetch(`${API_BASE_URL}/zapp/transaction/api/cash/transfer/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

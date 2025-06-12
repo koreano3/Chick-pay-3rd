@@ -31,4 +31,10 @@ output "vpc_id" {
   value = data.terraform_remote_state.vpc.outputs.vpc_id
 }
 
+output "oidc_provider_arn" {
+  value = module.eks.oidc_provider_arn
+}
 
+output "oidc_provider_url" {
+  value = module.eks.oidc_provider
+}

@@ -30,7 +30,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8001/api/token/", {
+      const response = await axios.post(`https://chick-pay.com/api/token/`, {
         email: formData.email,
         password: formData.password,
       });

@@ -48,7 +48,7 @@ const MyPage: React.FC = () => {
     }
 
     // 1. 회원 정보(user-service)
-    fetch("http://localhost:8001/zapp/api/mypage/", {
+    fetch("https://chick-pay.com/zapp/api/mypage/", {
       headers: { Authorization: `Bearer ${access}` },
     })
       .then(async (res) => {
@@ -63,7 +63,7 @@ const MyPage: React.FC = () => {
       })
       .then((userData) => {
         // 2. 캐시 정보(transaction-service)
-        fetch("http://localhost:8002/zapp/api/cash/info/", {
+        fetch("https://chick-pay.com/zapp/transaction/api/cash/info/", {
           headers: { Authorization: `Bearer ${access}` },
         })
           .then((res) => res.json())
@@ -97,7 +97,7 @@ const MyPage: React.FC = () => {
     }
     try {
       const res = await fetch(
-        "http://localhost:8001/zapp/api/change-password/",
+        "https://chick-pay.com/zapp/api/change-password/",
         {
           method: "POST",
           headers: {

@@ -54,7 +54,7 @@ const Main: React.FC = () => {
   useEffect(() => {
     const access = localStorage.getItem("access_token");
     if (access) {
-      fetch("http://localhost:8001/zapp/api/user/me/", {
+      fetch(`https://chick-pay.com/zapp/api/user/me/`, {
         headers: { Authorization: `Bearer ${access}` },
       })
         .then((res) => {

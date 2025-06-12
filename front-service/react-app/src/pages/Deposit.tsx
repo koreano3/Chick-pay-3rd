@@ -12,9 +12,9 @@ import { useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 
 const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8002";
+  process.env.REACT_APP_API_BASE_URL || "https://chick-pay.com";
 
-const Deposit: React.FC = () => {
+  const Deposit: React.FC = () => {
   const [amount, setAmount] = useState("");
   const [memo, setMemo] = useState("");
   const [error, setError] = useState("");
@@ -31,7 +31,7 @@ const Deposit: React.FC = () => {
 
     try {
       const access = localStorage.getItem("access_token");
-      const response = await fetch(`${API_BASE_URL}/zapp/api/cash/deposit/`, {
+      const response = await fetch(`${API_BASE_URL}/zapp/transaction/api/cash/deposit/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

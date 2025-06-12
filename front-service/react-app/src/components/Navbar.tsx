@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     const access = localStorage.getItem("access_token");
     if (access) {
-      fetch("http://localhost:8001/zapp/api/user/me/", {
+      fetch("https://chick-pay.com/zapp/api/user/me/", {
         headers: { Authorization: `Bearer ${access}` },
       })
         .then((res) => {
@@ -74,9 +74,16 @@ const Navbar: React.FC = () => {
             <img
               src="/static/images/image.png"
               alt="Chick Pay"
-              style={{ width: 50, height: "auto" }}
+              style={{ width: 50, height: "auto", cursor: "pointer" }}
+              onClick={() => navigate("/")}
             />
-            <Typography variant="h5" fontWeight={700} color="#B85C38">
+            <Typography
+              variant="h5"
+              fontWeight={700}
+              color="#B85C38"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            >
               Chick Pay
             </Typography>
             {user && (
@@ -94,16 +101,6 @@ const Navbar: React.FC = () => {
           >
             {user ? (
               <>
-                <Button
-                  sx={{
-                    color: "#B85C38",
-                    fontWeight: "bold",
-                    "&:hover": { bgcolor: "rgba(184, 92, 56, 0.1)" },
-                  }}
-                  onClick={() => navigate("/account")}
-                >
-                  계좌조회
-                </Button>
                 <Button
                   sx={{
                     color: "#B85C38",

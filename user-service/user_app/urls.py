@@ -5,7 +5,6 @@ from rest_framework_simplejwt.views import (
 )
 from .views import OTPVerifyAPIView, PasswordChangeAPIView, RegisterAPIView, UnregisterAPIView, UserDetailByIdAPIView
 from .views import MyPageAPIView, UserExistsAPIView, CashUpdateAPIView
-from .views import test_kafka_redis
 
 urlpatterns = [
     # API 엔드포인트
@@ -19,5 +18,5 @@ urlpatterns = [
     path('api/user/exists/', UserExistsAPIView.as_view(), name='user-exists'),
     path('api/cash/update/', CashUpdateAPIView.as_view(), name='cash-update'),
     path('api/user/<int:user_id>/', UserDetailByIdAPIView.as_view()),
-    path("test/", test_kafka_redis),
+    # path("test/", test_kafka_redis),
 ] 
