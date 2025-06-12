@@ -14,6 +14,15 @@ spec:
       labels:
         app: transaction-service
     spec:
+      initContainers:
+        - name: check-db-ready
+          image: postgres:14
+          command: [
+              "sh",
+              "-c",
+              "until pg_isready -h transaction-postgres -p 5432;
+              do echo waiting for database; sleep 2; done;",
+            ]
       containers:
         - name: transaction-service
           image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/transaction-service:latest
@@ -27,3 +36,16 @@ spec:
                 secretKeyRef:
                   name: transaction-postgres-secrets
                   key: database-url
+          readinessProbe:
+            httpGet:
+              path: / # 실제 헬스체크 엔드포인트로 수정하세요
+              port: 8002
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
