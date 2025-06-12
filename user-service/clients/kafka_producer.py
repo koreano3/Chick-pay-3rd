@@ -12,5 +12,5 @@ def send_user_created_event(user_id, email):
         "user_id": user_id,
         "email": email
     }
-    producer.send("user-events", message)
+    producer.send("user-signup", message)  # ✅ 통일된 토픽명
     producer.flush()

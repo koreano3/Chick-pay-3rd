@@ -96,8 +96,13 @@ class RegisterAPIView(APIView):
                     user = serializer.save()
                     Cash.objects.create(user=user, balance=0)
 
+                    print(f"✅ Created user: {user.id}, {user.email}")
+                    print("🚀 Sending Kafka event...")
+
                     # ✅ Kafka 이벤트 전송
                     send_user_created_event(user.id, user.email)
+
+                    print("✅ Kafka event sent!")
 
                 return Response({"message": "Registration successful"}, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
