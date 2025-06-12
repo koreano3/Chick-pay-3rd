@@ -288,3 +288,82 @@ resource "helm_release" "aws_load_balancer_controller" {
     value = "aws-load-balancer-controller"
   }
 }
+
+resource "kubernetes_namespace" "jenkins" {
+  provider = kubernetes.cicd
+  metadata {
+    name = "jenkins"
+
+  annotations = {
+      "meta.helm.sh/release-namespace" = "jenkins"
+  }
+
+  labels = {
+      "app.kubernetes.io/managed-by" = "Helm"
+  }
+  }
+}
+
+resource "helm_release" "jenkins" {
+  provider   = helm.cicd
+  name       = "jenkins"
+  namespace  = kubernetes_namespace.jenkins.metadata[0].name
+  repository = "https://charts.jenkins.io"
+  chart      = "jenkins"
+  version    = "4.10.0"
+  create_namespace = false
+
+  values = [
+    file("${path.module}/values/jenkins-values.yaml")
+  ]
+
+  depends_on = [kubernetes_namespace.jenkins]
+}
+
+
+
+resource "kubernetes_namespace" "velero" {
+  provider = kubernetes.cicd
+  metadata {
+    name = "velero"
+  }
+}
+
+resource "helm_release" "velero" {
+  provider   = helm.cicd
+  name       = "velero"
+  namespace  = kubernetes_namespace.velero.metadata[0].name
+  repository = "https://vmware-tanzu.github.io/helm-charts"
+  chart      = "velero"
+  version    = "6.5.0"
+  create_namespace = false
+
+
+  set {
+    name  = "configuration.backupStorageLocation[0].name"
+    value = "default"
+  }
+  set {
+    name  = "configuration.backupStorageLocation[0].provider"
+    value = "aws"
+  }
+  set {
+    name  = "configuration.backupStorageLocation[0].bucket"
+    value = "chickpay-backup"
+  }
+  set {
+    name  = "configuration.backupStorageLocation[0].config.region"
+    value = "ap-northeast-2"
+  }
+  set {
+    name  = "configuration.volumeSnapshotLocation[0].name"
+    value = "default"
+  }
+  set {
+    name  = "configuration.volumeSnapshotLocation[0].provider"
+    value = "aws"
+  }
+  # 필요시 credentials 등 추가
+
+  depends_on = [kubernetes_namespace.velero]
+}

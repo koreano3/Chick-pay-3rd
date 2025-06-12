@@ -35,7 +35,7 @@ module "eks" {
   cluster_endpoint_private_access = true
 
   vpc_id     = data.terraform_remote_state.vpc.outputs.vpc_id
-  subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+  subnet_ids = data.terraform_remote_state.vpc.outputs.public_subnet_ids
 
   enable_irsa = true
   enable_cluster_creator_admin_permissions = true  # 생성자에게 system:masters 권한 부여
