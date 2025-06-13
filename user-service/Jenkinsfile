@@ -9,9 +9,16 @@ pipeline {
     }
 
     stages {
-        stage('Clone') {
+        stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    checkout([$class: 'GitSCM',
+                        branches: [[name: '*/terraform']],
+                        userRemoteConfigs: [[
+                            url: 'https://github.com/bemajor-team/Chick-pay-3rd.git'
+                        ]]
+                    ])
+                }
             }
         }
 
@@ -21,7 +28,7 @@ pipeline {
                     sh """
                     echo "🛠 Docker Build & Push"
                     aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
-                    docker build -t ${ECR_REPO}:${IMAGE_TAG} .
+                    docker build -t ${ECR_REPO}:${IMAGE_TAG} user-service
                     docker push ${ECR_REPO}:${IMAGE_TAG}
                     """
                 }
