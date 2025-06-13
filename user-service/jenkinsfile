@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_DEFAULT_REGION = 'ap-northeast-2'
+        ECR_REPO = '123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/user-service'
+        IMAGE_TAG = "${env.BUILD_NUMBER}"
+    }
+
+    stages {
+        stage('Clone') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Docker Build & Push to ECR') {
+            steps {
+                script {
+                    sh """
+                    echo "🛠 Docker Build & Push"
+                    aws ecr get-login-password | docker login --username AWS --password-stdin ${ECR_REPO}
+                    docker build -t ${ECR_REPO}:${IMAGE_TAG} .
+                    docker push ${ECR_REPO}:${IMAGE_TAG}
+                    """
+                }
+            }
+        }
+    }
+}
