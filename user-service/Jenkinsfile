@@ -5,20 +5,42 @@ pipeline {
         AWS_DEFAULT_REGION = 'ap-northeast-2'
         ECR_REPO = '297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/user-service'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
+        SERVICE_DIR = "user-service"
+        BASE_BRANCH = "origin/terraform"
+        SHOULD_BUILD = ""
     }
 
     stages {
-        stage('Docker Build & Push') {
+        stage('Check Changes in user-service') {
             steps {
-                dir('user-service') {
+                script {
+                    sh "git fetch origin terraform"
+                    def changes = sh(
+                        script: "git diff --name-only ${BASE_BRANCH} HEAD | grep '^${SERVICE_DIR}/' || true",
+                        returnStdout: true
+                    ).trim()
+                    if (!changes) {
+                        echo "🚫 변경 없음. 빌드 스킵 예정"
+                        env.SHOULD_BUILD = "false"
+                    } else {
+                        echo "✅ 변경 감지됨:\n${changes}"
+                        env.SHOULD_BUILD = "true"
+                    }
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            when {
+                expression { env.SHOULD_BUILD == "true" }
+            }
+            steps {
+                dir("${SERVICE_DIR}") {
                     script {
                         sh """
                         echo "🛠 Docker Build 시작"
                         aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPO
-
                         docker build -t $ECR_REPO:$IMAGE_TAG .
-
-                        echo "📤 ECR Push"
                         docker push $ECR_REPO:$IMAGE_TAG
                         """
                     }
