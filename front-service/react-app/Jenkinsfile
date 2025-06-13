@@ -7,6 +7,7 @@ pipeline {
         IMAGE_TAG = "${env.BUILD_NUMBER}"
         SERVICE_DIR = "front-service/react-app"
         BASE_BRANCH = "origin/terraform"
+        SHOULD_BUILD = ""
     }
 
     stages {
@@ -19,18 +20,20 @@ pipeline {
                         returnStdout: true
                     ).trim()
                     if (!changes) {
-                        echo "🚫 변경 없음. 빌드 종료"
-                        // 파이프라인 즉시 종료 (이후 stage 생략)
-                        currentBuild.result = 'SUCCESS'
-                        return
+                        echo "🚫 변경 없음. 빌드 스킵 예정"
+                        env.SHOULD_BUILD = "false"
                     } else {
                         echo "✅ 변경 감지됨:\n${changes}"
+                        env.SHOULD_BUILD = "true"
                     }
                 }
             }
         }
 
         stage('Docker Build & Push') {
+            when {
+                expression { env.SHOULD_BUILD == "true" }
+            }
             steps {
                 dir("${SERVICE_DIR}") {
                     script {
