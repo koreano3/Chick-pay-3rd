@@ -17,18 +17,14 @@ pipeline {
 
         stage('Login to ECR') {
             steps {
-                sh '''
-                aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
-                '''
+                sh "aws ecr get-login-password --region ${env.AWS_REGION} | docker login --username AWS --password-stdin ${env.ECR_REPO}"
             }
         }
 
         stage('Docker Build & Push') {
             steps {
-                sh '''
-                docker build -t $ECR_REPO:$IMAGE_TAG .
-                docker push $ECR_REPO:$IMAGE_TAG
-                '''
+                sh "docker build -t ${env.ECR_REPO}:${env.IMAGE_TAG} ."
+                sh "docker push ${env.ECR_REPO}:${env.IMAGE_TAG}"
             }
         }
     }
