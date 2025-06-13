@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'ap-northeast-2'
-        ECR_REPO = '123456789012.dkr.ecr.ap-northeast-2.amazonaws.com/user-service'
-        IMAGE_TAG = "${env.BUILD_NUMBER}"
+        AWS_ACCOUNT_ID = '297195401389'
+        ECR_REPO = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/user-service"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -19,7 +20,7 @@ pipeline {
                 script {
                     sh """
                     echo "🛠 Docker Build & Push"
-                    aws ecr get-login-password | docker login --username AWS --password-stdin ${ECR_REPO}
+                    aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
                     docker build -t ${ECR_REPO}:${IMAGE_TAG} .
                     docker push ${ECR_REPO}:${IMAGE_TAG}
                     """
