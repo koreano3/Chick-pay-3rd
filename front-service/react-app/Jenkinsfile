@@ -3,15 +3,15 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'ap-northeast-2'
-        ECR_REPO = '297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/user-service'
+        ECR_REPO = '297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/react-app'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        SERVICE_DIR = "user-service"
+        SERVICE_DIR = "front-service/react-app"
         BASE_BRANCH = "origin/terraform"
         SHOULD_BUILD = ""
     }
 
     stages {
-        stage('Check Changes in user-service') {
+        stage('Check Changes in react-app') {
             steps {
                 script {
                     sh "git fetch origin terraform"
