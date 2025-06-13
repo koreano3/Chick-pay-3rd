@@ -1,0 +1,46 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_REGION = 'ap-northeast-2'
+        ECR_REPO = '297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/react-app'
+        IMAGE_TAG = "latest"
+        IMAGE = "${ECR_REPO}:${IMAGE_TAG}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dir('front-service/react-app') {
+                    script {
+                        dockerImage = docker.build("${IMAGE}", ".")
+                    }
+                }
+            }
+        }
+
+        stage('Login to ECR') {
+            steps {
+                script {
+                    withAWS(credentials: 'aws-ecr-credentials', region: "${AWS_REGION}") {
+                        sh 'aws ecr get-login-password | docker login --username AWS --password-stdin 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com'
+                    }
+                }
+            }
+        }
+
+        stage('Push to ECR') {
+            steps {
+                script {
+                    dockerImage.push()
+                }
+            }
+        }
+    }
+}
