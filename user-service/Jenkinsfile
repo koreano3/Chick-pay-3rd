@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                script {
+                dir('user-service') {
                     checkout([$class: 'GitSCM',
                         branches: [[name: '*/terraform']],
                         userRemoteConfigs: [[
@@ -24,11 +24,11 @@ pipeline {
 
         stage('Docker Build & Push to ECR') {
             steps {
-                script {
+                dir('user-service') {
                     sh """
                     echo "🛠 Docker Build & Push"
                     aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
-                    docker build -t ${ECR_REPO}:${IMAGE_TAG} user-service
+                    docker build -t ${ECR_REPO}:${IMAGE_TAG} .
                     docker push ${ECR_REPO}:${IMAGE_TAG}
                     """
                 }
