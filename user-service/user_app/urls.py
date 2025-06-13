@@ -18,5 +18,4 @@ urlpatterns = [
     path('api/user/exists/', UserExistsAPIView.as_view(), name='user-exists'),
     path('api/cash/update/', CashUpdateAPIView.as_view(), name='cash-update'),
     path('api/user/<int:user_id>/', UserDetailByIdAPIView.as_view()),
-    # path("test/", test_kafka_redis),
 ] 

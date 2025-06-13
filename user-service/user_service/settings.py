@@ -162,3 +162,33 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': True,
 }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s] %(levelname)s %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',  # DEBUG에서 INFO로 변경
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',  # DEBUG에서 INFO로 변경
+            'propagate': True
+        },
+        'kafka': {  # kafka 로거 추가
+            'handlers': ['console'],
+            'level': 'INFO',  # kafka 관련 로그도 INFO로 설정
+            'propagate': False
+        }
+    }
+}

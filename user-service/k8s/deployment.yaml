@@ -14,6 +14,12 @@ spec:
       labels:
         app: user-service
     spec:
+      initContainers:
+        - name: check-db-ready
+          image: postgres:14
+          command: ['sh', '-c', 
+            'until pg_isready -h user-postgres -p 5432; 
+            do echo waiting for database; sleep 2; done;']
       containers:
         - name: user-service
           image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/user-service:latest
