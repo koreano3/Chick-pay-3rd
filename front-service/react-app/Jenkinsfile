@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'docker-agent'   // 🔥 이 줄 추가!
+    }
 
     environment {
         AWS_REGION = 'ap-northeast-2'
