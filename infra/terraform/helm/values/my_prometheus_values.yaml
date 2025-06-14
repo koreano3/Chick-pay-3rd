@@ -1,0 +1,47 @@
+server:
+  enabled: false  # Agent 모드일 경우 Prometheus 서버 기능 끔
+
+alertmanager:
+  enabled: false
+
+pushgateway:
+  enabled: false
+
+kubelet:
+  enabled: false
+kubeApiServer:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeStateMetrics:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+defaultRules:
+  enabled: false
+
+
+# extraScrapeConfigs: |
+#   - job_name: 'custom-kubernetes-pods'
+#     kubernetes_sd_configs:
+#       - role: pod
+#     relabel_configs:
+#       - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+#         action: keep
+#         regex: true
+
+remoteWrite:
+  - url: https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/ws-51644ca3-8dfd-4b5e-ae78-ea46e34c48f8/api/v1/remote_write
+    sigv4:
+      region: ap-northeast-2
+    queue_config:
+      max_samples_per_send: 1000
+      max_shards: 200

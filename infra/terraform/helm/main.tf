@@ -102,28 +102,32 @@ resource "aws_prometheus_workspace" "main" {
 }
 
 #TODO: 비활성화 -> 활성화 해야함
-# resource "helm_release" "adot_collector" {
-#   name       = "adot-exporter-for-eks-on-ec2"
-#   repository = "https://aws-observability.github.io/aws-otel-helm-charts"
-#   chart      = "adot-exporter-for-eks-on-ec2"
-#   version    = "0.22.0"  # 최신 릴리즈 버전 기준 또는 필요 버전 입력
-#   namespace  = kubernetes_namespace.monitoring.metadata[0].name
-#   create_namespace = false
+resource "helm_release" "adot_collector" {
+  provider = helm.service
 
-#   values = [
-#     templatefile("${path.module}/values/adot-values.tpl.yaml", {
-#       cluster_name     = data.terraform_remote_state.service.outputs.cluster_name
-#       amp_workspace_id = aws_prometheus_workspace.main.id
-#       adot_amp_role_arn= aws_iam_role.adot_amp.arn
-#     })
-#   ]
+  name       = "adot-exporter-for-eks-on-ec2"
+  repository = "https://aws-observability.github.io/aws-otel-helm-charts"
+  chart      = "adot-exporter-for-eks-on-ec2"
+  version    = "0.22.0"  # 최신 릴리즈 버전 기준 또는 필요 버전 입력
+  namespace  = kubernetes_namespace.monitoring.metadata[0].name
+  create_namespace = false
 
-#   depends_on = [
-#     kubernetes_namespace.monitoring,
-#     aws_prometheus_workspace.main,
-#     aws_iam_role.adot_amp
-#   ]
-# }
+  timeout = 600
+
+  values = [
+    templatefile("${path.module}/values/adot-values.tpl.yaml", {
+      cluster_name     = data.terraform_remote_state.service.outputs.cluster_name
+      amp_workspace_id = aws_prometheus_workspace.main.id
+      adot_amp_role_arn= aws_iam_role.adot_amp.arn
+    })
+  ]
+
+  depends_on = [
+    kubernetes_namespace.monitoring,
+    aws_prometheus_workspace.main,
+    aws_iam_role.adot_amp
+  ]
+}
 
 resource "kubernetes_namespace" "grafana" {
   provider = kubernetes.service
@@ -131,97 +135,125 @@ resource "kubernetes_namespace" "grafana" {
     name = "grafana"
   }
 }
-# resource "helm_release" "grafana" {
-#   provider   = helm.service
-#   name       = "grafana"
-#   namespace  = kubernetes_namespace.grafana.metadata[0].name
-#   repository = "https://grafana.github.io/helm-charts"
-#   chart      = "grafana"
-#   version    = "7.3.9"
-#   create_namespace = false
+resource "helm_release" "grafana" {
+  provider   = helm.service
+  name       = "grafana"
+  namespace  = kubernetes_namespace.grafana.metadata[0].name
+  repository = "https://grafana.github.io/helm-charts"
+  chart      = "grafana"
+  version    = "7.3.9"
 
-#   set {
-#     name  = "adminUser"
-#     value = "admin"
-#   }
+  create_namespace = false
+  timeout = 600
 
-#   set {
-#     name  = "adminPassword"
-#     value = "changeme"
-#   }
+  set {
+    name  = "adminUser"
+    value = "admin"
+  }
 
-#   set {
-#     name  = "service.type"
-#     value = "LoadBalancer"
-#   }
+  set {
+    name  = "adminPassword"
+    value = "changeme"
+  }
 
-#   set {
-#     name  = "persistence.enabled"
-#     value = "true"
-#   }
+  set {
+    name  = "service.type"
+    value = "LoadBalancer"
+  }
 
-#   set {
-#     name  = "persistence.size"
-#     value = "5Gi"
-#   }
+  set {
+    name  = "persistence.enabled"
+    value = "true"
+  }
 
-#   depends_on = [kubernetes_namespace.grafana]
-# }
+  set {
+    name  = "persistence.size"
+    value = "5Gi"
+  }
 
-# resource "kubernetes_config_map" "grafana_datasource" {
-#   provider = kubernetes.service
-#   metadata {
-#     name      = "grafana-datasources"
-#     namespace = kubernetes_namespace.grafana.metadata[0].name
-#     labels = {
-#       grafana_datasource = "1"
-#     }
-#   }
+  depends_on = [kubernetes_namespace.grafana]
+}
 
-  # data = {
-  #   "prometheus.yaml" = yamlencode({
-  #     apiVersion = 1
-  #     datasources = [{
-  #       name      = "AMP"
-  #       type      = "prometheus"
-  #       access    = "proxy"
-  #       url       = "https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/${aws_prometheus_workspace.main.id}"
-  #       jsonData  = {
-  #         sigV4Auth     = true
-  #         sigV4AuthType = "default"
-  #         sigV4Region   = "ap-northeast-2"
-  #       }
-  #     }]
-  #   })
-  # }
+resource "kubernetes_config_map" "grafana_datasource" {
+  provider = kubernetes.service
+  metadata {
+    name      = "grafana-datasources"
+    namespace = kubernetes_namespace.grafana.metadata[0].name
+    labels = {
+      grafana_datasource = "1"
+    }
+  }
 
-#   depends_on = [helm_release.grafana]
-# }
-# # ---------------- ADOT AMP용 IAM Role (IRSA) ------------------
-# resource "aws_iam_role" "adot_amp" {
-#   name = "adot-amp-role"
+  data = {
+    "prometheus.yaml" = yamlencode({
+      apiVersion = 1
+      datasources = [{
+        name      = "AMP"
+        type      = "prometheus"
+        access    = "proxy"
+        url       = "https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/${aws_prometheus_workspace.main.id}"
+        jsonData  = {
+          sigV4Auth     = true
+          sigV4AuthType = "default"
+          sigV4Region   = "ap-northeast-2"
+        }
+      }]
+    })
+  }
 
-#   assume_role_policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [{
-#       Effect = "Allow"
-#       Principal = {
-#         Federated = data.terraform_remote_state.service.outputs.oidc_provider_arn
-#       }
-#       Action = "sts:AssumeRoleWithWebIdentity"
-#       Condition = {
-#         StringEquals = {
-#           "${data.terraform_remote_state.service.outputs.oidc_provider_url}:sub" = "system:serviceaccount:monitoring:adot-collector-sa"
-#         }
-#       }
-#     }]
-#   })
-# }
+  depends_on = [helm_release.grafana]
+}
+# ---------------- ADOT AMP용 IAM Role (IRSA) ------------------
+resource "aws_iam_role" "adot_amp" {
+  name = "adot-amp-role"
 
-# resource "aws_iam_role_policy_attachment" "adot_amp_attach" {
-#   role       = aws_iam_role.adot_amp.name
-#   policy_arn = "arn:aws:iam::aws:policy/AmazonPrometheusRemoteWriteAccess"
-# }
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Federated = data.terraform_remote_state.service.outputs.oidc_provider_arn
+      }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "${data.terraform_remote_state.service.outputs.oidc_provider_url}:sub" = "system:serviceaccount:monitoring:adot-collector-sa"
+        }
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "adot_amp_attach" {
+  role       = aws_iam_role.adot_amp.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonPrometheusRemoteWriteAccess"
+}
+#------------- Grafana용 IRSA -----------------------
+resource "aws_iam_role" "grafana_amp_irsa" {
+  name = "grafana-amp-irsa-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Principal = {
+        Federated = data.terraform_remote_state.service.outputs.oidc_provider_arn
+      }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringEquals = {
+          "${data.terraform_remote_state.service.outputs.oidc_provider_url}:sub" = "system:serviceaccount:grafana:grafana-sa"
+        }
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "grafana_amp_access" {
+  role       = aws_iam_role.grafana_amp_irsa.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonPrometheusQueryAccess"
+}
+
 
 
 # ---------------- ALB용 IAM Role (IRSA) ------------------
@@ -289,39 +321,6 @@ resource "helm_release" "aws_load_balancer_controller" {
   }
 }
 
-resource "kubernetes_namespace" "jenkins" {
-  provider = kubernetes.cicd
-  metadata {
-    name = "jenkins"
-
-  annotations = {
-      "meta.helm.sh/release-namespace" = "jenkins"
-  }
-
-  labels = {
-      "app.kubernetes.io/managed-by" = "Helm"
-  }
-  }
-}
-
-resource "helm_release" "jenkins" {
-  provider   = helm.cicd
-  name       = "jenkins"
-  namespace  = kubernetes_namespace.jenkins.metadata[0].name
-  repository = "https://charts.jenkins.io"
-  chart      = "jenkins"
-  version    = "4.10.0"
-  create_namespace = false
-
-  values = [
-    file("${path.module}/values/jenkins-values.yaml")
-  ]
-
-  depends_on = [kubernetes_namespace.jenkins]
-}
-
-
-
 resource "kubernetes_namespace" "velero" {
   provider = kubernetes.cicd
   metadata {
@@ -363,6 +362,7 @@ resource "helm_release" "velero" {
     name  = "configuration.volumeSnapshotLocation[0].provider"
     value = "aws"
   }
+
   # 필요시 credentials 등 추가
 
   depends_on = [kubernetes_namespace.velero]

@@ -1,12 +1,12 @@
 mode: deployment
-clusterName: ${cluster_name}
+clusterName: eks-chickpay-service
 region: ap-northeast-2
 
 serviceAccount:
   create: true
   name: adot-collector-sa
   annotations:
-    eks.amazonaws.com/role-arn: ${adot_amp_role_arn}
+    eks.amazonaws.com/role-arn: arn:aws:aps:ap-northeast-2:297195401389:workspace/ws-51644ca3-8dfd-4b5e-ae78-ea46e34c48f8
 
 receivers:
   prometheus:
@@ -18,7 +18,7 @@ receivers:
 
 exporters:
   awsprometheusremotewrite:
-    endpoint: https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/${amp_workspace_id}
+    endpoint: https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/ws-51644ca3-8dfd-4b5e-ae78-ea46e34c48f8
 
 service:
   pipelines:

@@ -1,3 +1,15 @@
+# terraform {
+#   backend "s3" {
+#     bucket         = "chickpay-terraform-state"
+#     key            = "eks/service/terraform.tfstate"
+#     region         = "ap-northeast-2"
+#     dynamodb_table = "chickpay-terraform-lock"
+#     encrypt        = true
+#   }
+# }
+
+
+
 terraform {
   required_providers {
     aws = {
@@ -71,3 +83,5 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.this.token
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.this.certificate_authority[0].data)
 }
+
+

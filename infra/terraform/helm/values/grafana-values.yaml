@@ -1,0 +1,40 @@
+plugins:
+  []
+
+grafana.ini:
+  auth.sigv4:
+    enabled: true
+  users:
+    viewers_can_edit: true
+  plugins:
+    enable_alpha: true
+
+sidecar:
+  datasources:
+    enabled: false
+
+serviceAccount:
+  create: true
+  name: grafana-sa
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::297195401389:role/grafana-amp-irsa-role
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  storageClassName: gp2  # 또는 네 클러스터에서 사용 가능한 이름으로 수정
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: AMP
+        type: prometheus
+        access: proxy
+        url: https://aps-workspaces.ap-northeast-2.amazonaws.com/workspaces/ws-51644ca3-8dfd-4b5e-ae78-ea46e34c48f8
+        isDefault: true
+        jsonData:
+          sigV4Auth: true
+          sigV4Region: ap-northeast-2

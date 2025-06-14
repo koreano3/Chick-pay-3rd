@@ -36,12 +36,12 @@ output "vpc_id" {
 #   value = aws_iam_openid_connect_provider.this.url
 # }
 
-# output "grafana_namespace" {
-#   description = "Namespace where Grafana is installed"
-#   value       = kubernetes_namespace.grafana.metadata[0].name
-# }
+output "grafana_namespace" {
+  description = "Namespace where Grafana is installed"
+  value       = kubernetes_namespace.grafana.metadata[0].name
+}
 
-# output "grafana_release_name" {
-#   description = "Grafana Helm release name"
-#   value       = helm_release.grafana.name
-# }
+output "grafana_release_name" {
+  description = "Grafana Helm release name"
+  value       = helm_release.grafana.name
+}

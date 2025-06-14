@@ -1,3 +1,13 @@
+# terraform {
+#   backend "s3" {
+#     bucket         = "chickpay-terraform-state"
+#     key            = "eks/service/terraform.tfstate"
+#     region         = "ap-northeast-2"
+#     dynamodb_table = "chickpay-terraform-lock"
+#     encrypt        = true
+#   }
+# }
+
 locals {
   common_tags = {
     Project     = "chick-pay-3rd"
@@ -47,6 +57,7 @@ module "eks" {
 
   enable_irsa                              = true
   enable_cluster_creator_admin_permissions = true
+  
 
   eks_managed_node_groups = {
     service-nodes = {
@@ -55,9 +66,7 @@ module "eks" {
       min_size       = 1
       max_size       = 3
 
-      iam_role_additional_policies = {
-        ebs_csi = "arn:aws:iam::aws:policy/AmazonEBSCSIDriverPolicy"
-      }
+      enable_ebs_csi_driver = true
     }
   }
 
