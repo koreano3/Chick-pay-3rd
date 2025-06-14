@@ -25,5 +25,19 @@ pipeline {
                 }
             }
         }
+
+        stage('Trigger Argo CD Sync') {
+            steps {
+                withCredentials([string(credentialsId: 'ARGOCD_AUTH_TOKEN', variable: 'ARGO_TOKEN')]) {
+                    sh """
+                    echo "🚀 Argo CD 배포 트리거"
+                    curl -k \\
+                      -H "Authorization: Bearer $ARGO_TOKEN" \\
+                      -H "Content-Type: application/json" \\
+                      -X POST https://argocd.chick-pay.com/api/v1/applications/transaction-service/sync
+                    """
+                }
+            }
+        }
     }
 }
