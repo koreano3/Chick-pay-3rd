@@ -30,7 +30,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'ARGOCD_AUTH_TOKEN', variable: 'ARGO_TOKEN')]) {
                     sh """
-                    echo "🚀 Argo CD 배포 트리거"
+                    echo "🚀 Argo CD transaction-service 배포 트리거"
                     curl -k \\
                       -H "Authorization: Bearer $ARGO_TOKEN" \\
                       -H "Content-Type: application/json" \\
