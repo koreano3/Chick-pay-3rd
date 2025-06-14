@@ -12,3 +12,8 @@ variable "cluster_name" {
 variable "cluster_version" {
   default = "1.29"
 }
+
+variable "vpc_id" {
+  description = "VPC ID for the CICD EKS cluster"
+  type        = string
+}

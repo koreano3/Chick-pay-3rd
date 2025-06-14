@@ -2,3 +2,4 @@
 argocd_namespace     = "argocd"
 argocd_chart_version = "5.51.6"
 alb_controller_iam_role_arn = "arn:aws:iam::297195401389:role/AmazonEKSLoadBalancerControllerRole"
+alb_controller_iam_role_arn_cicd = "arn:aws:iam::297195401389:role/AmazonEKSLoadBalancerControllerRole"

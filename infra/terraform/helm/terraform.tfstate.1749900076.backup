@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.12.1",
-  "serial": 274,
+  "serial": 272,
   "lineage": "6ff43f10-3a8b-60e4-1875-199f91f56aef",
   "outputs": {
     "argocd_namespace": {
@@ -33,7 +33,7 @@
           "attributes": {
             "id": "eks-chickpay-cicd",
             "name": "eks-chickpay-cicd",
-            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MTQlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjE0VDExMjEyN1omWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9NjliMmM5OWI0MzZlZGI3N2JhYjAxYjExMTllZTk2ZDZmNmRjODU2ZWExNjA0YzllMDg4MGQxOTYzNDM0Mzk5ZQ"
+            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MTQlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjE0VDExMjA1M1omWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9YjYxY2YwYzA2ZTIxY2IwOTFjNzZhODE3YzU2Y2EyOTYzOWNlMzJkMmFiZDU2M2FkMGE4Zjc5ZDFiMGYyYTMxNg"
           },
           "sensitive_attributes": [
             [
@@ -58,7 +58,7 @@
           "attributes": {
             "id": "eks-chickpay-service",
             "name": "eks-chickpay-service",
-            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MTQlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjE0VDExMjEyN1omWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9ZmZmMzBkNTgxOTMwNzVhNzA4MDRkOTJiNTU4NDYyZWQyYjRkNDFiZDE3ZjNlZDI3OGFjOWFlNWE5NDUxYTk3Nw"
+            "token": "k8s-aws-v1.aHR0cHM6Ly9zdHMuYXAtbm9ydGhlYXN0LTIuYW1hem9uYXdzLmNvbS8_QWN0aW9uPUdldENhbGxlcklkZW50aXR5JlZlcnNpb249MjAxMS0wNi0xNSZYLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFVS01SWjZDV1lORU5IQjQ1JTJGMjAyNTA2MTQlMkZhcC1ub3J0aGVhc3QtMiUyRnN0cyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUwNjE0VDExMjA1M1omWC1BbXotRXhwaXJlcz0wJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCUzQngtazhzLWF3cy1pZCZYLUFtei1TaWduYXR1cmU9MTA3YzQxNWIyZDU4Y2E4NWJiODEzOWJkZGZmM2NlOWE1OTU4YTMwZjZhYjlmY2E1MTlhOTg5ZWQ0NTBiYWZmMA"
           },
           "sensitive_attributes": [
             [
@@ -809,6 +809,44 @@
           "dependencies": [
             "data.aws_eks_cluster_auth.service",
             "data.terraform_remote_state.service"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "kubernetes_namespace",
+      "name": "jenkins",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"].cicd",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "jenkins",
+            "metadata": [
+              {
+                "annotations": {
+                  "meta.helm.sh/release-namespace": "jenkins"
+                },
+                "generate_name": "",
+                "generation": 0,
+                "labels": {
+                  "app.kubernetes.io/managed-by": "Helm"
+                },
+                "name": "jenkins",
+                "resource_version": "797232",
+                "uid": "740ba4ce-49e0-400e-a8f4-88177794fc87"
+              }
+            ],
+            "timeouts": null,
+            "wait_for_default_service_account": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjozMDAwMDAwMDAwMDB9fQ==",
+          "dependencies": [
+            "data.aws_eks_cluster_auth.cicd",
+            "data.terraform_remote_state.cicd"
           ]
         }
       ]

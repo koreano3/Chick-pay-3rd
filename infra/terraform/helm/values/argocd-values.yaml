@@ -1,0 +1,18 @@
+server:
+  service:
+    type: ClusterIP
+  extraArgs:
+    - --insecure
+
+  ingress:
+    enabled: false # 별도의 ingress 리소스를 만들 것이므로 false
+
+configs:
+  params:
+    server.insecure: true
+
+redis:
+  enabled: true
+
+dex:
+  enabled: true

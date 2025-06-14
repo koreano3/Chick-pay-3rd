@@ -289,37 +289,6 @@ resource "helm_release" "aws_load_balancer_controller" {
   }
 }
 
-resource "kubernetes_namespace" "jenkins" {
-  provider = kubernetes.cicd
-  metadata {
-    name = "jenkins"
-
-  annotations = {
-      "meta.helm.sh/release-namespace" = "jenkins"
-  }
-
-  labels = {
-      "app.kubernetes.io/managed-by" = "Helm"
-  }
-  }
-}
-
-resource "helm_release" "jenkins" {
-  provider   = helm.cicd
-  name       = "jenkins"
-  namespace  = kubernetes_namespace.jenkins.metadata[0].name
-  repository = "https://charts.jenkins.io"
-  chart      = "jenkins"
-  version    = "4.10.0"
-  create_namespace = false
-
-  values = [
-    file("${path.module}/values/jenkins-values.yaml")
-  ]
-
-  depends_on = [kubernetes_namespace.jenkins]
-}
-
 
 
 resource "kubernetes_namespace" "velero" {
@@ -366,4 +335,67 @@ resource "helm_release" "velero" {
   # 필요시 credentials 등 추가
 
   depends_on = [kubernetes_namespace.velero]
+}
+
+# ---------------- CICD ALB용 IAM Role (IRSA) ------------------
+variable "alb_controller_iam_role_arn_cicd" {
+  description = "ALB Controller IAM Role ARN for CICD cluster"
+  type        = string
+  default     = "arn:aws:iam::297195401389:role/AmazonEKSLoadBalancerControllerRole"
+}
+
+
+resource "kubernetes_service_account" "alb_controller_cicd" {
+  provider = kubernetes.cicd
+  metadata {
+    name      = "aws-load-balancer-controller"
+    namespace = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = var.alb_controller_iam_role_arn_cicd
+    }
+  }
+}
+
+resource "helm_release" "aws_load_balancer_controller_cicd" {
+  provider   = helm.cicd
+  name       = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  version    = "1.7.1"
+  create_namespace = false
+
+  depends_on = [
+    kubernetes_service_account.alb_controller_cicd
+  ]
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = var.alb_controller_iam_role_arn_cicd
+  }
+
+  set {
+    name  = "clusterName"
+    value = data.terraform_remote_state.cicd.outputs.cluster_name
+  }
+
+  set {
+    name  = "region"
+    value = "ap-northeast-2"
+  }
+
+  set {
+    name  = "vpcId"
+    value = data.terraform_remote_state.cicd.outputs.vpc_id
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
 }

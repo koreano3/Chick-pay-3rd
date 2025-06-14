@@ -25,3 +25,7 @@ output "cluster_token" {
   sensitive = true
 }
 
+output "vpc_id" {
+  value = var.vpc_id
+}
+
