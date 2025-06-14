@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: user-postgres
+  namespace: service
 spec:
   serviceName: user-postgres
   replicas: 1
