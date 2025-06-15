@@ -1,6 +1,0 @@
-resources:
-  - deployment.yaml
-  - service.yaml
-  - user-postgres-secrets.yaml
-  - user-postgres-service.yaml
-  - user-postgres-statefulset.yaml
