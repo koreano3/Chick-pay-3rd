@@ -1,0 +1,28 @@
+# # playbooks/install_velero.yml
+# - name: Install Velero on multiple clusters
+#   hosts: eks_clusters
+#   gather_facts: no
+#   vars:
+#     velero_namespace: velero
+#     kubeconfig_path: "{{ hostvars[inventory_hostname]['kubeconfig'] }}"
+#   tasks:
+#     - name: Create Velero namespace
+#       command: >
+#         kubectl --kubeconfig {{ kubeconfig_path }} create namespace {{ velero_namespace }}
+#       ignore_errors: yes
+
+#     - name: Install Velero via Helm
+#       command: >
+#         helm upgrade --install velero vmware-tanzu/velero
+#         --namespace {{ velero_namespace }}
+#         --kubeconfig {{ kubeconfig_path }}
+#         --set configuration.provider=aws
+#         --set configuration.backupStorageLocation.name=default
+#         --set configuration.backupStorageLocation.bucket={{ chickpay-backup }}
+#         --set configuration.backupStorageLocation.config.region={{ ap-northeast-2 }}
+#         --set initContainers[0].name=velero-plugin-for-aws
+#         --set initContainers[0].image=velero/velero-plugin-for-aws:v1.7.0
+#         --set initContainers[0].volumeMounts[0].mountPath=/target
+#         --set initContainers[0].volumeMounts[0].name=plugins
+#         --set serviceAccount.server.create=false
+#         --set serviceAccount.server.name=velero

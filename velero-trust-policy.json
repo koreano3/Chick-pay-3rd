@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::297195401389:oidc-provider/oidc.eks.ap-northeast-2.amazonaws.com/id/1787859437E70739232777A69E3505F0"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.ap-northeast-2.amazonaws.com/id/1787859437E70739232777A69E3505F0:sub": "system:serviceaccount:velero:velero"
+        }
+      }
+    }
+  ]
+}
+

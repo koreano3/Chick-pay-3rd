@@ -1,19 +1,21 @@
-serviceAccount:
-  annotations:
-    eks.amazonaws.com/role-arn: "${irsa_role_arn}"
-
 configuration:
   provider: aws
   backupStorageLocation:
     name: default
-    bucket: your-velero-backup-bucket
+    bucket: your-bucket-name
+    config:
+      region: ap-northeast-2
+      s3ForcePathStyle: true
+      publicUrl: arn:aws:s3:::chickpay-backup
+      kmsKeyId: your-arn:aws:kms:ap-northeast-2:297195401389:key/9bac7e18-9030-4f64-9c18-7fbf8a5a22b1
+  volumeSnapshotLocation:
+    name: default
     config:
       region: ap-northeast-2
 
 credentials:
   useSecret: true
-  secretContents:
-    cloud: |
-      [default]
-      aws_access_key_id = YOUR_KEY
-      aws_secret_access_key = YOUR_SECRET
+
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::297195401389:role/EKSNodeRole"

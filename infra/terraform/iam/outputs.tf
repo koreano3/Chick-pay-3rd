@@ -18,6 +18,3 @@ output "service_oidc_url" {
   value = data.aws_eks_cluster.service.identity[0].oidc[0].issuer
 }
 
-output "velero_irsa_role_arn" {
-  value = aws_iam_role.velero_irsa_role.arn
-}

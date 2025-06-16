@@ -7,3 +7,10 @@ output "argocd_namespace" {
   description = "Namespace where ArgoCD is installed"
   value       = kubernetes_namespace.argocd.metadata[0].name
 }
+
+output "velero_irsa_role_arn" {
+  value = data.terraform_remote_state.iam.outputs.velero_role_arn
+}
+
+
+
