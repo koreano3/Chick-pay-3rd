@@ -1,4 +1,4 @@
-# Chick-pay! 2차 프로젝트 
+# Chick-pay! 3차 프로젝트 
 
 Chick-pay Good
 
