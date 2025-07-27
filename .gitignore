@@ -62,3 +62,14 @@ ruff_cache/
 node_modules/
 dist/
 build/
+
+# .gitignore에 아래 추가 (있으면 중복X)
+.terraform/
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan
+crash.log
+*.exe

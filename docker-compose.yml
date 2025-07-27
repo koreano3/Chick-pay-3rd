@@ -1,25 +1,91 @@
+# ✅ docker-compose.yml (최종)
+version: "3.8"
+
 services:
-  web:
-    build: .
-    command: gunicorn --workers 3 --bind 0.0.0.0:8000 my_project.wsgi:application
-    volumes:
-      - .:/app
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test -d user_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=user_db
+      - DATABASE_USER=test
+      - DATABASE_PASSWORD=test
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - backend
+    command: >
+      sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  transaction-service:
+    build: ./transaction-service
+    ports:
+      - "8002:8002"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  front-service:
+    build: ./front-service
     ports:
       - "8000:8000"
     networks:
       - backend
-    restart: always
-  otel-collector:
-    image: otel/opentelemetry-collector:latest
-    volumes:
-      - ./otel-collector-config.yaml:/otel-local-config.yaml
-    command: ["--config", "/otel-local-config.yaml"]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
     ports:
-      - "4317:4317"
-      - "4318:4318"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/certs:/etc/nginx/certs
+    depends_on:
+      front-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      transaction-service:
+        condition: service_healthy
     networks:
       - backend
-      
+
 networks:
   backend:
     driver: bridge
+
+volumes:
+  user-db-data:

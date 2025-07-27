@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-nginx
+  namespace: service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: front-nginx
+  template:
+    metadata:
+      labels:
+        app: front-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/react-app:latest
+          ports:
+            - containerPort: 80

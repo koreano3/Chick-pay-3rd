@@ -1,0 +1,4 @@
+serviceAccount:
+  server:
+    create: false
+    name: velero # eksctl로 만든 SA 이름

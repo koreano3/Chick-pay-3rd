@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_DEFAULT_REGION = 'ap-northeast-2'
+        ECR_REPO = '297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp/transaction-service'
+        IMAGE_TAG = "latest"
+    }
+
+    stages {
+        stage('Docker Build & Push') {
+            steps {
+                dir('transaction-service') {
+                    script {
+                        sh """
+                        echo "🛠 Docker Build 시작"
+                        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPO
+
+                        docker build -t $ECR_REPO:$IMAGE_TAG .
+
+                        echo "📤 ECR Push"
+                        docker push $ECR_REPO:$IMAGE_TAG
+                        """
+                    }
+                }
+            }
+        }
+
+        stage('Trigger Argo CD Sync') {
+            steps {
+                withCredentials([string(credentialsId: 'ARGOCD_AUTH_TOKEN', variable: 'ARGO_TOKEN')]) {
+                    sh """
+                    echo "🚀 Argo CD transaction-service 배포 트리거"
+                    curl -k \\
+                      -H "Authorization: Bearer $ARGO_TOKEN" \\
+                      -H "Content-Type: application/json" \\
+                      -X POST https://argocd.chick-pay.com/api/v1/applications/transaction-service/sync
+                    """
+                }
+            }
+        }
+    }
+}
