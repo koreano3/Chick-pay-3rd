@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    command: gunicorn --workers 3 --bind 0.0.0.0:8000 my_project.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    restart: always
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    volumes:
+      - ./otel-collector-config.yaml:/otel-local-config.yaml
+    command: ["--config", "/otel-local-config.yaml"]
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    networks:
+      - backend
+      
+networks:
+  backend:
+    driver: bridge

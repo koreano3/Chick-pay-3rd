@@ -1,0 +1,204 @@
+kind: pipeline
+type: docker
+name: deploy-for-main
+
+steps:
+  # 1. ECR에 새 이미지 빌드 & 푸시
+  - name: build-and-push-to-ecr
+    image: plugins/ecr
+    settings:
+      repo: 297195401389.dkr.ecr.ap-northeast-2.amazonaws.com/zapp
+      region: ap-northeast-2
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+      dockerfile: dockerfile
+      context: .
+    when:
+      branch:
+        - sub
+        - main
+
+  # 2. ECS 테스트 업데이트
+  - name: deploy-test-ecs
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-test --force-new-deployment
+    when:
+      branch:
+        - sub
+        - main
+
+  # 3. ZAP 자동화 스캔
+  - name: zap-full-automation
+    image: appleboy/drone-ssh
+    environment:
+      ZAP_USERNAME:
+        from_secret: ZAP_USERNAME
+      ZAP_PASSWORD:
+        from_secret: ZAP_PASSWORD
+    settings:
+      host:
+        from_secret: drone_ec2
+      username: ubuntu
+      key:
+        from_secret: drone_ec2_ssh_key
+      port: 22
+      script:
+        - cd /home/ubuntu/zap
+        - docker run --rm -v $(pwd):/zap/wrk/:rw --memory=1.5g --cpus=2 ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/zap-automation.yaml
+        - |
+          echo "🔎 JSON 리포트에서 High 위험 이상 있는지 검사 중..."
+          ERRORS=$(jq '[.site[].alerts[].riskcode | tonumber] | map(select(. >= 3)) | length' reports/zap_report.json)
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "❌ High 위험도 $ERRORS 건 발견됨! 배포 중단."
+            exit 1
+          else
+            echo "✅ High 위험 없음. 계속 진행."
+          fi
+  # 4. 단위/통합 테스트
+  - name: pytest
+    image: python:3.12
+    environment:
+      DJANGO_SETTINGS_MODULE: my_project.settings
+    commands:
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
+      - python manage.py migrate
+      - pytest
+  # 5. Bandit 정적 분석
+  - name: bandit-analysis
+    image: python:3.12
+    commands:
+      - apt-get update && apt-get install -y jq
+      - pip install bandit
+      - bandit -r core zapp my_project -f json -o analysis/bandit-report.json -x zapp/tests
+      - |
+        ERRORS=$(jq '.metrics._totals.high + .metrics._totals.medium' analysis/bandit-report.json)
+        if [ "$ERRORS" -gt 0 ]; then
+          echo "❌ 배포 중단: 보안 취약점이 ${ERRORS}건 발견되었습니다."
+          exit 1
+        else
+          echo "✅ 보안 분석 통과: 심각한 취약점이 없습니다. 계속 진행합니다."
+          fi
+
+    # 6. 부하 테스트 + locust 결과 체크
+  - name: locust-load-test
+    image: python:3.11
+    environment:
+      PGHOST:
+        from_secret: dbhost
+      PGUSER: postgres
+      PGPASSWORD:
+        from_secret: dbpassword
+    commands:
+      - apt-get update && apt-get install -y postgresql-client
+      - pip install locust pandas pyotp
+      - |
+        echo "🌐 PGHOST=$PGHOST"
+
+        echo "🔧 DB 커넥션 모니터링 백그라운드 실행 시작..."
+        ( 
+          export PGHOST="$PGHOST"
+          export PGUSER="$PGUSER"
+          export PGPASSWORD="$PGPASSWORD"
+          echo "🔍 DB 모니터링 시작됨!"
+          for i in $(seq 1 6); do
+            echo "⏱ DB 커넥션 체크 $i/6:"
+            psql -h "$PGHOST" -U "$PGUSER" -d postgres -c "SELECT now(), numbackends FROM pg_stat_database WHERE datname='postgres';"
+            sleep 5
+          done
+        ) >> db_conn_log.txt 2>&1 &
+
+        echo "🧪 Locust 부하 테스트 시작"
+        locust --headless -f locustfile.py -u 28 -r 5 -t 30s --host http://chicktestalb-561931865.ap-northeast-2.elb.amazonaws.com --csv=locust_result 
+
+        wait 
+
+        echo "📤 DB 커넥션 로그 출력 ==============================="
+        cat db_conn_log.txt
+      - python check_locust_result.py
+
+    # 7 Drone UI에서 로그 확인하는 컨테이너
+  - name: show-locust-csv
+    image: python:3.11
+    commands:
+      - pip install pandas
+      - python -c "import pandas as pd; df = pd.read_csv('locust_result_stats.csv'); print('📊 LOCUST 결과 =========================='); print(df.to_string())"
+
+  # 8 부하 테스트 후 커넥션 누수 확인
+  - name: monitor-db-end
+    image: postgres:14
+    environment:
+      PGHOST:
+        from_secret: dbhost
+      PGUSER: postgres
+      PGPASSWORD:
+        from_secret: dbpassword
+    commands:
+      - echo "⏳ Locust 종료 후 안정화 대기 중... (60초)"
+      - sleep 60
+      - |
+        conn_count=$(PGPASSWORD=$PGPASSWORD psql -h "$PGHOST" -U "$PGUSER" -d postgres -t -c "SELECT numbackends FROM pg_stat_database WHERE datname='postgres';" | xargs)
+        echo "🔍 커넥션 수 = $conn_count"
+
+        if echo "$conn_count" | grep -qE '^[0-9]+$'; then
+          if [ "$conn_count" -gt 60 ]; then
+            echo "❌ DB 커넥션 누수 가능성 있음 ($conn_count개)"
+            exit 1
+          else
+            echo "✅ DB 커넥션 정상 종료 ($conn_count개)"
+          fi
+        else
+          echo "❌ conn_count가 숫자가 아님 → '$conn_count'"
+          exit 1
+        fi
+
+    # 9-1. BLUE 업데이트
+  - name: deploy-prod-blue
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-blue --force-new-deployment
+    when:
+      branch:
+        - main
+        - sub
+
+  # 9-2. GREEN 업데이트
+  - name: deploy-prod-green
+    image: amazon/aws-cli
+    settings:
+      access_key:
+        from_secret: aws_access_key_id
+      secret_key:
+        from_secret: aws_secret_access_key
+      region: ap-northeast-2
+    commands:
+      - aws ecs update-service --cluster ChickCluster --service ChickTask-service-green --force-new-deployment
+    when:
+      branch:
+        - main
+        - sub
+
+trigger:
+  branch:
+    - main
+    - feat/drone
+    - feat/infra
+    - sub

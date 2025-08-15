@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Chick Pay - 계좌 상세{% endblock %}
+
+{% block content %}
+{% load humanize %}
+<main class="container mx-auto px-4 py-10 flex-grow">
+  <div class="max-w-4xl mx-auto">
+    <!-- <div class="flex items-center mb-8">
+      <a href="{% url 'account' %}" class="text-chick-brown hover:underline flex items-center">
+        <span class="mr-2">←</span> 계좌 목록으로 돌아가기
+      </a>
+    </div> -->
+
+    <div class="bg-gradient-to-r from-chick-yellow to-chick-orange rounded-2xl p-6 text-chick-brown shadow-md mb-8">
+      <div class="flex justify-between items-center mb-4">
+        <span class="font-bold text-xl">Cash</span>
+        <span class="text-3xl">🏦</span>
+      </div>
+      <div class="text-2xl font-bold mb-2">{{ email }}</div>
+      <div class="flex justify-between items-center">
+        <span class="text-lg">{{ name }}</span>
+        <span class="font-bold text-3xl">₩ {{ balance|floatformat:"0"|intcomma }}</span>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="{% url 'cash-transfer' %}"
+          class="bg-white text-chick-brown px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition">송금하기</a>
+        <a href="{% url 'cash-deposit' %}"
+          class="bg-white text-chick-brown px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition">입금하기</a>
+        <a href="{% url 'cash-withdraw' %}"
+          class="bg-white text-chick-brown px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-100 transition">출금하기</a>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-lg p-8 border-3 border-chick-yellow mb-8">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-xl font-bold text-chick-brown">전체 거래내역</h3>
+      </div>
+
+      <div class="space-y-4">
+        {% for tx in transactions %}
+        <div class="flex items-center justify-between p-4 border-b">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-10 h-10 {% if tx.transaction_type == 'deposit' %}bg-green-100{% else %}bg-red-100{% endif %} rounded-full flex items-center justify-center text-xl">
+              {% if tx.transaction_type == 'deposit' %}↓{% else %}↑{% endif %}
+            </div>
+            <div>
+              <p class="font-medium">
+                {% if tx.transaction_type == 'deposit' %}입금
+                {% elif tx.transaction_type == 'withdraw' %}출금
+                {% elif tx.transaction_type == 'transfer' %}
+                {% endif %}
+                {% if tx.memo %} {{ tx.memo }}{% endif %}
+              </p>
+              <p class="text-sm text-gray-500">{{ tx.created_at|date:"Y.m.d H:i" }}</p>
+            </div>
+          </div>
+          <div
+            class="font-bold text-right {% if tx.transaction_type == 'deposit' %}text-green-600{% else %}text-red-600{% endif %}">
+            {% if tx.transaction_type == 'deposit' %}+ {% else %}- {% endif %}₩{{ tx.amount|floatformat:"0"|intcomma }}
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-gray-400">거래 내역이 없습니다.</p>
+        {% endfor %}
+      </div>
+
+      {% if page_obj.has_other_pages %}
+      <div class="mt-6 flex justify-center">
+        <div class="flex items-center gap-2">
+          {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}"
+            class="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-gray-100">&lt;</a>
+          {% endif %}
+
+          {# 페이지 범위 설정 #}
+          {% for num in page_obj.paginator.page_range %}
+          {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %} <a href="?page={{ num }}"
+            class="w-8 h-8 flex items-center justify-center rounded-full {% if page_obj.number == num %}bg-chick-yellow text-chick-brown font-bold{% else %}border hover:bg-gray-100{% endif %}">
+            {{ num }}
+            </a>
+            {% endif %}
+            {% endfor %}
+
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}"
+              class="w-8 h-8 flex items-center justify-center rounded-full border hover:bg-gray-100">&gt;</a>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  </div>
+  </div>
+</main>
+{% endblock %}
